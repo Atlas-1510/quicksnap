@@ -1,4 +1,4 @@
-# Quicksnap
+# QuickSnap
 
 ## A replica of instagram
 
