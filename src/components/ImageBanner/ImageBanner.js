@@ -88,7 +88,7 @@ function ImageSlider({ images, width }) {
 function ImageBanner() {
   return (
     <div className="absolute h-full w-full overflow-hidden">
-      <div className="imageBanner relative grid grid-rows-3 transform rotate-45 top-1/3 -left-1/4 lg:top-2/3">
+      <div className="imageBanner relative grid grid-rows-3 transform rotate-45 -right-24 top-96">
         <ImageSlider images={rowOne} width="3148px" />
         <ImageSlider images={rowTwo} width="2880px" />
         <ImageSlider images={rowThree} width="3456px" />
