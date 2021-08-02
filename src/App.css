@@ -5,20 +5,8 @@ body,
   box-sizing: border-box;
 }
 
-.slider-line-one {
-  width: 5280px;
-}
-
-.slider-line-two {
-  width: 4986px;
-}
-
-.image-stack-one {
-  animation: slider-left 10s linear infinite;
-}
-
-.image-stack-two {
-  animation: slider-right 10s linear infinite;
+.image-stack {
+  animation: slider-left 80s linear infinite;
 }
 
 @keyframes slider-left {

@@ -1,14 +1,4 @@
-import { useEffect } from "react";
 import "./App.css";
-
-// import BGimage20 from "./images/BGimage20.jpg";
-// import BGimage21 from "./images/BGimage21.jpg";
-// import BGimage23 from "./images/BGimage23.jpg";
-// import BGimage33 from "./images/BGimage33.jpg";
-// import BGimage11 from "./images/BGimage11.jpg";
-// import BGimage14 from "./images/BGimage14.jpg";
-// import BGimage4 from "./images/BGimage4.jpg";
-// import BGimage18 from "./images/BGimage18.jpg";
 
 import BGimage1 from "./images/BGimage1.jpg";
 import BGimage2 from "./images/BGimage2.jpg";
@@ -25,18 +15,16 @@ import BGimage12 from "./images/BGimage12.jpg";
 import BGimage13 from "./images/BGimage13.jpg";
 import BGimage14 from "./images/BGimage14.jpg";
 import BGimage15 from "./images/BGimage15.jpg";
-// import BGimage17 from "./images/BGimage17.jpg";
-// import BGimage18 from "./images/BGimage18.jpg";
+import BGimage16 from "./images/BGimage16.jpg";
+import BGimage17 from "./images/BGimage17.jpg";
+import BGimage18 from "./images/BGimage18.jpg";
+import BGimage19 from "./images/BGimage19.jpg";
+import BGimage20 from "./images/BGimage20.png";
+import BGimage22 from "./images/BGimage22.jpg";
+import BGimage21 from "./images/BGimage21.jpg";
+import BGimage23 from "./images/BGimage23.jpg";
 
 const rowOne = [
-  // BGimage20,
-  // BGimage21,
-  // BGimage23,
-  // BGimage33,
-  // BGimage11,
-  // BGimage14,
-  // BGimage4,
-  // BGimage18,
   BGimage1,
   BGimage2,
   BGimage3,
@@ -45,9 +33,6 @@ const rowOne = [
   BGimage6,
   BGimage7,
   BGimage8,
-
-  // BGimage17,
-  // BGimage18,
 ];
 
 const rowTwo = [
@@ -60,62 +45,51 @@ const rowTwo = [
   BGimage15,
 ];
 
-function App() {
-  // useEffect(() => {
-  //   const imageStack = document.getElementById("imageStack");
-  //   console.log(imageStack.scrollWidth);
-  // });
+const rowThree = [
+  BGimage16,
+  BGimage17,
+  BGimage18,
+  BGimage19,
+  BGimage20,
+  BGimage21,
+  BGimage22,
+  BGimage23,
+];
 
-  // const getWidth = () => {
-  //   const sliderLine = document.getElementById("sliderLine");
-  //   console.log(sliderLine.scrollWidth);
-  // };
+function ImageSlider({ images, width }) {
   return (
-    <div className="grid grid-rows-4 h-full overflow-hidden">
-      <div className="slider-line-one flex h-full">
-        <div className="image-stack-one flex py-1 relative h-full">
-          {rowOne.map((image, index) => (
-            <img
-              key={index}
-              className="mx-1 h-full border-0 rounded-lg"
-              src={image}
-              alt="decorative tile as part of background mosaic"
-            />
-          ))}
-        </div>
-        <div className="image-stack-one flex py-1 relative h-full">
-          {rowOne.map((image, index) => (
-            <img
-              key={index}
-              className="mx-1 h-full border-0 rounded-lg"
-              src={image}
-              alt="decorative tile as part of background mosaic"
-            />
-          ))}
-        </div>
+    <div className="slider-line-one flex h-full opacity-75" style={{ width }}>
+      <div className="image-stack flex py-1 relative h-full">
+        {images.map((image, index) => (
+          <img
+            key={index}
+            className="mx-1 h-full border-0 rounded-lg"
+            src={image}
+            alt="decorative tile as part of background mosaic"
+          />
+        ))}
       </div>
-      <div className="slider-line-two flex h-full">
-        <div className="image-stack-two flex my-1 relative h-full">
-          {rowTwo.map((image, index) => (
-            <img
-              key={index}
-              className="mx-1 h-full border-0 rounded-lg"
-              src={image}
-              alt="decorative tile as part of background mosaic"
-            />
-          ))}
-        </div>
-        <div className="image-stack-two flex my-1 relative h-full">
-          {rowTwo.map((image, index) => (
-            <img
-              key={index}
-              className="mx-1 h-full border-0 rounded-lg"
-              src={image}
-              alt="decorative tile as part of background mosaic"
-            />
-          ))}
-        </div>
+      {/* Two sets of the same images are required for the loop illusion */}
+      <div className="image-stack flex py-1 relative h-full">
+        {images.map((image, index) => (
+          <img
+            key={index}
+            className="mx-1 h-full border-0 rounded-lg"
+            src={image}
+            alt="decorative tile as part of background mosaic"
+          />
+        ))}
       </div>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <div className="grid grid-rows-3 h-3/4 transform rotate-45 -translate-x-1/4">
+      <ImageSlider images={rowOne} width="5280px" />
+      <ImageSlider images={rowTwo} width="4832px" />
+      <ImageSlider images={rowThree} width="5808px" />
     </div>
   );
 }
