@@ -1,0 +1,23 @@
+html,
+body,
+#root {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.slider-line {
+  width: 5450px;
+}
+
+.image-stack {
+  animation: slider-left 60s linear infinite;
+}
+
+@keyframes slider-left {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -50%;
+  }
+}
