@@ -24,7 +24,7 @@ function App() {
                 type="password"
                 placeholder="Password"
               />
-              <button className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white">
+              <button className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400">
                 Log In
               </button>
               <div className="flex m-1 w-full items-center">
@@ -52,7 +52,9 @@ function App() {
               <div className="w-full my-3 h-px bg-gray-400"></div>
               <div className="my-1">
                 <span>Don't have an account? </span>
-                <span className=" text-blue-500 font-semibold">Sign up</span>
+                <span className=" text-blue-500 font-semibold cursor-pointer">
+                  Sign up
+                </span>
               </div>
             </form>
           </div>
