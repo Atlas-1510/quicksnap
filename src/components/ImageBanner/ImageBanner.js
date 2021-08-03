@@ -1,35 +1,35 @@
 import React from "react";
 import "./ImageBanner.css";
 
-import BGimage1 from "../../images/BGimage1.jpg";
-import BGimage2 from "../../images/BGimage2.jpg";
-import BGimage3 from "../../images/BGimage3.jpg";
-import BGimage4 from "../../images/BGimage4.jpg";
-import BGimage5 from "../../images/BGimage5.jpg";
-import BGimage6 from "../../images/BGimage6.jpg";
-import BGimage7 from "../../images/BGimage7.jpg";
-import BGimage8 from "../../images/BGimage8.jpg";
-import BGimage9 from "../../images/BGimage9.jpg";
-import BGimage10 from "../../images/BGimage10.jpg";
-import BGimage11 from "../../images/BGimage11.jpg";
-import BGimage12 from "../../images/BGimage12.jpg";
-import BGimage13 from "../../images/BGimage13.jpg";
-import BGimage14 from "../../images/BGimage14.jpg";
-import BGimage15 from "../../images/BGimage15.jpg";
-import BGimage16 from "../../images/BGimage16.jpg";
-import BGimage17 from "../../images/BGimage17.jpg";
-import BGimage18 from "../../images/BGimage18.jpg";
-import BGimage19 from "../../images/BGimage19.jpg";
-import BGimage20 from "../../images/BGimage20.png"; // png
-import BGimage22 from "../../images/BGimage22.jpg";
-import BGimage21 from "../../images/BGimage21.jpg";
-import BGimage23 from "../../images/BGimage23.jpg";
-import BGimage24 from "../../images/BGimage24.jpg";
-import BGimage25 from "../../images/BGimage25.jpg";
-import BGimage26 from "../../images/BGimage26.jpg";
-import BGimage27 from "../../images/BGimage27.jpg";
-import BGimage28 from "../../images/BGimage28.jpg";
-import BGimage29 from "../../images/BGimage29.jpg";
+import BGimage1 from "../../images/image-slider/BGimage1.jpg";
+import BGimage2 from "../../images/image-slider/BGimage2.jpg";
+import BGimage3 from "../../images/image-slider/BGimage3.jpg";
+import BGimage4 from "../../images/image-slider/BGimage4.jpg";
+import BGimage5 from "../../images/image-slider/BGimage5.jpg";
+import BGimage6 from "../../images/image-slider/BGimage6.jpg";
+import BGimage7 from "../../images/image-slider/BGimage7.jpg";
+import BGimage8 from "../../images/image-slider/BGimage8.jpg";
+import BGimage9 from "../../images/image-slider/BGimage9.jpg";
+import BGimage10 from "../../images/image-slider/BGimage10.jpg";
+import BGimage11 from "../../images/image-slider/BGimage11.jpg";
+import BGimage12 from "../../images/image-slider/BGimage12.jpg";
+import BGimage13 from "../../images/image-slider/BGimage13.jpg";
+import BGimage14 from "../../images/image-slider/BGimage14.jpg";
+import BGimage15 from "../../images/image-slider/BGimage15.jpg";
+import BGimage16 from "../../images/image-slider/BGimage16.jpg";
+import BGimage17 from "../../images/image-slider/BGimage17.jpg";
+import BGimage18 from "../../images/image-slider/BGimage18.jpg";
+import BGimage19 from "../../images/image-slider/BGimage19.jpg";
+import BGimage20 from "../../images/image-slider/BGimage20.png"; // png
+import BGimage22 from "../../images/image-slider/BGimage22.jpg";
+import BGimage21 from "../../images/image-slider/BGimage21.jpg";
+import BGimage23 from "../../images/image-slider/BGimage23.jpg";
+import BGimage24 from "../../images/image-slider/BGimage24.jpg";
+import BGimage25 from "../../images/image-slider/BGimage25.jpg";
+import BGimage26 from "../../images/image-slider/BGimage26.jpg";
+import BGimage27 from "../../images/image-slider/BGimage27.jpg";
+import BGimage28 from "../../images/image-slider/BGimage28.jpg";
+import BGimage29 from "../../images/image-slider/BGimage29.jpg";
 
 const rowOne = [
   BGimage1,
