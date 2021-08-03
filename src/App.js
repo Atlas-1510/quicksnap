@@ -36,39 +36,17 @@ function App() {
                 <div className="w-full h-px bg-gray-400"></div>
               </div>
               <div className="mx-1 w-full flex">
-                <div className="grid place-items-center m-2 w-full bg-white border rounded-md border-gray-200 p-1">
-                  <img
-                    className="m-1 h-7 left-0"
-                    src={google}
-                    alt="Google logo"
-                  />
+                <div className="auth-button bg-white border-gray-200">
+                  <img className="m-1 h-7" src={google} alt="Google logo" />
                 </div>
-                <div
-                  className="grid place-items-center m-2 w-full border rounded-md text-white p-1"
-                  style={{
-                    backgroundColor: "rgb(24,119,242)",
-                    borderColor: "rgb(24,119,242)",
-                  }}
-                >
-                  <img
-                    className="m-1 h-7 left-0"
-                    src={facebook}
-                    alt="Facebook logo"
-                  />
+                <div className="auth-button bg-blue-600 border-blue-600 hover:bg-blue-500">
+                  <img className="m-1 h-7" src={facebook} alt="Facebook logo" />
                 </div>
-                <div className="grid place-items-center m-2 w-full bg-black border rounded-md border-black p-1">
-                  <img
-                    className="m-1 h-7 left-px"
-                    src={apple}
-                    alt="Apple logo"
-                  />
+                <div className="auth-button bg-black border-black hover:bg-gray-800">
+                  <img className="m-1 h-7" src={apple} alt="Apple logo" />
                 </div>
-                <div className="grid place-items-center m-2 w-full bg-white border rounded-md border-gray-200 p-1">
-                  <img
-                    className="m-1 h-7 left-0"
-                    src={github}
-                    alt="GitHub logo"
-                  />
+                <div className="auth-button bg-white border-gray-200">
+                  <img className="m-1 h-7" src={github} alt="GitHub logo" />
                 </div>
               </div>
               <div className="w-full my-3 h-px bg-gray-400"></div>
