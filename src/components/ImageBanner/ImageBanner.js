@@ -20,10 +20,16 @@ import BGimage16 from "../../images/BGimage16.jpg";
 import BGimage17 from "../../images/BGimage17.jpg";
 import BGimage18 from "../../images/BGimage18.jpg";
 import BGimage19 from "../../images/BGimage19.jpg";
-import BGimage20 from "../../images/BGimage20.png";
+import BGimage20 from "../../images/BGimage20.png"; // png
 import BGimage22 from "../../images/BGimage22.jpg";
 import BGimage21 from "../../images/BGimage21.jpg";
 import BGimage23 from "../../images/BGimage23.jpg";
+import BGimage24 from "../../images/BGimage24.jpg";
+import BGimage25 from "../../images/BGimage25.jpg";
+import BGimage26 from "../../images/BGimage26.jpg";
+import BGimage27 from "../../images/BGimage27.jpg";
+import BGimage28 from "../../images/BGimage28.jpg";
+import BGimage29 from "../../images/BGimage29.jpg";
 
 const rowOne = [
   BGimage1,
@@ -34,6 +40,8 @@ const rowOne = [
   BGimage6,
   BGimage7,
   BGimage8,
+  BGimage24,
+  BGimage25,
 ];
 
 const rowTwo = [
@@ -44,6 +52,9 @@ const rowTwo = [
   BGimage13,
   BGimage14,
   BGimage15,
+  BGimage26,
+  BGimage27,
+  BGimage29,
 ];
 
 const rowThree = [
@@ -55,6 +66,7 @@ const rowThree = [
   BGimage21,
   BGimage22,
   BGimage23,
+  BGimage28,
 ];
 
 function ImageSlider({ images, width }) {
@@ -88,13 +100,18 @@ function ImageSlider({ images, width }) {
 function ImageBanner() {
   return (
     <div className="absolute h-full w-full overflow-hidden">
-      <div className="imageBanner relative grid grid-rows-3 transform rotate-45 -right-24 top-96">
-        <ImageSlider images={rowOne} width="3148px" />
-        <ImageSlider images={rowTwo} width="2880px" />
-        <ImageSlider images={rowThree} width="3456px" />
+      <div className=" relative imageBanner grid grid-rows-3 top-1/2 transform -translate-y-1/2">
+        <ImageSlider images={rowOne} width="3848px" />
+        <ImageSlider images={rowTwo} width="3948px" />
+        <ImageSlider images={rowThree} width="3948px" />
       </div>
     </div>
   );
 }
 
 export default ImageBanner;
+
+// rotate-45 -right-24 top-96
+// 3148px
+// 2880px
+// 3456px

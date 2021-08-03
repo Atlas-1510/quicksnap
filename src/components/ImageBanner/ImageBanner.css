@@ -3,7 +3,7 @@
 }
 
 .image-stack {
-  animation: slider-left 60s linear infinite;
+  animation: slider-left 40s linear infinite;
 }
 
 @keyframes slider-left {
