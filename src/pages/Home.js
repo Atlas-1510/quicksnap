@@ -1,11 +1,16 @@
 import React from "react";
 import Header from "../components/Header";
 import Card from "../components/Card";
+import RightSideBox from "../components/RightSideBox";
 
 import testImage from "../images/test-images/road.jpeg";
 import testImage2 from "../images/test-images/shells.jpeg";
 import testUserProfile from "../images/test-images/testUserProfile.png";
 import testUserProfile2 from "../images/test-images/testUserProfile2.jpg";
+import userProfileImage from "../images/test-images/RightSideBox/userProfileImage.jpg";
+import davidBarrell from "../images/test-images/RightSideBox/david.barrell.png";
+import deshith from "../images/test-images/RightSideBox/deshith.png";
+import lisa from "../images/test-images/RightSideBox/lisamwill.png";
 
 function Home() {
   const cards = [
@@ -62,6 +67,30 @@ function Home() {
       likeCount: 999,
     },
   ];
+
+  const user = {
+    image: userProfileImage,
+    userName: "iamjasona",
+    fullName: "Jason Aravanis",
+  };
+
+  const followSuggestions = [
+    {
+      id: "random ID 1",
+      userName: "david.barrell",
+      image: davidBarrell,
+    },
+    {
+      id: "random ID 2",
+      userName: "deshith",
+      image: deshith,
+    },
+    {
+      id: "random ID 3",
+      userName: "lisamwil",
+      image: lisa,
+    },
+  ];
   return (
     <>
       <Header />
@@ -69,6 +98,7 @@ function Home() {
         <div className=" col-start-3 col-span-4 ">
           {cards && cards.map((card) => <Card key={card.id} card={card} />)}
         </div>
+        <RightSideBox user={user} followSuggestions={followSuggestions} />
       </div>
     </>
   );
