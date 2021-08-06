@@ -8,7 +8,7 @@ import User from "../images/SVG/User";
 
 function Header() {
   return (
-    <header className="grid grid-cols-11 border-b border-gray-300 items-center p-2">
+    <header className="grid grid-cols-11 border-b border-gray-300 items-center p-2 bg-white">
       <h1 className="col-start-3 font-curly text-4xl">QuickSnap</h1>
       <form className="col-start-5 col-span-3 flex justify-center items-center">
         <input
