@@ -92,18 +92,15 @@ function Home() {
     },
   ];
   return (
-    <div
-      className="max-h-screen grid"
-      style={{
-        gridTemplateRows: "min-content 1fr",
-      }}
-    >
+    <div className="max-h-screen flex flex-col">
       <Header />
-      <div className="bg-gray-200 grid grid-cols-11 max-h-full overflow-scroll">
-        <div className="col-start-3 col-span-4 overflow-scroll">
-          {cards && cards.map((card) => <Card key={card.id} card={card} />)}
+      <RightSideBox user={user} followSuggestions={followSuggestions} />
+      <div className="bg-gray-200 max-h-full w-full flex justify-center">
+        <div className="w-2/3 md:max-w-4xl mt-11">
+          <div className="w-full lg:w-3/5">
+            {cards && cards.map((card) => <Card key={card.id} card={card} />)}
+          </div>
         </div>
-        <RightSideBox user={user} followSuggestions={followSuggestions} />
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ function Card({ card }) {
   const { author, image, comments, likeCount } = card;
 
   return (
-    <div className="flex flex-col border border-gray-300 rounded-sm mt-7">
+    <div className="flex flex-col border border-gray-300 rounded-sm mt-7 text-sm">
       <div className="flex justify-between bg-white h-12 items-center">
         <div className="mx-3 flex items-center">
           <img
