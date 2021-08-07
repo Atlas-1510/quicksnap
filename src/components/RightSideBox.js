@@ -3,8 +3,8 @@ import React from "react";
 function RightSideBox({ user, followSuggestions }) {
   const { image, userName, fullName } = user;
   return (
-    <div className="fixed w-screen flex justify-center top-16 left-0 invisible lg:visible ">
-      <div className="w-2/3 md:max-w-4xl flex justify-end pointer-events-none">
+    <div className="fixed w-screen flex justify-center top-16 left-0 invisible lg:visible pointer-events-none">
+      <div className="w-2/3 md:max-w-4xl flex justify-end ">
         <div className="text-sm w-1/3 mr-2">
           <div className="flex items-center py-2">
             <img

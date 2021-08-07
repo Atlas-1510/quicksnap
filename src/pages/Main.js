@@ -10,10 +10,10 @@ function Main() {
   const [currentPage, setCurrentPage] = useState("home");
 
   return (
-    <>
+    <div className="flex flex-col h-screen overflow-auto">
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      <div className="bg-gray-100 pt-12 flex flex-col min-h-full items-center">
-        <div className="md:w-2/3 md:max-w-4xl">
+      <div className="bg-gray-700 flex flex-col items-center flex-grow overflow-scroll">
+        <div className="md:w-2/3 md:max-w-4xl h-full w-full">
           <Switch>
             <Route exact path="/" component={Home}></Route>
             <Route exact path="/messenger">
@@ -28,7 +28,7 @@ function Main() {
           </Switch>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
