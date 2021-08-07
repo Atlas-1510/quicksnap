@@ -1,19 +1,19 @@
 import React from "react";
 
-import House from "../images/SVG/House";
+import Home from "../images/SVG/Home/Home";
 import Search from "../images/SVG/Search";
-import Add from "../images/SVG/Add";
-import Heart from "../images/SVG/Heart";
-import User from "../images/SVG/User";
+import Add from "../images/SVG/Add/Add";
+import Heart from "../images/SVG/Heart/Heart";
+import Profile from "../images/SVG/Profile/Profile";
 
 function BottomMobileNav() {
   return (
     <nav className="fixed flex md:hidden bottom-0 w-full bg-white border-t border-gray-300 items-center justify-between">
-      <House />
+      <Home />
       <Search />
       <Add />
       <Heart />
-      <User />
+      <Profile />
     </nav>
   );
 }

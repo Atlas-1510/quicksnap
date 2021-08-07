@@ -1,9 +1,9 @@
 import React from "react";
 
-import Heart from "../images/SVG/Heart";
-import PaperAirplane from "../images/SVG/PaperAirplane";
+import Heart from "../images/SVG/Heart/Heart";
+import PaperAirplane from "../images/SVG/PaperAirplane/PaperAirplane";
 import TextBubble from "../images/SVG/TextBubble";
-import Bookmark from "../images/SVG/Bookmark";
+import Bookmark from "../images/SVG/Bookmark/Bookmark";
 import ThreeDots from "../images/SVG/ThreeDots";
 
 function Card({ card }) {

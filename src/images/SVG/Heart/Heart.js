@@ -1,19 +1,17 @@
 import React from "react";
 
-export default Search;
-
 function Filled() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      title="search"
-      data-testid="icon-search"
+      title="like"
+      data-testid="icon-add"
       className="h-7 w-7 m-2 text-gray-700 fill-current"
       viewBox="0 0 20 20"
     >
       <path
         fillRule="evenodd"
-        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+        d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
         clipRule="evenodd"
       />
     </svg>
@@ -24,8 +22,8 @@ function Outline() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      title="search"
-      data-testid="icon-search"
+      title="like"
+      data-testid="icon-like"
       className="h-7 w-7 m-2 text-gray-700"
       fill="none"
       viewBox="0 0 24 24"
@@ -35,12 +33,19 @@ function Outline() {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1"
-        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
       />
     </svg>
   );
 }
 
-function Search({ active }) {
-  return <>{active ? <Filled /> : <Outline />}</>;
+function Add({ currentPage }) {
+  return (
+    <>
+      {currentPage === "liked" && <Filled />}
+      {currentPage !== "liked" && <Outline />}
+    </>
+  );
 }
+
+export default Add;

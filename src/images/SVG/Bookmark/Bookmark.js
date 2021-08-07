@@ -1,21 +1,16 @@
 import React from "react";
 
-export default Search;
-
 function Filled() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      title="search"
-      data-testid="icon-search"
+      title="like"
+      data-testid="icon-add"
       className="h-7 w-7 m-2 text-gray-700 fill-current"
       viewBox="0 0 20 20"
+      fill="currentColor"
     >
-      <path
-        fillRule="evenodd"
-        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-        clipRule="evenodd"
-      />
+      <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
     </svg>
   );
 }
@@ -24,8 +19,8 @@ function Outline() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      title="search"
-      data-testid="icon-search"
+      title="bookmark"
+      data-testid="icon-bookmark"
       className="h-7 w-7 m-2 text-gray-700"
       fill="none"
       viewBox="0 0 24 24"
@@ -35,12 +30,14 @@ function Outline() {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1"
-        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"
       />
     </svg>
   );
 }
 
-function Search({ active }) {
+function Bookmark({ active }) {
   return <>{active ? <Filled /> : <Outline />}</>;
 }
+
+export default Bookmark;
