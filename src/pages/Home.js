@@ -1,5 +1,4 @@
 import React from "react";
-import Header from "../components/Header";
 import Card from "../components/Card";
 import RightSideBox from "../components/RightSideBox";
 import BottomMobileNav from "../components/BottomMobileNav";
@@ -93,11 +92,10 @@ function Home() {
     },
   ];
   return (
-    <div className="max-h-screen flex flex-col">
-      <Header />
+    <div className="flex flex-col">
       <RightSideBox user={user} followSuggestions={followSuggestions} />
-      <div className="bg-gray-200 max-h-full w-full flex justify-center">
-        <div className="md:w-2/3 md:max-w-4xl mt-11">
+      <div className="max-h-full w-full flex justify-center">
+        <div className="md:w-2/3 md:max-w-4xl">
           <div className="w-full lg:w-3/5 mt-2 md:mt-auto">
             {cards && cards.map((card) => <Card key={card.id} card={card} />)}
           </div>

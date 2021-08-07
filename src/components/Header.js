@@ -11,7 +11,7 @@ function Header() {
   return (
     <>
       {/* Mobile Header */}
-      <nav className="flex md:hidden justify-between items-center w-full bg-white border-b border-gray-300 py-1 fixed top-0">
+      <nav className="flex md:hidden justify-between items-center w-full bg-white border-b border-gray-300 py-1 fixed top-0 max-h-12">
         <Camera />
         <h1 className="font-curly text-4xl">QuickSnap</h1>
         <PaperAirplane />

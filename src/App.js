@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
-import Home from "./pages/Home";
+import Main from "./pages/Main";
 import Login from "./pages/Login";
 
 function App() {
@@ -12,11 +12,10 @@ function App() {
     <Router>
       <Switch>
         <Route
-          exact
-          path="/"
+          path=""
           render={() => {
             if (user) {
-              return <Home />;
+              return <Main />;
             } else {
               return <Login />;
             }
