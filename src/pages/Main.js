@@ -12,19 +12,21 @@ function Main() {
   return (
     <>
       <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      <div className="bg-gray-200 pt-12 flex flex-col min-h-full">
-        <Switch>
-          <Route exact path="/" component={Home}></Route>
-          <Route exact path="/messenger">
-            <Messenger />
-          </Route>
-          <Route exact path="/liked">
-            <Liked />
-          </Route>
-          <Route exact path="/explore">
-            <Explore />
-          </Route>
-        </Switch>
+      <div className="bg-gray-100 pt-12 flex flex-col min-h-full items-center">
+        <div className="md:w-2/3 md:max-w-4xl">
+          <Switch>
+            <Route exact path="/" component={Home}></Route>
+            <Route exact path="/messenger">
+              <Messenger />
+            </Route>
+            <Route exact path="/liked">
+              <Liked />
+            </Route>
+            <Route exact path="/explore">
+              <Explore />
+            </Route>
+          </Switch>
+        </div>
       </div>
     </>
   );

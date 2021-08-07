@@ -94,13 +94,10 @@ function Home() {
   return (
     <div className="flex flex-col">
       <RightSideBox user={user} followSuggestions={followSuggestions} />
-      <div className="max-h-full w-full flex justify-center">
-        <div className="md:w-2/3 md:max-w-4xl">
-          <div className="w-full lg:w-3/5 mt-2 md:mt-auto">
-            {cards && cards.map((card) => <Card key={card.id} card={card} />)}
-          </div>
-        </div>
+      <div className="w-full lg:w-3/5 mt-2 md:mt-auto">
+        {cards && cards.map((card) => <Card key={card.id} card={card} />)}
       </div>
+
       <BottomMobileNav />
     </div>
   );
