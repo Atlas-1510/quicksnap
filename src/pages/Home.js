@@ -2,6 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import Card from "../components/Card";
 import RightSideBox from "../components/RightSideBox";
+import BottomMobileNav from "../components/BottomMobileNav";
 
 import testImage from "../images/test-images/road.jpeg";
 import testImage2 from "../images/test-images/shells.jpeg";
@@ -96,12 +97,13 @@ function Home() {
       <Header />
       <RightSideBox user={user} followSuggestions={followSuggestions} />
       <div className="bg-gray-200 max-h-full w-full flex justify-center">
-        <div className="w-2/3 md:max-w-4xl mt-11">
-          <div className="w-full lg:w-3/5">
+        <div className="md:w-2/3 md:max-w-4xl mt-11">
+          <div className="w-full lg:w-3/5 mt-2 md:mt-auto">
             {cards && cards.map((card) => <Card key={card.id} card={card} />)}
           </div>
         </div>
       </div>
+      <BottomMobileNav />
     </div>
   );
 }
