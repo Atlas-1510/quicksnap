@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Add from "../images/SVG/Add";
 import Eye from "../images/SVG/Eye";
 import Heart from "../images/SVG/Heart";
@@ -7,7 +8,7 @@ import PaperAirplane from "../images/SVG/PaperAirplane";
 import User from "../images/SVG/User";
 import Camera from "../images/SVG/Camera";
 
-function Header() {
+function Header({ currentPage, setCurrentPage }) {
   return (
     <>
       {/* Mobile Header */}
@@ -28,8 +29,12 @@ function Header() {
             />
           </form>
           <div className="flex">
-            <House />
-            <PaperAirplane />
+            <Link to="/" onClick={() => setCurrentPage("home")}>
+              <House currentPage={currentPage} />
+            </Link>
+            <Link to="/messenger" onClick={() => setCurrentPage("messenger")}>
+              <PaperAirplane currentPage={currentPage} />
+            </Link>
             <Add />
             <Heart />
             <Eye />
