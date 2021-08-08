@@ -13,9 +13,13 @@ function Header({ currentPage, setCurrentPage }) {
     <>
       {/* Mobile Header */}
       <nav className="flex md:hidden justify-between items-center w-full bg-white border-b border-gray-300 py-1">
-        <Camera />
+        <div className="w-7 m-2">
+          <Camera />
+        </div>
         <h1 className="font-curly text-4xl">QuickSnap</h1>
-        <PaperAirplane />
+        <div className="w-7 m-2">
+          <PaperAirplane />
+        </div>
       </nav>
       {/* Desktop Header */}
       <nav className="hidden md:flex justify-center w-full bg-white border-b border-gray-300 py-1">
@@ -30,42 +34,54 @@ function Header({ currentPage, setCurrentPage }) {
           </form>
           <div className="flex">
             <Link to="/" onClick={() => setCurrentPage("home")}>
-              <Home currentPage={currentPage} />
+              <div className="w-7 m-2">
+                <Home currentPage={currentPage} />
+              </div>
             </Link>
             <Link
               to="/messenger"
               onClick={() => setCurrentPage("messenger")}
               data-testid="messenger-icon"
             >
-              <PaperAirplane currentPage={currentPage} />
+              <div className="w-7 m-2">
+                <PaperAirplane currentPage={currentPage} />
+              </div>
             </Link>
             <Link
               to="/add"
               onClick={() => setCurrentPage("add")}
               data-testid="add-icon"
             >
-              <Add currentPage={currentPage} />
+              <div className="w-7 m-2">
+                <Add currentPage={currentPage} />
+              </div>
             </Link>
             <Link
               to="/liked"
               onClick={() => setCurrentPage("liked")}
               data-testid="heart-icon"
             >
-              <Heart currentPage={currentPage} />
+              <div className="w-7 m-2">
+                <Heart currentPage={currentPage} />
+              </div>
             </Link>
             <Link
               to="/explore"
               onClick={() => setCurrentPage("explore")}
               data-testid="eye-icon"
             >
-              <Eye currentPage={currentPage} />
+              <div className="w-7 m-2">
+                <Eye currentPage={currentPage} />
+              </div>
             </Link>
             <Link
               to="/explore"
               onClick={() => setCurrentPage("profile")}
               data-testid="profile-icon"
             >
-              <Profile currentPage={currentPage} />
+              <div className="w-7 m-2">
+                <Profile currentPage={currentPage} />
+              </div>
             </Link>
           </div>
         </div>

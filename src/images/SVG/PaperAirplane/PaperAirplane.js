@@ -6,7 +6,7 @@ function Filled() {
       xmlns="http://www.w3.org/2000/svg"
       title="messenger"
       data-testid="icon-messenger"
-      className="h-7 w-7 m-2 text-gray-700 fill-current"
+      className="text-gray-700 fill-current w-full"
       viewBox="0 0 20 20"
       stroke="currentColor"
     >
@@ -21,7 +21,7 @@ function Outline() {
       xmlns="http://www.w3.org/2000/svg"
       title="messenger"
       data-testid="icon-messenger"
-      className="h-7 w-7 m-2 text-gray-700"
+      className="text-gray-700 w-full"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

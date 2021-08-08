@@ -20,7 +20,9 @@ function Card({ card }) {
           />
           <span className="mx-3">{author.name}</span>
         </div>
-        <ThreeDots />
+        <div className="w-7 m-2">
+          <ThreeDots />
+        </div>
       </div>
       <div>
         <img src={image} alt="None" />
@@ -28,11 +30,19 @@ function Card({ card }) {
       <div className="flex flex-col bg-white text-gray-700">
         <div className="flex justify-between">
           <div className="flex">
-            <Heart />
-            <TextBubble />
-            <PaperAirplane />
+            <div className="w-8 m-2">
+              <Heart />
+            </div>
+            <div className="w-8 m-2">
+              <TextBubble />
+            </div>
+            <div className="w-8 m-2">
+              <PaperAirplane />
+            </div>
           </div>
-          <Bookmark />
+          <div className="w-8 m-2">
+            <Bookmark />
+          </div>
         </div>
         <span className="mx-3 my-1">
           Liked by <span className="font-bold">XYZ</span> and{" "}

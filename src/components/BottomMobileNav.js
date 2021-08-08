@@ -9,11 +9,21 @@ import Profile from "../images/SVG/Profile/Profile";
 function BottomMobileNav() {
   return (
     <nav className="fixed flex md:hidden bottom-0 w-full bg-white border-t border-gray-300 items-center justify-between">
-      <Home />
-      <Search />
-      <Add />
-      <Heart />
-      <Profile />
+      <div className="w-8 m-2">
+        <Home />
+      </div>
+      <div className="w-8 m-2">
+        <Search />
+      </div>
+      <div className="w-8 m-2">
+        <Add />
+      </div>
+      <div className="w-8 m-2">
+        <Heart />
+      </div>
+      <div className="w-8 m-2">
+        <Profile />
+      </div>
     </nav>
   );
 }

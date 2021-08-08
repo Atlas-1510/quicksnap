@@ -8,7 +8,7 @@ function Filled() {
       xmlns="http://www.w3.org/2000/svg"
       title="search"
       data-testid="icon-search"
-      className="h-7 w-7 m-2 text-gray-700 fill-current"
+      className="w-full text-gray-700 fill-current"
       viewBox="0 0 20 20"
     >
       <path
@@ -26,7 +26,7 @@ function Outline() {
       xmlns="http://www.w3.org/2000/svg"
       title="search"
       data-testid="icon-search"
-      className="h-7 w-7 m-2 text-gray-700"
+      className="w-full text-gray-700"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"

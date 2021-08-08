@@ -1,10 +1,12 @@
 import React from "react";
 
-function ThreeDots() {
+function Write() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="w-full"
+      title="write"
+      data-testid="icon-write"
+      className="w-full text-gray-700"
       fill="none"
       viewBox="0 0 24 24"
       stroke="currentColor"
@@ -13,10 +15,10 @@ function ThreeDots() {
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="1"
-        d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
       />
     </svg>
   );
 }
 
-export default ThreeDots;
+export default Write;
