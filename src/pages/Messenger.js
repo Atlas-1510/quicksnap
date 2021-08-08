@@ -7,6 +7,7 @@ import davidBarrell from "../images/test-images/RightSideBox/david.barrell.png";
 import deshith from "../images/test-images/RightSideBox/deshith.png";
 import lisa from "../images/test-images/RightSideBox/lisamwill.png";
 import PaperAirplane from "../images/SVG/PaperAirplane/PaperAirplane";
+import ChevronLeft from "../images/SVG/ChevronLeft";
 
 const testContacts = [
   {
@@ -31,18 +32,21 @@ function Messenger() {
 
   return (
     <div
-      className=" my-7 bg-white border rounded-md border-gray-300 grid grid-cols-3"
-      style={{ height: "87vh" }}
+      className=" md:my-7 bg-white md:border rounded-md border-gray-300 
+      grid grid-cols-3 absolute top-0 md:static w-full h-full md:h-5/6"
     >
-      <div className=" h-full flex flex-col">
-        <div className="border-b border-gray-300 relative flex items-center justify-center py-2">
+      <div className="md:static col-span-3 md:col-span-1 h-full flex flex-col">
+        <div className="border-b border-gray-300 flex items-center justify-between py-2">
+          <div className=" mx-2 w-7 md:invisible">
+            <ChevronLeft />
+          </div>
           <div className="my-1 flex items-center">
             <span className="font-semibold text-sm">iamjasona</span>
             <div className="w-6">
               <ChevronDown />
             </div>
           </div>
-          <div className="absolute right-2 w-7">
+          <div className=" mx-2 w-7">
             <Write />
           </div>
         </div>
@@ -64,7 +68,7 @@ function Messenger() {
           ))}
         </div>
       </div>
-      <div className="col-span-2 h-full border-l border-gray-300 flex flex-col justify-center">
+      <div className="hidden md:flex col-span-2 h-full border-l border-gray-300 flex-col justify-center">
         {/* Guide to send first message if no messages loaded */}
         {!messages && (
           <div className="flex flex-col justify-center items-center">
