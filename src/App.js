@@ -6,7 +6,9 @@ import Main from "./pages/Main";
 import Login from "./pages/Login";
 
 function App() {
-  const user = true;
+  const user = {
+    id: 1,
+  };
 
   return (
     <Router>
@@ -15,7 +17,7 @@ function App() {
           path=""
           render={() => {
             if (user) {
-              return <Main />;
+              return <Main user={user} />;
             } else {
               return <Login />;
             }

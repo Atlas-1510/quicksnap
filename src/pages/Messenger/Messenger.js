@@ -11,7 +11,7 @@ import ChevronLeft from "../../images/SVG/ChevronLeft";
 import getContacts from "./getContacts";
 import getMessages from "./getMessages";
 
-function Messenger() {
+function Messenger({ user }) {
   const isFirstRender = useIsFirstRender();
   const screenSize = useWindowSize();
   const [contacts, setContacts] = useState([]);
@@ -102,10 +102,7 @@ function Messenger() {
                 <Write />
               </div>
             </div>
-            {messages &&
-              messages.map((message) => (
-                <div key={message.id}>{message.content}</div>
-              ))}
+            {messages && <ChatBox messages={messages} user={user} />}
           </div>
         )}
       </div>
@@ -175,14 +172,54 @@ function Messenger() {
               </button>
             </div>
           )}
-          {messages &&
-            messages.map((message) => (
-              <div key={message.id}>{message.content}</div>
-            ))}
+          {messages && <ChatBox messages={messages} user={user} />}
         </div>
       </div>
     );
   }
+}
+
+function ChatBox({ messages, user }) {
+  return (
+    <div className="flex flex-col h-full ">
+      <div className="flex flex-col h-full  justify-end">
+        {messages.map((message) => {
+          if (message.authorID === user.id) {
+            return (
+              <div className="flex justify-end mx-1 text-sm">
+                <span
+                  className=" bg-blue-500 text-white py-2 px-2 m-3 border-0 rounded-3xl"
+                  style={{ maxWidth: "70%" }}
+                  key={message.id}
+                >
+                  {message.content}
+                </span>
+              </div>
+            );
+          } else {
+            return (
+              <div className="flex justify-start mx-1 text-sm">
+                <span
+                  className="bg-gray-300 py-2 px-2 m-3 border-0 rounded-3xl"
+                  style={{ maxWidth: "70%" }}
+                  key={message.id}
+                >
+                  {message.content}
+                </span>
+              </div>
+            );
+          }
+        })}
+      </div>
+      <div className="flex items-center justify-center">
+        <input
+          type="text"
+          placeholder="Message..."
+          className="border border-gray-300 rounded-3xl m-4 p-2 w-full"
+        />
+      </div>
+    </div>
+  );
 }
 
 export default Messenger;

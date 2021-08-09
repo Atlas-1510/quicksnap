@@ -6,7 +6,7 @@ import Messenger from "./Messenger/Messenger";
 import Liked from "./Liked";
 import Explore from "./Explore";
 
-function Main() {
+function Main({ user }) {
   const [currentPage, setCurrentPage] = useState("home");
 
   return (
@@ -17,7 +17,7 @@ function Main() {
           <Switch>
             <Route exact path="/" component={Home}></Route>
             <Route exact path="/messenger">
-              <Messenger />
+              <Messenger user={user} />
             </Route>
             <Route exact path="/liked">
               <Liked />
