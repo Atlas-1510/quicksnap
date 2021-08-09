@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "../components/Header/Header";
 import Home from "./Home";
-import Messenger from "./Messenger";
+import Messenger from "./Messenger/Messenger";
 import Liked from "./Liked";
 import Explore from "./Explore";
 
