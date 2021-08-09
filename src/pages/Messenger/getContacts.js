@@ -6,17 +6,17 @@ export default function getContacts() {
   return [
     {
       id: "random ID 1",
-      userName: "david.barrell",
+      name: "david.barrell",
       image: davidBarrell,
     },
     {
       id: "random ID 2",
-      userName: "deshith",
+      name: "deshith",
       image: deshith,
     },
     {
       id: "random ID 3",
-      userName: "lisamwil",
+      name: "lisamwil",
       image: lisa,
     },
   ];
