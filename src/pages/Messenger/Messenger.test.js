@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
 import Messenger from "./Messenger";
 import getContacts from "./getContacts";
 import getMessages from "./getMessages";
@@ -31,10 +32,20 @@ describe("Messenger", () => {
         content: "message content 3",
       },
     ]);
+
+    render(
+      <BrowserRouter>
+        <Messenger
+          user={{
+            id: 1,
+          }}
+        />
+      </BrowserRouter>
+    );
   });
 
   it("renders contact information", () => {
-    render(<Messenger />);
+    // render(<Messenger />);
 
     const contact = screen.getByText("test-user-name");
     expect(contact).toBeTruthy();
@@ -44,7 +55,7 @@ describe("Messenger", () => {
   });
 
   it("renders send message prompt", () => {
-    render(<Messenger />);
+    // render(<Messenger />);
 
     const prompt = screen.getByText("Send private messages to a friend");
 
@@ -52,7 +63,7 @@ describe("Messenger", () => {
   });
 
   it("requests messages when a contact is clicked", () => {
-    render(<Messenger />);
+    // render(<Messenger />);
 
     const contact = screen.getByText("test-user-name");
     fireEvent.click(contact);
@@ -61,7 +72,7 @@ describe("Messenger", () => {
   });
 
   it("renders messages when a contact is clicked", () => {
-    render(<Messenger />);
+    // render(<Messenger />);
 
     const contact = screen.getByText("test-user-name");
     fireEvent.click(contact);

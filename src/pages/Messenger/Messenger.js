@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import useIsFirstRender from "../../hooks/useIsFirstRender/useIsFirstRender";
 import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
+import { Link } from "react-router-dom";
 
 import Write from "../../images/SVG/Write";
 import ChevronDown from "../../images/SVG/ChevronDown";
@@ -11,7 +12,7 @@ import ChevronLeft from "../../images/SVG/ChevronLeft";
 import getContacts from "./getContacts";
 import getMessages from "./getMessages";
 
-function Messenger({ user }) {
+function Messenger({ user, setCurrentPage }) {
   const isFirstRender = useIsFirstRender();
   const screenSize = useWindowSize();
   const [contacts, setContacts] = useState([]);
@@ -44,9 +45,12 @@ function Messenger({ user }) {
         {!activeContact && (
           <div className="h-full flex flex-col">
             <div className="border-b border-gray-300 flex items-center justify-between py-2">
-              <div className=" mx-2 w-7 md:invisible">
-                <ChevronLeft />
-              </div>
+              <Link to="/" onClick={() => setCurrentPage("home")}>
+                <div className="mx-2 w-7">
+                  <ChevronLeft />
+                </div>
+              </Link>
+
               <div className="my-1 flex items-center">
                 <span className="font-semibold text-sm">iamjasona</span>
                 <div className="w-6">
@@ -186,11 +190,10 @@ function ChatBox({ messages, user }) {
         {messages.map((message) => {
           if (message.authorID === user.id) {
             return (
-              <div className="flex justify-end mx-1 text-sm">
+              <div key={message.id} className="flex justify-end mx-1 text-sm">
                 <span
                   className=" bg-blue-500 text-white py-2 px-2 m-3 border-0 rounded-3xl"
                   style={{ maxWidth: "70%" }}
-                  key={message.id}
                 >
                   {message.content}
                 </span>
@@ -198,11 +201,10 @@ function ChatBox({ messages, user }) {
             );
           } else {
             return (
-              <div className="flex justify-start mx-1 text-sm">
+              <div key={message.id} className="flex justify-start mx-1 text-sm">
                 <span
                   className="bg-gray-300 py-2 px-2 m-3 border-0 rounded-3xl"
                   style={{ maxWidth: "70%" }}
-                  key={message.id}
                 >
                   {message.content}
                 </span>

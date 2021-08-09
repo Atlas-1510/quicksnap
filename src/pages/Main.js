@@ -17,7 +17,7 @@ function Main({ user }) {
           <Switch>
             <Route exact path="/" component={Home}></Route>
             <Route exact path="/messenger">
-              <Messenger user={user} />
+              <Messenger user={user} setCurrentPage={setCurrentPage} />
             </Route>
             <Route exact path="/liked">
               <Liked />
