@@ -5,13 +5,15 @@ import { Link } from "react-router-dom";
 
 import Write from "../../images/SVG/Write";
 import ChevronDown from "../../images/SVG/ChevronDown";
-
 import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
 import ChevronLeft from "../../images/SVG/ChevronLeft";
+import ModalBackground from "../../components/ModalBackground";
 
 import getContacts from "./getContacts";
 import getMessages from "./getMessages";
-import ModalBackground from "../../components/ModalBackground";
+
+// TODO: Remove this test image when no longer required
+import Matt from "../../images/test-images/RightSideBox/mattohalleron12.png";
 
 function Messenger({ user, setCurrentPage }) {
   const isFirstRender = useIsFirstRender();
@@ -52,7 +54,6 @@ function Messenger({ user, setCurrentPage }) {
                   <ChevronLeft />
                 </div>
               </Link>
-
               <div className="my-1 flex items-center">
                 <span className="font-semibold text-sm">iamjasona</span>
                 <div className="w-6">
@@ -119,7 +120,12 @@ function Messenger({ user, setCurrentPage }) {
           </div>
         )}
         {newMessage && !activeContact && (
-          <NewMessage setNewMessage={setNewMessage} />
+          <NewMessage
+            setNewMessage={setNewMessage}
+            setContacts={setContacts}
+            contacts={contacts}
+            setActiveContact={setActiveContact}
+          />
         )}
       </div>
     );
@@ -192,7 +198,12 @@ function Messenger({ user, setCurrentPage }) {
           {newMessage && (
             <ModalBackground>
               <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-white border rounded-md border-gray-300">
-                <NewMessage setNewMessage={setNewMessage} />
+                <NewMessage
+                  setNewMessage={setNewMessage}
+                  setContacts={setContacts}
+                  contacts={contacts}
+                  setActiveContact={setActiveContact}
+                />
               </div>
             </ModalBackground>
           )}
@@ -243,7 +254,12 @@ function ChatBox({ messages, user }) {
   );
 }
 
-function NewMessage({ setNewMessage }) {
+function NewMessage({
+  setNewMessage,
+  setContacts,
+  contacts,
+  setActiveContact,
+}) {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState(null);
 
@@ -257,19 +273,36 @@ function NewMessage({ setNewMessage }) {
 
   // TODO: Implement firebase call to get similar contact names from input search query
   const getSearchResults = () => {
-    return getContacts();
+    const knownContacts = getContacts();
+    const newContact = {
+      id: "random ID 4",
+      name: "An New User We Dont Already Know",
+      image: Matt,
+    };
+    return [...knownContacts, newContact];
+  };
+
+  const handleContactSelection = (e) => {
+    const userid = e.target.dataset.userid;
+    let user = searchResults.find((contact) => contact.id === userid);
+    if (!contacts.find((contact) => contact.id === userid)) {
+      setContacts([...contacts, user]);
+    }
+    setActiveContact(user);
+    setNewMessage(false);
   };
 
   return (
     <div className="h-full flex flex-col">
-      <div className="border-b border-gray-300 flex items-center justify-between py-2">
+      <div className="border-b border-gray-300 flex items-center justify-between py-2 relative">
         <div className="mx-2 w-7" onClick={() => setNewMessage(false)}>
           <ChevronLeft />
         </div>
-        <span className="font-semibold text-sm">New Message</span>
-        <span className="font-semibold text-sm text-blue-500 mr-3">Next</span>
+        <span className="font-semibold text-sm absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+          New Message
+        </span>
       </div>
-      <div className="flex flex-col">
+      <div className="flex flex-col overflow-y-scroll">
         <div className="flex px-2 py-3 border-b border-gray-300">
           <span className="font-semibold mr-2">To:</span>
           <form className="w-full">
@@ -288,6 +321,7 @@ function NewMessage({ setNewMessage }) {
               key={contact.id}
               className="flex items-center m-2"
               data-userid={contact.id}
+              onClick={(e) => handleContactSelection(e)}
             >
               <img
                 src={contact.image}
