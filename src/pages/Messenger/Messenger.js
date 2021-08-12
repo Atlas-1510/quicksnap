@@ -11,6 +11,7 @@ import ChevronLeft from "../../images/SVG/ChevronLeft";
 
 import getContacts from "./getContacts";
 import getMessages from "./getMessages";
+import ModalBackground from "../../components/ModalBackground";
 
 function Messenger({ user, setCurrentPage }) {
   const isFirstRender = useIsFirstRender();
@@ -18,6 +19,7 @@ function Messenger({ user, setCurrentPage }) {
   const [contacts, setContacts] = useState([]);
   const [activeContact, setActiveContact] = useState(null);
   const [messages, setMessages] = useState(null);
+  const [newMessage, setNewMessage] = useState(false);
 
   useEffect(() => {
     //TODO: Replace getContacts with firebase call. Remember to update tests to mock firebase instead of getContacts
@@ -42,7 +44,7 @@ function Messenger({ user, setCurrentPage }) {
   if (screenSize.width < 768) {
     return (
       <div className=" bg-white absolute top-0 w-full h-full ">
-        {!activeContact && (
+        {!activeContact && !newMessage && (
           <div className="h-full flex flex-col">
             <div className="border-b border-gray-300 flex items-center justify-between py-2">
               <Link to="/" onClick={() => setCurrentPage("home")}>
@@ -57,7 +59,7 @@ function Messenger({ user, setCurrentPage }) {
                   <ChevronDown />
                 </div>
               </div>
-              <div className=" mx-2 w-7">
+              <div className=" mx-2 w-7" onClick={() => setNewMessage(true)}>
                 <Write />
               </div>
             </div>
@@ -88,13 +90,20 @@ function Messenger({ user, setCurrentPage }) {
             </div>
           </div>
         )}
-        {activeContact && (
+        {activeContact && !newMessage && (
           <div className="h-full flex flex-col">
             <div className="border-b border-gray-300 flex items-center justify-between py-2">
-              <div className=" mx-2 w-7 md:invisible">
+              <div
+                className=" mx-2 w-7 md:invisible"
+                onClick={() => setActiveContact(null)}
+                data-testid="mobile-return-messenger-main"
+              >
                 <ChevronLeft />
               </div>
-              <div className="my-1 flex items-center">
+              <div
+                className="my-1 flex items-center"
+                data-testid="activeUserHeading"
+              >
                 <span className="font-semibold text-sm">
                   {activeContact.name}
                 </span>
@@ -108,6 +117,9 @@ function Messenger({ user, setCurrentPage }) {
             </div>
             {messages && <ChatBox messages={messages} user={user} />}
           </div>
+        )}
+        {newMessage && !activeContact && (
+          <NewMessage setNewMessage={setNewMessage} />
         )}
       </div>
     );
@@ -130,7 +142,7 @@ function Messenger({ user, setCurrentPage }) {
                 <ChevronDown />
               </div>
             </div>
-            <div className=" mx-2 w-7">
+            <div className=" mx-2 w-7" onClick={() => setNewMessage(true)}>
               <Write />
             </div>
           </div>
@@ -177,6 +189,13 @@ function Messenger({ user, setCurrentPage }) {
             </div>
           )}
           {messages && <ChatBox messages={messages} user={user} />}
+          {newMessage && (
+            <ModalBackground>
+              <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-white border rounded-md border-gray-300">
+                <NewMessage setNewMessage={setNewMessage} />
+              </div>
+            </ModalBackground>
+          )}
         </div>
       </div>
     );
@@ -219,6 +238,68 @@ function ChatBox({ messages, user }) {
           placeholder="Message..."
           className="border border-gray-300 rounded-3xl m-4 p-2 w-full"
         />
+      </div>
+    </div>
+  );
+}
+
+function NewMessage({ setNewMessage }) {
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState(null);
+
+  useEffect(() => {
+    if (searchInput !== "") {
+      setSearchResults(getSearchResults());
+    } else {
+      setSearchResults(null);
+    }
+  }, [searchInput]);
+
+  // TODO: Implement firebase call to get similar contact names from input search query
+  const getSearchResults = () => {
+    return getContacts();
+  };
+
+  return (
+    <div className="h-full flex flex-col">
+      <div className="border-b border-gray-300 flex items-center justify-between py-2">
+        <div className="mx-2 w-7" onClick={() => setNewMessage(false)}>
+          <ChevronLeft />
+        </div>
+        <span className="font-semibold text-sm">New Message</span>
+        <span className="font-semibold text-sm text-blue-500 mr-3">Next</span>
+      </div>
+      <div className="flex flex-col">
+        <div className="flex px-2 py-3 border-b border-gray-300">
+          <span className="font-semibold mr-2">To:</span>
+          <form className="w-full">
+            <input
+              className="w-full"
+              type="text"
+              placeholder="Search..."
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+          </form>
+        </div>
+        {searchResults &&
+          searchResults.map((contact) => (
+            <div
+              key={contact.id}
+              className="flex items-center m-2"
+              data-userid={contact.id}
+            >
+              <img
+                src={contact.image}
+                alt="contact"
+                className="border rounded-full h-12 pointer-events-none"
+                data-testid={`user-image-${contact.id}`}
+              />
+              <div className="ml-3 flex flex-col pointer-events-none">
+                <span className="font-semibold text-sm">{contact.name}</span>
+              </div>
+            </div>
+          ))}
       </div>
     </div>
   );

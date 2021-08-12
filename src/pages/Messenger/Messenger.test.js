@@ -21,14 +21,17 @@ describe("Messenger", () => {
     getMessages.mockReturnValue([
       {
         id: 1,
+        authorID: "random ID 1",
         content: "message content 1",
       },
       {
         id: 2,
+        authorID: "random ID 2",
         content: "message content 2",
       },
       {
         id: 3,
+        authorID: "random ID 1",
         content: "message content 3",
       },
     ]);
@@ -45,8 +48,6 @@ describe("Messenger", () => {
   });
 
   it("renders contact information", () => {
-    // render(<Messenger />);
-
     const contact = screen.getByText("test-user-name");
     expect(contact).toBeTruthy();
 
@@ -55,16 +56,12 @@ describe("Messenger", () => {
   });
 
   it("renders send message prompt", () => {
-    // render(<Messenger />);
-
     const prompt = screen.getByText("Send private messages to a friend");
 
     expect(prompt).toBeVisible();
   });
 
   it("requests messages when a contact is clicked", () => {
-    // render(<Messenger />);
-
     const contact = screen.getByText("test-user-name");
     fireEvent.click(contact);
 
@@ -72,8 +69,6 @@ describe("Messenger", () => {
   });
 
   it("renders messages when a contact is clicked", () => {
-    // render(<Messenger />);
-
     const contact = screen.getByText("test-user-name");
     fireEvent.click(contact);
 
