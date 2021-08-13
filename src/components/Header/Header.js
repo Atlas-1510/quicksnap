@@ -91,12 +91,11 @@ function Header({ currentPage, setCurrentPage }) {
       </nav>
       {uploadModal && (
         <ModalBackground closeFunction={() => setUploadModal(false)}>
-          <div
-            className="bg-white border rounded-md border-gray-300 w-1/2 h-1/2"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <ImageUploader exit={() => setUploadModal(false)} />
-          </div>
+          <ImageUploader
+            exit={() => setUploadModal(false)}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </ModalBackground>
       )}
     </>
