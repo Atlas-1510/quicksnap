@@ -86,7 +86,7 @@ function Desktop({
           <ModalBackground closeFunction={() => setNewMessage(false)}>
             <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-white border rounded-md border-gray-300">
               <NewMessage
-                setNewMessage={setNewMessage}
+                exit={() => setNewMessage(false)}
                 setContacts={setContacts}
                 contacts={contacts}
                 setActiveContact={setActiveContact}

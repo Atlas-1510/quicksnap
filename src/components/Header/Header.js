@@ -90,7 +90,7 @@ function Header({ currentPage, setCurrentPage }) {
         </div>
       </nav>
       {uploadModal && (
-        <ModalBackground closeFunction={() => setUploadModal(false)}>
+        <ModalBackground exit={() => setUploadModal(false)}>
           <ImageUploader
             exit={() => setUploadModal(false)}
             currentPage={currentPage}
