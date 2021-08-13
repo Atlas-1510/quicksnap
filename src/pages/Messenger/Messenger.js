@@ -196,7 +196,7 @@ function Messenger({ user, setCurrentPage }) {
           )}
           {messages && <ChatBox messages={messages} user={user} />}
           {newMessage && (
-            <ModalBackground>
+            <ModalBackground closeFunction={() => setNewMessage(false)}>
               <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-white border rounded-md border-gray-300">
                 <NewMessage
                   setNewMessage={setNewMessage}
@@ -293,7 +293,7 @@ function NewMessage({
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col" onClick={(e) => e.stopPropagation()}>
       <div className="border-b border-gray-300 flex items-center justify-between py-2 relative">
         <div className="mx-2 w-7" onClick={() => setNewMessage(false)}>
           <ChevronLeft />

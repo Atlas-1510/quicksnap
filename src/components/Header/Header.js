@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import ModalBackground from "../ModalBackground";
 import Add from "../../images/SVG/Add/Add";
 import Eye from "../../images/SVG/Eye/Eye";
 import Heart from "../../images/SVG/Heart/Heart";
@@ -8,7 +9,11 @@ import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
 import Profile from "../../images/SVG/Profile/Profile";
 import Camera from "../../images/SVG/Camera";
 
+import ImageUploader from "../ImageUploader/ImageUploader";
+
 function Header({ currentPage, setCurrentPage }) {
+  const [uploadModal, setUploadModal] = useState(false);
+
   return (
     <>
       {/* Mobile Header */}
@@ -47,15 +52,13 @@ function Header({ currentPage, setCurrentPage }) {
                 <PaperAirplane currentPage={currentPage} />
               </div>
             </Link>
-            <Link
-              to="/add"
-              onClick={() => setCurrentPage("add")}
+            <div
+              className="w-7 m-2 cursor-pointer"
               data-testid="add-icon"
+              onClick={() => setUploadModal(true)}
             >
-              <div className="w-7 m-2">
-                <Add currentPage={currentPage} />
-              </div>
-            </Link>
+              <Add currentPage={currentPage} />
+            </div>
             <Link
               to="/liked"
               onClick={() => setCurrentPage("liked")}
@@ -86,6 +89,16 @@ function Header({ currentPage, setCurrentPage }) {
           </div>
         </div>
       </nav>
+      {uploadModal && (
+        <ModalBackground closeFunction={() => setUploadModal(false)}>
+          <div
+            className="bg-white border rounded-md border-gray-300 w-1/2 h-1/2"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <ImageUploader exit={() => setUploadModal(false)} />
+          </div>
+        </ModalBackground>
+      )}
     </>
   );
 }
