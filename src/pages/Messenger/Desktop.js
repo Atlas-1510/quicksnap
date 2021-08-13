@@ -11,7 +11,6 @@ import ChatBox from "./ChatBox";
 import NewMessage from "./NewMessage";
 
 function Desktop({
-  user,
   handleClick,
   contacts,
   setContacts,
@@ -81,7 +80,7 @@ function Desktop({
             <Button>Send Message</Button>
           </div>
         )}
-        {messages && <ChatBox messages={messages} user={user} />}
+        {messages && <ChatBox messages={messages} />}
         {newMessage && (
           <ModalBackground closeFunction={() => setNewMessage(false)}>
             <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-white border rounded-md border-gray-300">

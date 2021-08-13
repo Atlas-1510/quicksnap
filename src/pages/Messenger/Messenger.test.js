@@ -5,6 +5,7 @@ import getContacts from "./getContacts";
 import getMessages from "./getMessages";
 
 import testImage from "../../images/test-images/RightSideBox/david.barrell.png";
+import { UserContext } from "../../App";
 
 jest.mock("./getContacts");
 jest.mock("./getMessages");
@@ -38,11 +39,13 @@ describe("Messenger", () => {
 
     render(
       <BrowserRouter>
-        <Messenger
-          user={{
+        <UserContext.Provider
+          value={{
             id: 1,
           }}
-        />
+        >
+          <Messenger />
+        </UserContext.Provider>
       </BrowserRouter>
     );
   });

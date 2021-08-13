@@ -8,7 +8,7 @@ import getMessages from "./getMessages";
 import Desktop from "./Desktop";
 import Mobile from "./Mobile";
 
-function Messenger({ user, setCurrentPage }) {
+function Messenger({ setCurrentPage }) {
   const isFirstRender = useIsFirstRender();
   const screenSize = useWindowSize();
   const [contacts, setContacts] = useState([]);
@@ -39,7 +39,6 @@ function Messenger({ user, setCurrentPage }) {
   if (screenSize.width < 768) {
     return (
       <Mobile
-        user={user}
         handleClick={handleClick}
         contacts={contacts}
         setContacts={setContacts}
@@ -55,7 +54,6 @@ function Messenger({ user, setCurrentPage }) {
   } else {
     return (
       <Desktop
-        user={user}
         handleClick={handleClick}
         contacts={contacts}
         setContacts={setContacts}

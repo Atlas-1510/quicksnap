@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../../App";
 
-export default function ChatBox({ messages, user }) {
+export default function ChatBox({ messages }) {
+  const user = useContext(UserContext);
   return (
     <div className="flex flex-col h-full ">
       <div className="flex flex-col h-full  justify-end">

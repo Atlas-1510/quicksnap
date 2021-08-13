@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
+import { createContext } from "react";
+
+export const UserContext = createContext(null);
 
 function App() {
   const user = {
@@ -13,16 +16,18 @@ function App() {
   return (
     <Router>
       <Switch>
-        <Route
-          path=""
-          render={() => {
-            if (user) {
-              return <Main user={user} />;
-            } else {
-              return <Login />;
-            }
-          }}
-        ></Route>
+        <UserContext.Provider value={user}>
+          <Route
+            path=""
+            render={() => {
+              if (user) {
+                return <Main />;
+              } else {
+                return <Login />;
+              }
+            }}
+          ></Route>
+        </UserContext.Provider>
       </Switch>
     </Router>
   );
