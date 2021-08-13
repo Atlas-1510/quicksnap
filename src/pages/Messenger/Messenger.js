@@ -8,6 +8,7 @@ import ChevronDown from "../../images/SVG/ChevronDown";
 import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
 import ChevronLeft from "../../images/SVG/ChevronLeft";
 import ModalBackground from "../../components/ModalBackground";
+import Button from "../../components/Button";
 
 import getContacts from "./getContacts";
 import getMessages from "./getMessages";
@@ -189,9 +190,7 @@ function Messenger({ user, setCurrentPage }) {
               <span className="text-sm text-gray-500">
                 Send private messages to a friend
               </span>
-              <button className="bg-blue-500 my-3 py-1 px-2 border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400">
-                Send Message
-              </button>
+              <Button>Send Message</Button>
             </div>
           )}
           {messages && <ChatBox messages={messages} user={user} />}
