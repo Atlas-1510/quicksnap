@@ -103,15 +103,34 @@ describe("Messenger - Mobile", () => {
     expect(newMessageTitle).toBeTruthy();
   });
 
-  it("renders contact name when given a contact is active", () => {
+  it("renders contact name when a contact is active", () => {
     instance.rerender(
-      <Mobile
-        activeContact={{
-          id: "random ID 1",
-          name: "test-contact-name",
-          image: testImage,
-        }}
-      />
+      <BrowserRouter>
+        <UserContext.Provider
+          value={{
+            id: 1,
+            name: "test-user-name",
+          }}
+        >
+          <Mobile
+            contacts={contacts}
+            messages={messages}
+            handleClick={handleClick}
+            setContacts={setContacts}
+            activeContact={{
+              id: "random ID 1",
+              name: "test-contact-name",
+              image: testImage,
+            }}
+            setActiveContact={setActiveContact}
+            setMessages={setMessages}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            setCurrentPage={setCurrentPage}
+          />
+          ;
+        </UserContext.Provider>
+      </BrowserRouter>
     );
 
     // Renders active contact name in header
@@ -121,31 +140,32 @@ describe("Messenger - Mobile", () => {
 
   it("renders ChatBox component when given an active contact", () => {
     instance.rerender(
-      <Mobile
-        activeContact={{
-          id: "random ID 1",
-          name: "test-contact-name",
-          image: testImage,
-        }}
-        // For some reason, messages needs to passed to the rerender again. No actual change to messages for this test.
-        messages={[
-          {
+      <BrowserRouter>
+        <UserContext.Provider
+          value={{
             id: 1,
-            authorID: "random ID 1",
-            content: "message content 1",
-          },
-          {
-            id: 2,
-            authorID: "random ID 2",
-            content: "message content 2",
-          },
-          {
-            id: 3,
-            authorID: "random ID 1",
-            content: "message content 3",
-          },
-        ]}
-      />
+            name: "test-user-name",
+          }}
+        >
+          <Mobile
+            contacts={contacts}
+            messages={messages}
+            handleClick={handleClick}
+            setContacts={setContacts}
+            activeContact={{
+              id: "random ID 1",
+              name: "test-contact-name",
+              image: testImage,
+            }}
+            setActiveContact={setActiveContact}
+            setMessages={setMessages}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            setCurrentPage={setCurrentPage}
+          />
+          ;
+        </UserContext.Provider>
+      </BrowserRouter>
     );
 
     // Renders ChatBox component, which will display messages
@@ -155,15 +175,33 @@ describe("Messenger - Mobile", () => {
   });
 
   it("while a contact is active, returns to main messenger page when left-chevron is clicked", () => {
-    instance.rerender(
-      <Mobile
-        activeContact={{
-          id: "random ID 1",
-          name: "test-contact-name",
-          image: testImage,
-        }}
-        setActiveContact={setActiveContact}
-      />
+    instance = render(
+      <BrowserRouter>
+        <UserContext.Provider
+          value={{
+            id: 1,
+            name: "test-user-name",
+          }}
+        >
+          <Mobile
+            contacts={contacts}
+            messages={messages}
+            handleClick={handleClick}
+            setContacts={setContacts}
+            activeContact={{
+              id: "random ID 1",
+              name: "test-contact-name",
+              image: testImage,
+            }}
+            setActiveContact={setActiveContact}
+            setMessages={setMessages}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            setCurrentPage={setCurrentPage}
+          />
+          ;
+        </UserContext.Provider>
+      </BrowserRouter>
     );
 
     const returnHomeButton = screen.getByTestId("test-return-messenger-main");
