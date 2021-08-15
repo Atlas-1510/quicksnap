@@ -213,4 +213,34 @@ describe("Messenger - Mobile", () => {
     const ChatBox = screen.getByText("ChatBox");
     expect(ChatBox).toBeTruthy();
   });
+
+  it("renders send message prompt", () => {
+    instance.rerender(
+      <BrowserRouter>
+        <UserContext.Provider
+          value={{
+            id: 1,
+            name: "test-user-name",
+          }}
+        >
+          <Desktop
+            contacts={contacts}
+            messages={false}
+            handleClick={handleClick}
+            setContacts={setContacts}
+            activeContact={activeContact}
+            setActiveContact={setActiveContact}
+            setMessages={setMessages}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            setCurrentPage={setCurrentPage}
+          />
+          ;
+        </UserContext.Provider>
+      </BrowserRouter>
+    );
+    const prompt = screen.getByText("Send private messages to a friend");
+
+    expect(prompt).toBeVisible();
+  });
 });
