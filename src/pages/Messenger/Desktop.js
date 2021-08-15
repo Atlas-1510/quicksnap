@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import Write from "../../images/SVG/Write";
 import ChevronDown from "../../images/SVG/ChevronDown";
 import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
-import ChevronLeft from "../../images/SVG/ChevronLeft";
 import ModalBackground from "../../components/ModalBackground";
 import Button from "../../components/Button";
+
+import { UserContext } from "../../App";
 
 import ChatBox from "./ChatBox";
 import NewMessage from "./NewMessage";
@@ -22,23 +23,25 @@ function Desktop({
   setNewMessage,
   setCurrentPage,
 }) {
+  const user = useContext(UserContext);
   return (
     <div
       className=" my-7 bg-white border rounded-md border-gray-300 
       grid grid-cols-3 top-0 static w-full h-5/6"
     >
       <div className="col-span-1 h-full flex flex-col">
-        <div className="border-b border-gray-300 flex items-center justify-between py-2">
-          <div className=" mx-2 w-7 invisible">
-            <ChevronLeft />
-          </div>
+        <div className="border-b border-gray-300 flex items-center justify-center py-2 relative">
           <div className="my-1 flex items-center">
-            <span className="font-semibold text-sm">iamjasona</span>
+            <span className="font-semibold text-sm">{user.name}</span>
             <div className="w-6">
               <ChevronDown />
             </div>
           </div>
-          <div className=" mx-2 w-7" onClick={() => setNewMessage(true)}>
+          <div
+            className=" mx-2 w-7 absolute right-0"
+            onClick={() => setNewMessage(true)}
+            data-testid="test-write-button"
+          >
             <Write />
           </div>
         </div>
