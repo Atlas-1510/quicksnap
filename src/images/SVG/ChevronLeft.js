@@ -4,8 +4,8 @@ function ChevronLeft() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      title="chevron-down"
-      data-testid="icon-chevron-down"
+      title="chevron-left"
+      data-testid="icon-chevron-left"
       className="w-full text-gray-700"
       fill="none"
       viewBox="0 0 24 24"

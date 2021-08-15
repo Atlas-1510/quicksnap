@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import Write from "../../images/SVG/Write";
@@ -8,8 +8,9 @@ import ChevronLeft from "../../images/SVG/ChevronLeft";
 import ChatBox from "./ChatBox";
 import NewMessage from "./NewMessage";
 
+import { UserContext } from "../../App";
+
 function Mobile({
-  user,
   handleClick,
   contacts,
   setContacts,
@@ -21,6 +22,7 @@ function Mobile({
   setNewMessage,
   setCurrentPage,
 }) {
+  const user = useContext(UserContext);
   return (
     <div className=" bg-white absolute top-0 w-full h-full ">
       {!activeContact && !newMessage && (
@@ -32,12 +34,16 @@ function Mobile({
               </div>
             </Link>
             <div className="my-1 flex items-center">
-              <span className="font-semibold text-sm">iamjasona</span>
+              <span className="font-semibold text-sm">{user.name}</span>
               <div className="w-6">
                 <ChevronDown />
               </div>
             </div>
-            <div className=" mx-2 w-7" onClick={() => setNewMessage(true)}>
+            <div
+              className=" mx-2 w-7"
+              onClick={() => setNewMessage(true)}
+              data-testid="test-write-button"
+            >
               <Write />
             </div>
           </div>
@@ -68,11 +74,11 @@ function Mobile({
       )}
       {activeContact && !newMessage && (
         <div className="h-full flex flex-col">
-          <div className="border-b border-gray-300 flex items-center justify-between py-2">
+          <div className="border-b border-gray-300 flex items-center justify-center py-2 relative">
             <div
-              className=" mx-2 w-7 md:invisible"
+              className=" mx-2 w-7 absolute left-0"
               onClick={() => setActiveContact(null)}
-              data-testid="mobile-return-messenger-main"
+              data-testid="test-return-messenger-main"
             >
               <ChevronLeft />
             </div>
@@ -87,11 +93,8 @@ function Mobile({
                 <ChevronDown />
               </div>
             </div>
-            <div className=" mx-2 w-7">
-              <Write />
-            </div>
           </div>
-          {messages && <ChatBox messages={messages} user={user} />}
+          {messages && <ChatBox messages={messages} />}
         </div>
       )}
       {newMessage && !activeContact && (

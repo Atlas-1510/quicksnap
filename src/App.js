@@ -11,6 +11,7 @@ export const UserContext = createContext(null);
 function App() {
   const user = {
     id: 1,
+    name: "iamjasona",
   };
 
   return (
