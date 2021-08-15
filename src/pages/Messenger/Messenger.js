@@ -10,7 +10,7 @@ import Mobile from "./Mobile";
 
 function Messenger({ setCurrentPage }) {
   const isFirstRender = useIsFirstRender();
-  const screenSize = useWindowSize();
+  const { width } = useWindowSize();
   const [contacts, setContacts] = useState([]);
   const [activeContact, setActiveContact] = useState(null);
   const [messages, setMessages] = useState(null);
@@ -36,7 +36,7 @@ function Messenger({ setCurrentPage }) {
   }, [activeContact]);
 
   // Mobile messenger - max width of 768 based on tailwind screen sizes
-  if (screenSize.width < 768) {
+  if (width < 768) {
     return (
       <Mobile
         handleClick={handleClick}
@@ -51,7 +51,7 @@ function Messenger({ setCurrentPage }) {
         setCurrentPage={setCurrentPage}
       />
     );
-  } else {
+  } else if (width >= 768) {
     return (
       <Desktop
         handleClick={handleClick}
@@ -66,6 +66,8 @@ function Messenger({ setCurrentPage }) {
         setCurrentPage={setCurrentPage}
       />
     );
+  } else {
+    throw new Error("NO SCREEN SIZE");
   }
 }
 

@@ -28,6 +28,7 @@ function Desktop({
     <div
       className=" my-7 bg-white border rounded-md border-gray-300 
       grid grid-cols-3 top-0 static w-full h-5/6"
+      data-testid="test-messenger-desktop"
     >
       <div className="col-span-1 h-full flex flex-col">
         <div className="border-b border-gray-300 flex items-center justify-center py-2 relative">

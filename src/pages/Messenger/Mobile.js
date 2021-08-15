@@ -24,7 +24,10 @@ function Mobile({
 }) {
   const user = useContext(UserContext);
   return (
-    <div className=" bg-white absolute top-0 w-full h-full ">
+    <div
+      className=" bg-white absolute top-0 w-full h-full"
+      data-testid="test-messenger-mobile"
+    >
       {!activeContact && !newMessage && (
         <div className="h-full flex flex-col">
           <div className="border-b border-gray-300 flex items-center justify-between py-2">

@@ -1,7 +1,7 @@
 import { fireEvent } from "@testing-library/react";
 import { act, renderHook } from "@testing-library/react-hooks";
 
-import { useWindowSize } from "./useWindowSize";
+import useWindowSize from "./useWindowSize";
 
 describe("useWindowSize", () => {
   global.innerWidth = 500;
@@ -29,6 +29,12 @@ describe("useWindowSize", () => {
 
     expect(result.current.width).toBe(1000);
     expect(result.current.height).toBe(1000);
+  });
+
+  it("returns an object", () => {
+    const { result } = renderHook(() => useWindowSize());
+
+    expect(typeof result.current).toBe("object");
   });
 });
 
