@@ -1,10 +1,10 @@
-import Desktop from "./Desktop";
+import Mobile from "./Mobile";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { UserContext } from "../../App";
-import testImage from "../../images/test-images/RightSideBox/david.barrell.png";
+import { UserContext } from "../../../App";
+import testImage from "../../../images/test-images/RightSideBox/david.barrell.png";
 
-jest.mock("./ChatBox", () => {
+jest.mock("../ChatBox/ChatBox", () => {
   const ChatBox = () => <div>ChatBox</div>;
   return ChatBox;
 });
@@ -55,7 +55,7 @@ describe("Messenger - Mobile", () => {
             name: "test-user-name",
           }}
         >
-          <Desktop
+          <Mobile
             contacts={contacts}
             messages={messages}
             handleClick={handleClick}
@@ -97,36 +97,13 @@ describe("Messenger - Mobile", () => {
 
     expect(setNewMessage.mock.calls[0][0]).toBe(true);
 
-    instance.rerender(
-      <BrowserRouter>
-        <UserContext.Provider
-          value={{
-            id: 1,
-            name: "test-user-name",
-          }}
-        >
-          <Desktop
-            contacts={contacts}
-            messages={messages}
-            handleClick={handleClick}
-            setContacts={setContacts}
-            activeContact={activeContact}
-            setActiveContact={setActiveContact}
-            setMessages={setMessages}
-            newMessage={true}
-            setNewMessage={setNewMessage}
-            setCurrentPage={setCurrentPage}
-          />
-          ;
-        </UserContext.Provider>
-      </BrowserRouter>
-    );
+    instance.rerender(<Mobile newMessage={true} />);
 
     const newMessageTitle = screen.getByText("New Message");
     expect(newMessageTitle).toBeTruthy();
   });
 
-  it("renders contact name when given a contact is active", () => {
+  it("renders contact name when a contact is active", () => {
     instance.rerender(
       <BrowserRouter>
         <UserContext.Provider
@@ -135,7 +112,7 @@ describe("Messenger - Mobile", () => {
             name: "test-user-name",
           }}
         >
-          <Desktop
+          <Mobile
             contacts={contacts}
             messages={messages}
             handleClick={handleClick}
@@ -147,7 +124,7 @@ describe("Messenger - Mobile", () => {
             }}
             setActiveContact={setActiveContact}
             setMessages={setMessages}
-            newMessage={true}
+            newMessage={newMessage}
             setNewMessage={setNewMessage}
             setCurrentPage={setCurrentPage}
           />
@@ -162,7 +139,6 @@ describe("Messenger - Mobile", () => {
   });
 
   it("renders ChatBox component when given an active contact", () => {
-    // rendered with change to activeContact
     instance.rerender(
       <BrowserRouter>
         <UserContext.Provider
@@ -171,37 +147,21 @@ describe("Messenger - Mobile", () => {
             name: "test-user-name",
           }}
         >
-          <Desktop
+          <Mobile
             contacts={contacts}
+            messages={messages}
             handleClick={handleClick}
             setContacts={setContacts}
-            setActiveContact={setActiveContact}
-            setMessages={setMessages}
-            newMessage={true}
-            setNewMessage={setNewMessage}
-            setCurrentPage={setCurrentPage}
             activeContact={{
               id: "random ID 1",
               name: "test-contact-name",
               image: testImage,
             }}
-            messages={[
-              {
-                id: 1,
-                authorID: "random ID 1",
-                content: "message content 1",
-              },
-              {
-                id: 2,
-                authorID: "random ID 2",
-                content: "message content 2",
-              },
-              {
-                id: 3,
-                authorID: "random ID 1",
-                content: "message content 3",
-              },
-            ]}
+            setActiveContact={setActiveContact}
+            setMessages={setMessages}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            setCurrentPage={setCurrentPage}
           />
           ;
         </UserContext.Provider>
@@ -214,8 +174,8 @@ describe("Messenger - Mobile", () => {
     expect(ChatBox).toBeTruthy();
   });
 
-  it("renders send message prompt", () => {
-    instance.rerender(
+  it("while a contact is active, returns to main messenger page when left-chevron is clicked", () => {
+    instance = render(
       <BrowserRouter>
         <UserContext.Provider
           value={{
@@ -223,12 +183,16 @@ describe("Messenger - Mobile", () => {
             name: "test-user-name",
           }}
         >
-          <Desktop
+          <Mobile
             contacts={contacts}
-            messages={false}
+            messages={messages}
             handleClick={handleClick}
             setContacts={setContacts}
-            activeContact={activeContact}
+            activeContact={{
+              id: "random ID 1",
+              name: "test-contact-name",
+              image: testImage,
+            }}
             setActiveContact={setActiveContact}
             setMessages={setMessages}
             newMessage={newMessage}
@@ -239,8 +203,13 @@ describe("Messenger - Mobile", () => {
         </UserContext.Provider>
       </BrowserRouter>
     );
-    const prompt = screen.getByText("Send private messages to a friend");
 
-    expect(prompt).toBeVisible();
+    const returnHomeButton = screen.getByTestId("test-return-messenger-main");
+    expect(returnHomeButton).toBeTruthy();
+
+    fireEvent.click(returnHomeButton);
+
+    expect(setActiveContact).toBeCalled();
+    expect(setActiveContact.mock.calls[0][0]).toBe(null);
   });
 });

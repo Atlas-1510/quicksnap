@@ -1,6 +1,6 @@
-import davidBarrell from "../../images/test-images/RightSideBox/david.barrell.png";
-import deshith from "../../images/test-images/RightSideBox/deshith.png";
-import lisa from "../../images/test-images/RightSideBox/lisamwill.png";
+import davidBarrell from "../../../images/test-images/RightSideBox/david.barrell.png";
+import deshith from "../../../images/test-images/RightSideBox/deshith.png";
+import lisa from "../../../images/test-images/RightSideBox/lisamwill.png";
 
 export default function getContacts() {
   return [

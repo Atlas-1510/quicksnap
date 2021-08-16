@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import ChevronLeft from "../../images/SVG/ChevronLeft";
+import ChevronLeft from "../../../images/SVG/ChevronLeft";
 
-import getContacts from "./getContacts";
+import getContacts from "../getContacts/getContacts";
 
-import Matt from "../../images/test-images/RightSideBox/mattohalleron12.png";
+import Matt from "../../../images/test-images/RightSideBox/mattohalleron12.png";
 
-import useComponentVisible from "../../hooks/useComponentVisible/useComponentVisible";
+import useComponentVisible from "../../../hooks/useComponentVisible/useComponentVisible";
 
 export default function NewMessage({
   exit,

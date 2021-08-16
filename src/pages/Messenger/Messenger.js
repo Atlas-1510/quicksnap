@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import useIsFirstRender from "../../hooks/useIsFirstRender/useIsFirstRender";
 import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
 
-import getContacts from "./getContacts";
-import getMessages from "./getMessages";
+import getContacts from "./getContacts/getContacts";
+import getMessages from "./getMessages/getMessages";
 
-import Desktop from "./Desktop";
-import Mobile from "./Mobile";
+import Desktop from "./Desktop/Desktop";
+import Mobile from "./Mobile/Mobile";
 
 function Messenger({ setCurrentPage }) {
   const isFirstRender = useIsFirstRender();

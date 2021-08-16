@@ -1,16 +1,16 @@
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import Messenger from "./Messenger";
-import getContacts from "./getContacts";
-import getMessages from "./getMessages";
+import getContacts from "./getContacts/getContacts";
+import getMessages from "./getMessages/getMessages";
 
 import testImage from "../../images/test-images/RightSideBox/david.barrell.png";
 import { UserContext } from "../../App";
 import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
 
 jest.mock("../../hooks/useWindowSize/useWindowSize");
-jest.mock("./getContacts");
-jest.mock("./getMessages");
+jest.mock("./getContacts/getContacts");
+jest.mock("./getMessages/getMessages");
 
 describe("Messenger - small screen", () => {
   let instance;

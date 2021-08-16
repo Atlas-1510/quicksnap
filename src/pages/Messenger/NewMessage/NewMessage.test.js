@@ -1,10 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import NewMessage from "./NewMessage";
-import getContacts from "./getContacts";
+import getContacts from "../getContacts/getContacts";
 
-import davidBarrell from "../../images/test-images/RightSideBox/david.barrell.png";
-import deshith from "../../images/test-images/RightSideBox/deshith.png";
-import lisa from "../../images/test-images/RightSideBox/lisamwill.png";
+import davidBarrell from "../../../images/test-images/RightSideBox/david.barrell.png";
+import deshith from "../../../images/test-images/RightSideBox/deshith.png";
+import lisa from "../../../images/test-images/RightSideBox/lisamwill.png";
 
 const exit = jest.fn();
 const setContacts = jest.fn();
@@ -27,7 +27,7 @@ const contacts = [
   },
 ];
 
-jest.mock("./getContacts");
+jest.mock("../getContacts/getContacts");
 
 describe("NewMessage", () => {
   beforeEach(() => {

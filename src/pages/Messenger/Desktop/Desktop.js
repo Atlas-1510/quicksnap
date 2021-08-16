@@ -1,15 +1,15 @@
 import React, { useContext } from "react";
 
-import Write from "../../images/SVG/Write";
-import ChevronDown from "../../images/SVG/ChevronDown";
-import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
-import ModalBackground from "../../components/ModalBackground";
-import Button from "../../components/Button";
+import Write from "../../../images/SVG/Write";
+import ChevronDown from "../../../images/SVG/ChevronDown";
+import PaperAirplane from "../../../images/SVG/PaperAirplane/PaperAirplane";
+import ModalBackground from "../../../components/ModalBackground";
+import Button from "../../../components/Button";
 
-import { UserContext } from "../../App";
+import { UserContext } from "../../../App";
 
-import ChatBox from "./ChatBox";
-import NewMessage from "./NewMessage";
+import ChatBox from "../ChatBox/ChatBox";
+import NewMessage from "../NewMessage/NewMessage";
 
 function Desktop({
   handleClick,
