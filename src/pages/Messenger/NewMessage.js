@@ -31,7 +31,7 @@ export default function NewMessage({
     const knownContacts = getContacts();
     const newContact = {
       id: "random ID 4",
-      name: "An New User We Dont Already Know",
+      name: "A New User We Dont Already Know",
       image: Matt,
     };
     return [...knownContacts, newContact];
@@ -67,6 +67,7 @@ export default function NewMessage({
               <span className="font-semibold mr-2">To:</span>
               <form className="w-full">
                 <input
+                  aria-label="Search for contact"
                   className="w-full"
                   type="text"
                   placeholder="Search..."
