@@ -3,7 +3,6 @@ import React from "react";
 import Home from "../images/SVG/Home/Home";
 import Search from "../images/SVG/Search";
 import Add from "../images/SVG/Add/Add";
-import Heart from "../images/SVG/Heart/Heart";
 import Profile from "../images/SVG/Profile/Profile";
 
 function BottomMobileNav() {
@@ -17,9 +16,6 @@ function BottomMobileNav() {
       </div>
       <div className="w-8 m-2">
         <Add />
-      </div>
-      <div className="w-8 m-2">
-        <Heart />
       </div>
       <div className="w-8 m-2">
         <Profile />

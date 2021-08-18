@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import ModalBackground from "../ModalBackground";
 import Add from "../../images/SVG/Add/Add";
-import Eye from "../../images/SVG/Eye/Eye";
-import Heart from "../../images/SVG/Heart/Heart";
 import Home from "../../images/SVG/Home/Home";
 import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
 import Profile from "../../images/SVG/Profile/Profile";
@@ -60,25 +58,7 @@ function Header({ currentPage, setCurrentPage }) {
               <Add currentPage={currentPage} />
             </div>
             <Link
-              to="/liked"
-              onClick={() => setCurrentPage("liked")}
-              data-testid="heart-icon"
-            >
-              <div className="w-7 m-2">
-                <Heart currentPage={currentPage} />
-              </div>
-            </Link>
-            <Link
-              to="/explore"
-              onClick={() => setCurrentPage("explore")}
-              data-testid="eye-icon"
-            >
-              <div className="w-7 m-2">
-                <Eye currentPage={currentPage} />
-              </div>
-            </Link>
-            <Link
-              to="/explore"
+              to="/user"
               onClick={() => setCurrentPage("profile")}
               data-testid="profile-icon"
             >
