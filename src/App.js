@@ -5,14 +5,20 @@ import "./App.css";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import { createContext } from "react";
+import testUserProfileImage from "./images/test-images/testUserProfileImage.jpg";
 
 export const UserContext = createContext(null);
 
 function App() {
-  const user = {
-    id: 1,
-    name: "iamjasona",
-  };
+  // const user = {
+  //   id: 1,
+  //   name: "iamjasona",
+  //   displayImage: testUserProfileImage,
+  //   postCount: 18,
+  //   followerCount: 74,
+  //   followingCount: 134,
+  // };
+  const user = null;
 
   return (
     <Router>

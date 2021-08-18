@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "../components/Header/Header";
 import Home from "./Home";
 import Messenger from "./Messenger/Messenger";
-import User from "./User";
+import User from "./User/User";
 
 function Main() {
   const [currentPage, setCurrentPage] = useState("home");
