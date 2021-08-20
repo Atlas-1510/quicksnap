@@ -13,7 +13,6 @@ import trees from "../../images/test-images/trees.jpeg";
 
 jest.mock("./getUserPosts/getUserPosts");
 jest.mock("./getLikedPosts/getLikedPosts");
-
 const logOut = jest.fn();
 
 describe("User", () => {
@@ -57,9 +56,10 @@ describe("User", () => {
           postCount: 18,
           followerCount: 74,
           followingCount: 134,
+          logOut,
         }}
       >
-        <User logOut={logOut} />
+        <User />
       </UserContext.Provider>
     );
   });
@@ -90,5 +90,11 @@ describe("User", () => {
     expect(followers).toHaveTextContent("74 followers");
     const following = screen.getByTestId("test-following");
     expect(following).toHaveTextContent("134 following");
+  });
+
+  it("activates log out function when log out button is clicked", () => {
+    const button = screen.getByText("Log Out");
+    fireEvent.click(button);
+    expect(logOut).toHaveBeenCalled();
   });
 });

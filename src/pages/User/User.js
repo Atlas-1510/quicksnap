@@ -4,11 +4,22 @@ import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getUserPosts from "./getUserPosts/getUserPosts";
 
 function User() {
-  const { name, displayImage, postCount, followerCount, followingCount } =
-    useContext(UserContext);
+  const {
+    name,
+    displayImage,
+    postCount,
+    followerCount,
+    followingCount,
+    logOut,
+  } = useContext(UserContext);
   const [userPosts, setUserPosts] = useState(getUserPosts());
   const [likedPosts, setLikedPosts] = useState(getLikedPosts());
   const [grid, setGrid] = useState("posts");
+
+  const handleLogOut = () => {
+    logOut();
+  };
+
   return (
     <div className="flex flex-col h-full">
       {/* Top Section */}
@@ -25,7 +36,10 @@ function User() {
             <button className="border border-gray-300 rounded-md py-1 px-2 m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner">
               Edit Profile
             </button>
-            <button className="border border-gray-300 rounded-md py-1 px-2 m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner">
+            <button
+              className="border border-gray-300 rounded-md py-1 px-2 m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
+              onClick={() => handleLogOut()}
+            >
               Log Out
             </button>
           </div>
@@ -116,7 +130,7 @@ function User() {
             })}
         </div>
       </div>
-
+      {/* TODO: Implement Footer */}
       <footer>FOOTER</footer>
     </div>
   );
