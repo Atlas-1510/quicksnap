@@ -35,26 +35,28 @@ function User() {
       {/* Top Section */}
       <div className="grid grid-cols-3 grid-rows-1 my-6 justify-items-center items-center">
         {/* Profile Image */}
-        <div className=" h-36 w-36 border rounded-full overflow-hidden col-start-1 col-span-1">
+        <div className=" h-20 w-20 md:h-36 md:w-36 border rounded-full overflow-hidden col-start-1 col-span-1">
           <img src={displayImage} alt="chosen display for current user" />
         </div>
         {/* User Information */}
         <div className="col-start-2 col-span-2">
           {/* Container for user name, edit profile and log out buttons */}
           <div className="flex items-center">
-            <span className="font-roboto text-3xl font-light mr-6">{name}</span>
-            <button className="border border-gray-300 rounded-md py-1 px-2 m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner">
+            <span className="font-roboto text-xl md:text-3xl font-light mr-2 md:mr-6">
+              {name}
+            </span>
+            <button className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner">
               Edit Profile
             </button>
             <button
-              className="border border-gray-300 rounded-md py-1 px-2 m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
+              className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
               onClick={() => handleLogOut()}
             >
               Log Out
             </button>
           </div>
           {/* Container for counts of posts, followers, and following */}
-          <div className="mt-6">
+          <div className="mt-6 text-xs md:text-sm">
             <span className="mr-4" data-testid="test-posts">
               <span className="font-semibold">{postCount}</span> posts
             </span>
@@ -97,7 +99,7 @@ function User() {
       {/* Image Grid Container */}
       <div className="flex-grow">
         {/* Image Grid */}
-        <div className="grid grid-cols-3 gap-6 auto-rows-auto">
+        <div className="grid grid-cols-3 gap-1 md:gap-6 auto-rows-auto">
           {grid === "posts" &&
             userPosts &&
             userPosts.map((image) => {
