@@ -101,7 +101,7 @@ describe("User", () => {
   it("opens image modal when a user's uploaded image is clicked", () => {
     const thumbnail = screen.getByTestId("some image ID 1");
     fireEvent.click(thumbnail);
-    const image = screen.getByTestId("test-image-modal");
+    const image = screen.getByTestId("test-image-modal-desktop");
     expect(image.src).toContain(redFlowers);
     expect(image).toBeTruthy();
   });

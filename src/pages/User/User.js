@@ -1,9 +1,11 @@
 import React, { useContext, useState } from "react";
+
 import { UserContext } from "../../App";
 import ImageModal from "../../components/ImageModal/ImageModal";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getUserPosts from "./getUserPosts/getUserPosts";
 import getPostInfo from "./getPostInfo/getPostInfo";
+import BottomMobileNav from "../../components/BottomMobileNav";
 
 function User() {
   const {
@@ -14,8 +16,9 @@ function User() {
     followingCount,
     logOut,
   } = useContext(UserContext);
-  const [userPosts, setUserPosts] = useState(getUserPosts());
-  const [likedPosts, setLikedPosts] = useState(getLikedPosts());
+
+  const [userPosts] = useState(getUserPosts());
+  const [likedPosts] = useState(getLikedPosts());
   const [grid, setGrid] = useState("posts");
   const [activePost, setActivePost] = useState(null);
 
@@ -151,6 +154,7 @@ function User() {
       )}
       {/* TODO: Implement Footer */}
       <footer>FOOTER</footer>
+      <BottomMobileNav />
     </div>
   );
 }
