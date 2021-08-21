@@ -9,6 +9,7 @@ import ChatBox from "../ChatBox/ChatBox";
 import NewMessage from "../NewMessage/NewMessage";
 
 import { UserContext } from "../../../App";
+import BottomMobileNav from "../../../components/BottomMobileNav";
 
 function Mobile({
   handleClick,
@@ -108,6 +109,7 @@ function Mobile({
           setActiveContact={setActiveContact}
         />
       )}
+      <BottomMobileNav />
     </div>
   );
 }
