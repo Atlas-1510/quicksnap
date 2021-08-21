@@ -1,7 +1,9 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../../App";
+import ImageModal from "../../components/ImageModal/ImageModal";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getUserPosts from "./getUserPosts/getUserPosts";
+import getPostInfo from "./getPostInfo/getPostInfo";
 
 function User() {
   const {
@@ -15,9 +17,17 @@ function User() {
   const [userPosts, setUserPosts] = useState(getUserPosts());
   const [likedPosts, setLikedPosts] = useState(getLikedPosts());
   const [grid, setGrid] = useState("posts");
+  const [activePost, setActivePost] = useState(null);
 
   const handleLogOut = () => {
     logOut();
+  };
+
+  const openPost = (id) => {
+    // make request to get post id information
+    // setActiveImage with the returned information
+    let info = getPostInfo(id);
+    setActivePost(info);
   };
 
   return (
@@ -96,13 +106,14 @@ function User() {
                   className="inline-block relative overflow-hidden"
                   key={image.id}
                   data-testid={image.id}
+                  onClick={() => openPost(image.id)}
                 >
                   {/* TODO: Remove comment below */}
                   {/* To handle non-square images: https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout */}
                   <div style={{ marginTop: "100%" }}></div>
                   <img
                     src={image.file}
-                    className="absolute top-0 left-0 right-0 bottom-0"
+                    className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer"
                     alt="one of the current user posts"
                   />
                 </div>
@@ -116,20 +127,26 @@ function User() {
                   className="inline-block relative overflow-hidden"
                   key={image.id}
                   data-testid={image.id}
+                  onClick={() => openPost(image.id)}
                 >
                   {/* TODO: Remove comment below */}
                   {/* To handle non-square images: https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout */}
                   <div style={{ marginTop: "100%" }}></div>
                   <img
                     src={image.file}
-                    className="absolute top-0 left-0 right-0 bottom-0"
+                    className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer"
                     alt="one of the current user posts"
                   />
                 </div>
               );
             })}
+          {/* TODO: Add saved section to go with posts and likes. Tie to bookmark button in card component */}
         </div>
       </div>
+      {/* Image Modal (shows when a post is opened) */}
+      {activePost && (
+        <ImageModal post={activePost} setActivePost={setActivePost} />
+      )}
       {/* TODO: Implement Footer */}
       <footer>FOOTER</footer>
     </div>

@@ -5,6 +5,8 @@ import watch from "../../../images/test-images/watch.jpeg";
 import flowers from "../../../images/test-images/flowers.jpeg";
 import trees from "../../../images/test-images/trees.jpeg";
 
+// TODO: implement tests for getUserPosts
+
 export default function getUserPosts(userID) {
   return [
     {
