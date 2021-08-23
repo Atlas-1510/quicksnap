@@ -29,6 +29,20 @@ function Login({ getUserInfo }) {
     auth.signInWithPopup(provider);
   };
 
+  // TODO: Add github sign in
+  const handleGitHubSignIn = () => {
+    alert(
+      "This sign in method has not been implemented. Try to log in with Google!"
+    );
+  };
+
+  // TODO: Add apple sign in
+  const handleAppleSignIn = () => {
+    alert(
+      "This sign in method has not been implemented. Try to log in with Google!"
+    );
+  };
+
   return (
     <div className="h-full bg-gray-50">
       <div className="h-full grid place-items-center">
@@ -69,10 +83,16 @@ function Login({ getUserInfo }) {
                 >
                   <img className="m-1 h-7" src={facebook} alt="Facebook logo" />
                 </div>
-                <div className="auth-button bg-black border-black hover:bg-gray-800">
+                <div
+                  className="auth-button bg-black border-black hover:bg-gray-800"
+                  onClick={handleAppleSignIn}
+                >
                   <img className="m-1 h-7" src={apple} alt="Apple logo" />
                 </div>
-                <div className="auth-button bg-white border-gray-200">
+                <div
+                  className="auth-button bg-white border-gray-200"
+                  onClick={handleGitHubSignIn}
+                >
                   <img className="m-1 h-7" src={github} alt="GitHub logo" />
                 </div>
               </div>
