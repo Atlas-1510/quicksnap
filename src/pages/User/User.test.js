@@ -11,9 +11,16 @@ import watch from "../../images/test-images/watch.jpeg";
 import flowers from "../../images/test-images/flowers.jpeg";
 import trees from "../../images/test-images/trees.jpeg";
 
+import { auth } from "../../firebase/firebase";
+
 jest.mock("./getUserPosts/getUserPosts");
 jest.mock("./getLikedPosts/getLikedPosts");
-const logOut = jest.fn();
+jest.mock("../../firebase/firebase", () => ({
+  __esModule: true,
+  auth: {
+    signOut: jest.fn(),
+  },
+}));
 
 describe("User", () => {
   let instance;
@@ -56,7 +63,6 @@ describe("User", () => {
           postCount: 18,
           followerCount: 74,
           followingCount: 134,
-          logOut,
         }}
       >
         <User />
@@ -95,7 +101,7 @@ describe("User", () => {
   it("activates log out function when log out button is clicked", () => {
     const button = screen.getByText("Log Out");
     fireEvent.click(button);
-    expect(logOut).toHaveBeenCalled();
+    expect(auth.signOut).toHaveBeenCalled();
   });
 
   it("opens image modal when a user's uploaded image is clicked", () => {

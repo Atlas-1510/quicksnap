@@ -6,16 +6,11 @@ import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getUserPosts from "./getUserPosts/getUserPosts";
 import getPostInfo from "./getPostInfo/getPostInfo";
 import BottomMobileNav from "../../components/BottomMobileNav";
+import { auth } from "../../firebase/firebase";
 
 function User() {
-  const {
-    name,
-    displayImage,
-    postCount,
-    followerCount,
-    followingCount,
-    logOut,
-  } = useContext(UserContext);
+  const { name, displayImage, postCount, followerCount, followingCount } =
+    useContext(UserContext);
 
   const [userPosts] = useState(getUserPosts());
   const [likedPosts] = useState(getLikedPosts());
@@ -23,7 +18,8 @@ function User() {
   const [activePost, setActivePost] = useState(null);
 
   const handleLogOut = () => {
-    logOut();
+    // logOut();
+    auth.signOut();
   };
 
   const openPost = (id) => {
