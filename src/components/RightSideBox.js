@@ -1,19 +1,20 @@
 import React from "react";
 
 function RightSideBox({ user, followSuggestions }) {
-  const { image, userName, fullName } = user;
+  const { displayImage, name, fullName } = user;
+
   return (
     <div className="fixed w-screen flex justify-center top-16 left-0 invisible lg:visible pointer-events-none">
       <div className="w-2/3 md:max-w-4xl flex justify-end ">
         <div className="text-sm w-1/3 mr-2">
           <div className="flex items-center py-2">
             <img
-              src={image}
+              src={displayImage}
               alt="User"
               className=" h-14 w-14 border rounded-full"
             />
             <div className="flex flex-col flex-grow ml-3">
-              <span className="font-bold">{userName}</span>
+              <span className="font-bold">{name}</span>
               <span className="text-gray-500">{fullName}</span>
             </div>
             <span className="text-blue-500 font-semibold text-sm">Log Out</span>

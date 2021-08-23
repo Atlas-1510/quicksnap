@@ -7,7 +7,21 @@ import facebook from "../images/login-auth-icons/facebook.png";
 import apple from "../images/login-auth-icons/apple.svg";
 import github from "../images/login-auth-icons/github.png";
 
-function Login() {
+import { auth } from "../firebase/firebase";
+import firebase from "firebase";
+
+function Login({ getUserInfo }) {
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      getUserInfo(user.uid);
+    }
+  });
+
+  const handleGoogleSignIn = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    auth.signInWithPopup(provider);
+  };
+
   return (
     <div className="h-full bg-gray-50">
       <div className="h-full grid place-items-center">
@@ -36,7 +50,10 @@ function Login() {
                 <div className="w-full h-px bg-gray-400"></div>
               </div>
               <div className="mx-1 w-full flex">
-                <div className="auth-button bg-white border-gray-200">
+                <div
+                  className="auth-button bg-white border-gray-200"
+                  onClick={handleGoogleSignIn}
+                >
                   <img className="m-1 h-7" src={google} alt="Google logo" />
                 </div>
                 <div className="auth-button bg-blue-600 border-blue-600 hover:bg-blue-500">
