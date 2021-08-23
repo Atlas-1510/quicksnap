@@ -5,7 +5,6 @@ import "./App.css";
 import Main from "./pages/Main";
 import Login from "./pages/Login";
 import { createContext } from "react";
-import testUserProfileImage from "./images/test-images/testUserProfileImage.jpg";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, firestore } from "./firebase/firebase";
@@ -16,17 +15,6 @@ export const UserContext = createContext(null);
 function App() {
   const [session] = useAuthState(auth);
   const [user, setUser] = useState(null);
-  // TODO: Replace manual user state setting with context/reducer
-  // const userInfo = {
-  //   id: 1,
-  //   name: "iamjasona",
-  //   displayImage: testUserProfileImage,
-  //   postCount: 18,
-  //   followerCount: 74,
-  //   followingCount: 134,
-  //   logOut: () => {}, // TODO: update placeholder function
-  // };
-  // const user = null;
 
   const getUserInfo = async (uid) => {
     const ref = firestore.collection("users").doc(uid);
