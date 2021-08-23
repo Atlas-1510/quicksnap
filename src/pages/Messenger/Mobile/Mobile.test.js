@@ -1,7 +1,7 @@
 import Mobile from "./Mobile";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import { UserContext } from "../../../App";
+import { UserContext } from "../../Main";
 import testImage from "../../../images/test-images/RightSideBox/david.barrell.png";
 
 jest.mock("../ChatBox/ChatBox", () => {

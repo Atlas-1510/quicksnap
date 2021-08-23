@@ -5,7 +5,7 @@ import getContacts from "./getContacts/getContacts";
 import getMessages from "./getMessages/getMessages";
 
 import testImage from "../../images/test-images/RightSideBox/david.barrell.png";
-import { UserContext } from "../../App";
+import { UserContext } from "../Main";
 import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
 
 jest.mock("../../hooks/useWindowSize/useWindowSize");

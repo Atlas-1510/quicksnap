@@ -8,7 +8,7 @@ import ChevronLeft from "../../../images/SVG/ChevronLeft";
 import ChatBox from "../ChatBox/ChatBox";
 import NewMessage from "../NewMessage/NewMessage";
 
-import { UserContext } from "../../../App";
+import { UserContext } from "../../Main";
 import BottomMobileNav from "../../../components/BottomMobileNav";
 
 function Mobile({

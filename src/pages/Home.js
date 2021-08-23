@@ -11,7 +11,7 @@ import davidBarrell from "../images/test-images/RightSideBox/david.barrell.png";
 import deshith from "../images/test-images/RightSideBox/deshith.png";
 import lisa from "../images/test-images/RightSideBox/lisamwill.png";
 
-import { UserContext } from "../App";
+import { UserContext } from "./Main";
 
 function Home() {
   const cards = [

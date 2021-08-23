@@ -10,10 +10,10 @@ import github from "../images/login-auth-icons/github.png";
 import { auth } from "../firebase/firebase";
 import firebase from "firebase";
 
-function Login({ getUserInfo }) {
+function Login({ setUID }) {
   auth.onAuthStateChanged((user) => {
     if (user) {
-      getUserInfo(user.uid);
+      setUID(user.uid);
     }
   });
 

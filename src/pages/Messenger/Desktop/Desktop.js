@@ -6,7 +6,7 @@ import PaperAirplane from "../../../images/SVG/PaperAirplane/PaperAirplane";
 import ModalBackground from "../../../components/ModalBackground";
 import Button from "../../../components/Button";
 
-import { UserContext } from "../../../App";
+import { UserContext } from "../../Main";
 
 import ChatBox from "../ChatBox/ChatBox";
 import NewMessage from "../NewMessage/NewMessage";

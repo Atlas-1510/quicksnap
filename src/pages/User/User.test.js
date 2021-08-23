@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import User from "./User";
-import { UserContext } from "../../App";
+import { UserContext } from "../Main";
 import testUserProfileImage from "../../images/test-images/testUserProfileImage.jpg";
 import getUserPosts from "./getUserPosts/getUserPosts";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";

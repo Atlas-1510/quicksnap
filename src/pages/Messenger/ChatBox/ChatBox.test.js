@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import ChatBox from "./ChatBox";
-import { UserContext } from "../../../App";
+import { UserContext } from "../../Main";
 
 describe("ChatBox", () => {
   const messages = [

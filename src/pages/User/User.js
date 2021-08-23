@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import { UserContext } from "../../App";
+import { UserContext } from "../Main";
 import ImageModal from "../../components/ImageModal/ImageModal";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getUserPosts from "./getUserPosts/getUserPosts";
@@ -18,7 +18,6 @@ function User() {
   const [activePost, setActivePost] = useState(null);
 
   const handleLogOut = () => {
-    // logOut();
     auth.signOut();
   };
 
