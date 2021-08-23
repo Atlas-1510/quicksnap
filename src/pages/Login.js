@@ -22,6 +22,13 @@ function Login({ getUserInfo }) {
     auth.signInWithPopup(provider);
   };
 
+  // TODO: Verify that facebook log in works in a production environment
+  // In dev environment it throws error regarding unsecure connection
+  const handleFacebookSignIn = () => {
+    const provider = new firebase.auth.FacebookAuthProvider();
+    auth.signInWithPopup(provider);
+  };
+
   return (
     <div className="h-full bg-gray-50">
       <div className="h-full grid place-items-center">
@@ -56,7 +63,10 @@ function Login({ getUserInfo }) {
                 >
                   <img className="m-1 h-7" src={google} alt="Google logo" />
                 </div>
-                <div className="auth-button bg-blue-600 border-blue-600 hover:bg-blue-500">
+                <div
+                  className="auth-button bg-blue-600 border-blue-600 hover:bg-blue-500"
+                  onClick={handleFacebookSignIn}
+                >
                   <img className="m-1 h-7" src={facebook} alt="Facebook logo" />
                 </div>
                 <div className="auth-button bg-black border-black hover:bg-gray-800">
