@@ -123,51 +123,14 @@ function User() {
       {/* Image Grid Container */}
       <div className="flex-grow">
         {/* Image Grid */}
-        <div className="grid grid-cols-3 gap-1 md:gap-6 auto-rows-auto">
-          {grid === "posts" &&
-            userPosts &&
-            userPosts.map((post) => {
-              return (
-                <div
-                  className="inline-block relative overflow-hidden"
-                  key={post.id}
-                  data-testid={post.id}
-                  onClick={() => openPost(post.id)}
-                >
-                  {/* TODO: Remove comment below */}
-                  {/* To handle non-square images: https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout */}
-                  <div style={{ marginTop: "100%" }}></div>
-                  <img
-                    src={post.image}
-                    className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer"
-                    alt="one of the current user posts"
-                  />
-                </div>
-              );
-            })}
-          {grid === "liked" &&
-            likedPosts &&
-            likedPosts.map((post) => {
-              return (
-                <div
-                  className="inline-block relative overflow-hidden"
-                  key={post.id}
-                  data-testid={post.id}
-                  onClick={() => openPost(post.id)}
-                >
-                  {/* TODO: Remove comment below */}
-                  {/* To handle non-square images: https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout */}
-                  <div style={{ marginTop: "100%" }}></div>
-                  <img
-                    src={post.image}
-                    className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer"
-                    alt="one of the current user posts"
-                  />
-                </div>
-              );
-            })}
-          {/* TODO: Add saved section to go with posts and likes. Tie to bookmark button in card component */}
-        </div>
+
+        {grid === "posts" && userPosts && (
+          <ImageGrid posts={userPosts} openPost={openPost} />
+        )}
+        {grid === "liked" && likedPosts && (
+          <ImageGrid posts={likedPosts} openPost={openPost} />
+        )}
+        {/* TODO: Add saved section to go with posts and likes. Tie to bookmark button in card component */}
       </div>
       {/* Image Modal (shows when a post is opened) */}
       {activePost && (
@@ -181,3 +144,29 @@ function User() {
 }
 
 export default User;
+
+function ImageGrid({ posts, openPost }) {
+  return (
+    <div className="grid grid-cols-3 gap-1 md:gap-6 auto-rows-auto">
+      {posts.map((post) => {
+        return (
+          <div
+            className="inline-block relative overflow-hidden"
+            key={post.id}
+            data-testid={post.id}
+            onClick={() => openPost(post.id)}
+          >
+            {/* TODO: Remove comment below */}
+            {/* To handle non-square images: https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout */}
+            <div style={{ marginTop: "100%" }}></div>
+            <img
+              src={post.image}
+              className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer"
+              alt="one of the current user posts"
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
+}
