@@ -8,6 +8,8 @@ import getPostInfo from "./getPostInfo/getPostInfo";
 import BottomMobileNav from "../../components/BottomMobileNav";
 import { auth } from "../../firebase/firebase";
 
+// TODO: Implement DiceBear avatar library for default user display images
+
 function User() {
   const { uid, name, displayImage, postCount, followerCount, followingCount } =
     useContext(UserContext);

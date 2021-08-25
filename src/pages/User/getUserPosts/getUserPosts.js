@@ -12,3 +12,5 @@ export default async function getUserPosts(uid) {
 
   return docs;
 }
+
+// TODO: Paginate, limit to 12 results at a time
