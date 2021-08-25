@@ -1,7 +1,5 @@
 // TODO: Relocate this so that it can be used by the Home page to get get post information for each Card component
 
-// TODO: Make tests for getPostInfo
-
 import { firestore, storage } from "../../../firebase/firebase";
 
 export default async function getPostInfo(id) {
@@ -11,3 +9,6 @@ export default async function getPostInfo(id) {
   const image = await storage.refFromURL(imgRef).getDownloadURL();
   return { ...doc.data(), image };
 }
+
+// TODO: paginate this to return 12 results at a time (to fill grid, and then scroll down for more)
+//www.youtube.com/watch?v=yFlhTvxcrQ8

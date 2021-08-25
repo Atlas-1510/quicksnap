@@ -13,7 +13,7 @@ function User() {
     useContext(UserContext);
 
   const [userPosts, setUserPosts] = useState(null);
-  const [likedPosts, setLikedPosts] = useState(getLikedPosts());
+  const [likedPosts, setLikedPosts] = useState(null);
   const [grid, setGrid] = useState("posts");
   const [activePost, setActivePost] = useState(null);
 
