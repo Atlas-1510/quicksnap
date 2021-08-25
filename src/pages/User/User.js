@@ -156,14 +156,14 @@ function ImageGrid({ posts, openPost }) {
             data-testid={post.id}
             onClick={() => openPost(post.id)}
           >
-            {/* TODO: Remove comment below */}
-            {/* To handle non-square images: https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout */}
             <div style={{ marginTop: "100%" }}></div>
-            <img
-              src={post.image}
-              className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer"
-              alt="one of the current user posts"
-            />
+            <div className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer">
+              <img
+                src={post.image}
+                className="w-full h-full object-cover"
+                alt="one of the current user posts"
+              />
+            </div>
           </div>
         );
       })}
