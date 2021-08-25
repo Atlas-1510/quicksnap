@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import { UserContext } from "../Main";
 import ImageModal from "../../components/ImageModal/ImageModal";
@@ -9,13 +9,21 @@ import BottomMobileNav from "../../components/BottomMobileNav";
 import { auth } from "../../firebase/firebase";
 
 function User() {
-  const { name, displayImage, postCount, followerCount, followingCount } =
+  const { uid, name, displayImage, postCount, followerCount, followingCount } =
     useContext(UserContext);
 
-  const [userPosts] = useState(getUserPosts());
+  const [userPosts, setUserPosts] = useState(null);
   const [likedPosts] = useState(getLikedPosts());
   const [grid, setGrid] = useState("posts");
   const [activePost, setActivePost] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      console.log(uid);
+      let posts = await getUserPosts(uid);
+      setUserPosts(posts);
+    })();
+  }, []);
 
   const handleLogOut = () => {
     auth.signOut();
@@ -100,19 +108,19 @@ function User() {
         <div className="grid grid-cols-3 gap-1 md:gap-6 auto-rows-auto">
           {grid === "posts" &&
             userPosts &&
-            userPosts.map((image) => {
+            userPosts.map((post) => {
               return (
                 <div
                   className="inline-block relative overflow-hidden"
-                  key={image.id}
-                  data-testid={image.id}
-                  onClick={() => openPost(image.id)}
+                  key={post.id}
+                  data-testid={post.id}
+                  onClick={() => openPost(post.id)}
                 >
                   {/* TODO: Remove comment below */}
                   {/* To handle non-square images: https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout */}
                   <div style={{ marginTop: "100%" }}></div>
                   <img
-                    src={image.file}
+                    src={post.image}
                     className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer"
                     alt="one of the current user posts"
                   />
@@ -121,19 +129,19 @@ function User() {
             })}
           {grid === "liked" &&
             likedPosts &&
-            likedPosts.map((image) => {
+            likedPosts.map((post) => {
               return (
                 <div
                   className="inline-block relative overflow-hidden"
-                  key={image.id}
-                  data-testid={image.id}
-                  onClick={() => openPost(image.id)}
+                  key={post.id}
+                  data-testid={post.id}
+                  onClick={() => openPost(post.id)}
                 >
                   {/* TODO: Remove comment below */}
                   {/* To handle non-square images: https://stackoverflow.com/questions/5445491/height-equal-to-dynamic-width-css-fluid-layout */}
                   <div style={{ marginTop: "100%" }}></div>
                   <img
-                    src={image.file}
+                    src={post.image}
                     className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer"
                     alt="one of the current user posts"
                   />

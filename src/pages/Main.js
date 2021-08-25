@@ -17,7 +17,7 @@ function Main({ uid }) {
   return (
     <>
       {user && (
-        <UserContext.Provider value={user.data()}>
+        <UserContext.Provider value={{ ...user.data(), uid }}>
           <div className="flex flex-col h-screen overflow-auto relative">
             <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
             <div className="bg-gray-100 flex justify-center h-full flex-grow overflow-scroll">
