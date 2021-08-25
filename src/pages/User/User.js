@@ -47,10 +47,8 @@ function User() {
     }
   };
 
-  const openPost = (id) => {
-    // make request to get post id information
-    // setActiveImage with the returned information
-    let info = getPostInfo(id);
+  const openPost = async (id) => {
+    let info = await getPostInfo(id);
     setActivePost(info);
   };
 
