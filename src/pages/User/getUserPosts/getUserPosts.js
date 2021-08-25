@@ -5,7 +5,6 @@ export default async function getUserPosts(uid) {
   const snap = await ref.get();
   const docs = [];
   for (const doc of snap.docs) {
-    console.log(doc.id, "=>", doc.data());
     docs.push({ ...doc.data(), id: doc.id });
   }
 

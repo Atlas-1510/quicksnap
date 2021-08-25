@@ -13,13 +13,12 @@ function User() {
     useContext(UserContext);
 
   const [userPosts, setUserPosts] = useState(null);
-  const [likedPosts] = useState(getLikedPosts());
+  const [likedPosts, setLikedPosts] = useState(getLikedPosts());
   const [grid, setGrid] = useState("posts");
   const [activePost, setActivePost] = useState(null);
 
   useEffect(() => {
     (async () => {
-      console.log(uid);
       let posts = await getUserPosts(uid);
       setUserPosts(posts);
     })();
@@ -27,6 +26,25 @@ function User() {
 
   const handleLogOut = () => {
     auth.signOut();
+  };
+
+  const switchGrid = (type) => {
+    switch (type) {
+      case "posts":
+        setGrid("posts");
+        break;
+      case "liked":
+        (async () => {
+          let posts = await getLikedPosts(uid);
+          setLikedPosts(posts);
+          setGrid("liked");
+        })();
+        break;
+      default:
+        throw new Error(
+          `switchGrid not assigned a valid setting. Received: ${type} `
+        );
+    }
   };
 
   const openPost = (id) => {
@@ -84,7 +102,7 @@ function User() {
                 ? "text-black border-t border-black relative -top-px"
                 : "text-gray-400"
             }`}
-            onClick={() => setGrid("posts")}
+            onClick={() => switchGrid("posts")}
             data-testid="test-show-posts-button"
           >
             <span>POSTS</span>
@@ -95,7 +113,7 @@ function User() {
                 ? "text-black border-t border-black relative -top-px"
                 : "text-gray-400"
             }`}
-            onClick={() => setGrid("liked")}
+            onClick={() => switchGrid("liked")}
             data-testid="test-show-liked-button"
           >
             <span>LIKED</span>
