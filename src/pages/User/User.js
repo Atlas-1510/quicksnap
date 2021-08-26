@@ -1,12 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
-
 import { UserContext } from "../Main";
-import ImageModal from "../../components/ImageModal/ImageModal";
-import getLikedPosts from "./getLikedPosts/getLikedPosts";
-import useGetUserPosts from "./useGetUserPosts/useGetUserPosts";
-import getPostInfo from "./getPostInfo/getPostInfo";
-import BottomMobileNav from "../../components/BottomMobileNav";
 import { auth } from "../../firebase/firebase";
+import useGetUserPosts from "./useGetUserPosts/useGetUserPosts";
+import getLikedPosts from "./getLikedPosts/getLikedPosts";
+import getPostInfo from "./getPostInfo/getPostInfo";
+import ImageModal from "../../components/ImageModal/ImageModal";
+import BottomMobileNav from "../../components/BottomMobileNav";
 
 // TODO: Implement DiceBear avatar library for default user display images
 
