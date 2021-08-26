@@ -3,7 +3,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../Main";
 import ImageModal from "../../components/ImageModal/ImageModal";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";
-import getUserPosts from "./getUserPosts/getUserPosts";
+import useGetUserPosts from "./useGetUserPosts/useGetUserPosts";
 import getPostInfo from "./getPostInfo/getPostInfo";
 import BottomMobileNav from "../../components/BottomMobileNav";
 import { auth } from "../../firebase/firebase";
@@ -11,20 +11,13 @@ import { auth } from "../../firebase/firebase";
 // TODO: Implement DiceBear avatar library for default user display images
 
 function User() {
-  const { uid, name, displayImage, postCount, followerCount, followingCount } =
+  const { uid, name, profileImage, postCount, followerCount, followingCount } =
     useContext(UserContext);
 
-  const [userPosts, setUserPosts] = useState(null);
+  const userPosts = useGetUserPosts(uid);
   const [likedPosts, setLikedPosts] = useState(null);
   const [grid, setGrid] = useState("posts");
   const [activePost, setActivePost] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      let posts = await getUserPosts(uid);
-      setUserPosts(posts);
-    })();
-  }, []);
 
   const handleLogOut = () => {
     auth.signOut();
@@ -60,7 +53,7 @@ function User() {
       <div className="grid grid-cols-3 grid-rows-1 my-6 justify-items-center items-center">
         {/* Profile Image */}
         <div className=" h-20 w-20 md:h-36 md:w-36 border rounded-full overflow-hidden col-start-1 col-span-1">
-          <img src={displayImage} alt="chosen display for current user" />
+          <img src={profileImage} alt="chosen display for current user" />
         </div>
         {/* User Information */}
         <div className="col-start-2 col-span-2">
