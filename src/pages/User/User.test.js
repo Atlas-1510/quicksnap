@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import User from "./User";
 import { UserContext } from "../Main";
 import testUserProfileImage from "../../images/test-images/testUserProfileImage.jpg";
-import getUserPosts from "./getUserPosts/getUserPosts";
+import useGetUserPosts from "./useGetUserPosts/useGetUserPosts";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getPostInfo from "./getPostInfo/getPostInfo";
 import redFlowers from "../../images/test-images/redFlowers.jpg";
@@ -14,7 +14,7 @@ import { act } from "react-dom/test-utils";
 // Note: Some tests encapsulated in async/await blocks due to issue outlined here:
 // https://github.com/facebook/react/issues/15379
 
-jest.mock("./getUserPosts/getUserPosts", () => jest.fn());
+jest.mock("./useGetUserPosts/useGetUserPosts", () => jest.fn());
 jest.mock("./getLikedPosts/getLikedPosts", () => jest.fn());
 jest.mock("./getPostInfo/getPostInfo", () => jest.fn());
 jest.mock("../../firebase/firebase", () => ({
@@ -29,7 +29,7 @@ describe("User", () => {
 
   beforeEach(async () => {
     jest.clearAllMocks();
-    getUserPosts.mockReturnValue([
+    useGetUserPosts.mockReturnValue([
       {
         id: "testID",
         image: plane,
@@ -82,7 +82,7 @@ describe("User", () => {
   });
 
   it("gets user posts when loaded", () => {
-    expect(getUserPosts.mock.calls.length).toBe(1);
+    expect(useGetUserPosts.mock.calls.length).toBe(1);
     const testImageOne = screen.getByTestId("testID");
     expect(testImageOne).toBeTruthy();
   });
