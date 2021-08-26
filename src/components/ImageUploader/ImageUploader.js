@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Exit from "../../images/SVG/Exit";
 import Button from "../Button";
@@ -8,14 +8,15 @@ import Media from "../../images/SVG/Media";
 import useComponentVisible from "../../hooks/useComponentVisible/useComponentVisible";
 import useIsFirstRender from "../../hooks/useIsFirstRender/useIsFirstRender";
 
+import postImage from "./postImage/postImage";
+import { UserContext } from "../../pages/Main";
+
 function ImageUploader({ exit, currentPage, setCurrentPage }) {
+  const user = useContext(UserContext);
   const isFirstRender = useIsFirstRender();
   const [returnRef] = useState(currentPage);
   const [image, setImage] = useState(null);
-  const [storedImages, setStoredImages] = useState(() => {
-    const localData = localStorage.getItem("images");
-    return localData ? JSON.parse(localData) : [];
-  });
+
   const [submissionComplete, setSubmissionComplete] = useState(false);
 
   const handleExit = () => {
@@ -38,24 +39,11 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
     setImage(chosenImage);
   };
 
-  const handleSubmission = () => {
-    setStoredImages([
-      ...storedImages,
-      {
-        name: image.name,
-        type: image.type,
-        size: image.size,
-      },
-    ]);
+  const handleSubmission = async () => {
+    await postImage(user, image);
     setImage(null);
     setSubmissionComplete(true);
   };
-
-  useEffect(() => {
-    if (!isFirstRender) {
-      localStorage.setItem("images", JSON.stringify(storedImages));
-    }
-  }, [storedImages]);
 
   useEffect(() => {
     if (!isFirstRender && submissionComplete) {
