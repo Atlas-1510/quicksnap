@@ -2,44 +2,35 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ImageUploader from "./ImageUploader";
 import testImage from "../../images/test-images/testUserProfile2.jpg";
+import postImage from "./postImage/postImage";
+import { act } from "react-dom/test-utils";
+
+// Note: Some tests encapsulated in async/await blocks due to issue outlined here:
+// https://github.com/facebook/react/issues/15379
 
 const exit = jest.fn();
 const currentPage = jest.fn();
 const setCurrentPage = jest.fn();
+jest.mock("./postImage/postImage", () => jest.fn());
+global.URL.createObjectURL = jest.fn();
 
 describe("ImageUploader", () => {
   let instance;
 
-  let setItemSpy, getItemSpy;
-
   let mockStorage = {};
 
-  beforeAll(() => {
-    setItemSpy = jest
-      .spyOn(global.Storage.prototype, "setItem")
-      .mockImplementation((key, value) => {
-        mockStorage[key] = value;
-      });
+  beforeEach(async () => {
+    jest.clearAllMocks();
 
-    getItemSpy = jest
-      .spyOn(global.Storage.prototype, "getItem")
-      .mockImplementation((key) => mockStorage[key]);
-  });
-
-  beforeEach(() => {
-    global.URL.createObjectURL = jest.fn();
-    instance = render(
-      <ImageUploader
-        exit={exit}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
-    );
-  });
-
-  afterAll(() => {
-    getItemSpy.mockRestore();
-    setItemSpy.mockRestore();
+    await act(async () => {
+      instance = render(
+        <ImageUploader
+          exit={exit}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
+      );
+    });
   });
 
   it("renders", () => {
@@ -90,31 +81,45 @@ describe("ImageUploader", () => {
     expect(uploadSpy).toHaveBeenCalledTimes(2);
   });
 
-  it("saves image to local storage when share button is clicked", () => {
-    const button = screen.getByTestId("test-file-upload-button");
-    fireEvent.click(button);
+  it("saves image to storage when share button is clicked", async () => {
+    await act(async () => {
+      const button = await screen.findByTestId("test-file-upload-button");
+      fireEvent.click(button);
+    });
 
-    const input = screen.getByTestId("test-file-input");
-    userEvent.upload(input, testImage);
+    await act(async () => {
+      const input = await screen.findByTestId("test-file-input");
+      userEvent.upload(input, testImage);
+    });
 
-    const shareButton = screen.getByText("Share");
-    fireEvent.click(shareButton);
+    await act(async () => {
+      const shareButton = await screen.findByText("Share");
+      fireEvent.click(shareButton);
+    });
 
-    expect(global.Storage.prototype.setItem).toHaveBeenCalledTimes(1);
+    expect(postImage).toHaveBeenCalledTimes(1);
   });
 
-  it("unmounts after submission is completed", () => {
-    const button = screen.getByTestId("test-file-upload-button");
-    fireEvent.click(button);
+  it("unmounts after submission is completed", async () => {
+    await act(async () => {
+      const button = await screen.findByTestId("test-file-upload-button");
+      fireEvent.click(button);
+    });
 
-    const input = screen.getByTestId("test-file-input");
-    userEvent.upload(input, testImage);
+    await act(async () => {
+      const input = await screen.findByTestId("test-file-input");
+      userEvent.upload(input, testImage);
+    });
 
-    const shareButton = screen.getByText("Share");
-    fireEvent.click(shareButton);
+    await act(async () => {
+      const shareButton = await screen.findByText("Share");
+      fireEvent.click(shareButton);
+    });
 
     expect(exit.mock.calls.length).toBe(1);
   });
 });
 
+// TODO: Remove comment below
+// Link below used for prior tests based on local storage, not firestore
 // https://bholmes.dev/blog/mocking-browser-apis-fetch-localstorage-dates-the-easy-way-with-jest/
