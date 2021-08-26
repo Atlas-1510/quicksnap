@@ -1,5 +1,7 @@
 import { firestore, storage } from "../../../firebase/firebase";
 
+// This is not a realtime listener, as no way for user to like new posts without navigating away from page anyway.
+
 export default async function getLikedPosts(uid) {
   const ref = firestore.collection("users").doc(uid).collection("liked");
   const snap = await ref.get();
