@@ -43,6 +43,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const handleSubmission = async () => {
     if (!/image/i.test(image.type)) {
       alert("File " + image.name + " is not an image.");
+      setImage(null);
       return false;
     }
     let fileToUpload = image.size > 102400 ? await compressImage(image) : image;

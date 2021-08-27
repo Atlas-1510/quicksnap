@@ -1,9 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ImageUploader from "./ImageUploader";
-import testImage from "../../images/test-images/testUserProfile2.jpg";
+import testImageFile from "../../images/test-images/testUserProfile2.jpg";
 import postImage from "./postImage/postImage";
 import { act } from "react-dom/test-utils";
+
+const testImage = {
+  image: testImageFile,
+  type: "image/jpeg",
+};
 
 // Note: Some tests encapsulated in async/await blocks due to issue outlined here:
 // https://github.com/facebook/react/issues/15379
@@ -13,6 +18,7 @@ const currentPage = jest.fn();
 const setCurrentPage = jest.fn();
 jest.mock("./postImage/postImage", () => jest.fn());
 global.URL.createObjectURL = jest.fn();
+jest.spyOn(window, "alert").mockImplementation(() => {});
 
 describe("ImageUploader", () => {
   let instance;
