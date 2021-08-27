@@ -43,13 +43,24 @@ function Login({ setUID }) {
     );
   };
 
+  const handleEmailSignIn = (e) => {
+    e.preventDefault();
+    const email = e.target[0].value;
+    const pw = e.target[1].value;
+    auth.signInWithEmailAndPassword(email, pw);
+  };
+
   return (
     <div className="h-full bg-gray-50">
       <div className="h-full grid place-items-center">
         <GlassBox>
           <div className="w-80">
             <h1 className="font-curly text-6xl m-4 text-center">QuickSnap</h1>
-            <form className="flex items-center flex-col">
+            <form
+              id="login-form"
+              className="flex items-center flex-col"
+              onSubmit={(e) => handleEmailSignIn(e)}
+            >
               <input
                 className=" w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
                 placeholder="Email or username"
@@ -59,9 +70,11 @@ function Login({ setUID }) {
                 type="password"
                 placeholder="Password"
               />
-              <button className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400">
-                Log In
-              </button>
+              <input
+                value="Log In"
+                type="submit"
+                className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400"
+              />
               <div className="flex m-1 w-full items-center">
                 <div className="w-full h-px bg-gray-400"></div>
                 <span className="whitespace-nowrap mx-4 text-gray-400 font-semibold">
