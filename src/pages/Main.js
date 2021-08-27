@@ -19,9 +19,10 @@ function Main({ uid }) {
     if (packedUser) {
       (async () => {
         const unpackedUser = packedUser.data();
-        const gs = unpackedUser.profileImage;
-        const ref = await storage.refFromURL(gs).getDownloadURL();
-
+        const gsProfileImageURL = unpackedUser.profileImage;
+        let ref = gsProfileImageURL
+          ? await storage.refFromURL(gsProfileImageURL).getDownloadURL()
+          : null;
         setUser({
           ...unpackedUser,
           uid,
