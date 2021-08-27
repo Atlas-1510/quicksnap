@@ -45,12 +45,8 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
       alert("File " + image.name + " is not an image.");
       return false;
     }
-    if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
-      alert("The File APIs are not fully supported in this browser.");
-      return false;
-    }
-    const compressedImage = await compressImage(image);
-    await postImage(user, compressedImage);
+    let fileToUpload = image.size > 102400 ? await compressImage(image) : image;
+    await postImage(user, fileToUpload);
     setImage(null);
     setSubmissionComplete(true);
   };
