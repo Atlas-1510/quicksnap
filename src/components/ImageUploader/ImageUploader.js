@@ -10,6 +10,7 @@ import useIsFirstRender from "../../hooks/useIsFirstRender/useIsFirstRender";
 
 import postImage from "./postImage/postImage";
 import { UserContext } from "../../pages/Main";
+import compressImage from "./compressImage/compressImage";
 
 function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const user = useContext(UserContext);
@@ -40,7 +41,16 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
   };
 
   const handleSubmission = async () => {
-    await postImage(user, image);
+    if (!/image/i.test(image.type)) {
+      alert("File " + image.name + " is not an image.");
+      return false;
+    }
+    if (!(window.File && window.FileReader && window.FileList && window.Blob)) {
+      alert("The File APIs are not fully supported in this browser.");
+      return false;
+    }
+    const compressedImage = await compressImage(image);
+    await postImage(user, compressedImage);
     setImage(null);
     setSubmissionComplete(true);
   };
@@ -89,7 +99,11 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
                   className="w-1/3 flex items-center justify-center"
                   data-testid="test-image-preview"
                 >
-                  <img src={URL.createObjectURL(image)} alt="preview" />
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt="preview"
+                    id="chosen-image"
+                  />
                 </div>
                 <div className="flex">
                   <div className="m-2" onClick={() => handleButtonClick()}>
