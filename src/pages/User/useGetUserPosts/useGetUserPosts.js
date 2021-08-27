@@ -9,6 +9,7 @@ function useGetUserPosts(uid) {
     const unsub = firestore
       .collection("posts")
       .where("author.id", "==", uid)
+      .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         const promises = snapshot.docs.map((doc) => {
           return storage.refFromURL(doc.data().image).getDownloadURL();

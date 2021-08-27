@@ -1,4 +1,4 @@
-import { storage, firestore } from "../../../firebase/firebase";
+import { storage, firestore, timestamp } from "../../../firebase/firebase";
 
 // TODO: implement uuid for uploaded file name, to avoid issues if two photos have the same name
 
@@ -13,7 +13,7 @@ export default async function postImage(user, image) {
       profileImage: user.profileImage,
       id: user.uid,
     },
-    createdAt: "placeholder timestamp",
+    timestamp: timestamp(),
     image: imageURL,
     likeCount: 0,
     comments: [],

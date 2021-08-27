@@ -12,6 +12,8 @@ import postImage from "./postImage/postImage";
 import { UserContext } from "../../pages/Main";
 import compressImage from "./compressImage/compressImage";
 
+// TODO: Implement drag and drop for uploading files
+
 function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const user = useContext(UserContext);
   const isFirstRender = useIsFirstRender();
