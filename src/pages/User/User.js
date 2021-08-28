@@ -11,8 +11,15 @@ import { Link } from "react-router-dom";
 // TODO: Implement DiceBear avatar library for default user display images
 
 function User() {
-  const { uid, name, profileImage, postCount, followerCount, followingCount } =
-    useContext(UserContext);
+  const {
+    uid,
+    name,
+    fullName,
+    profileImage,
+    postCount,
+    followerCount,
+    followingCount,
+  } = useContext(UserContext);
 
   const userPosts = useGetUserPosts(uid);
   const [likedPosts, setLikedPosts] = useState(null);
@@ -74,6 +81,10 @@ function User() {
               Log Out
             </button>
             <Link to="/" id="returnHome" />
+          </div>
+          {/* Container for full name of user */}
+          <div>
+            <span className="text-gray-500">{fullName}</span>
           </div>
           {/* Container for counts of posts, followers, and following */}
           <div className="mt-6 text-xs md:text-sm">
