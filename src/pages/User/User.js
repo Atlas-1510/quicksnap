@@ -6,6 +6,7 @@ import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getPostInfo from "./getPostInfo/getPostInfo";
 import ImageModal from "../../components/ImageModal/ImageModal";
 import BottomMobileNav from "../../components/BottomMobileNav";
+import { Link } from "react-router-dom";
 
 // TODO: Implement DiceBear avatar library for default user display images
 
@@ -20,6 +21,8 @@ function User() {
 
   const handleLogOut = () => {
     auth.signOut();
+    const returnHome = document.getElementById("returnHome");
+    returnHome.click();
   };
 
   const switchGrid = (type) => {
@@ -70,6 +73,7 @@ function User() {
             >
               Log Out
             </button>
+            <Link to="/" id="returnHome" />
           </div>
           {/* Container for counts of posts, followers, and following */}
           <div className="mt-6 text-xs md:text-sm">

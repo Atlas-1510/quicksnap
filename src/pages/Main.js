@@ -45,7 +45,7 @@ function Main({ uid }) {
                   <Route exact path="/messenger">
                     <Messenger setCurrentPage={setCurrentPage} />
                   </Route>
-                  <Route>
+                  <Route exact path="/user">
                     <User />
                   </Route>
                 </Switch>

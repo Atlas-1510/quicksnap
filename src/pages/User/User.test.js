@@ -10,6 +10,7 @@ import plane from "../../images/test-images/plane.jpeg";
 
 import { auth } from "../../firebase/firebase";
 import { act } from "react-dom/test-utils";
+import { MemoryRouter } from "react-router-dom";
 
 // Note: Some tests encapsulated in async/await blocks due to issue outlined here:
 // https://github.com/facebook/react/issues/15379
@@ -60,18 +61,20 @@ describe("User", () => {
     });
     await act(async () => {
       instance = render(
-        <UserContext.Provider
-          value={{
-            id: 1,
-            name: "iamjasona",
-            displayImage: testUserProfileImage,
-            postCount: 18,
-            followerCount: 74,
-            followingCount: 134,
-          }}
-        >
-          <User />
-        </UserContext.Provider>
+        <MemoryRouter>
+          <UserContext.Provider
+            value={{
+              id: 1,
+              name: "iamjasona",
+              displayImage: testUserProfileImage,
+              postCount: 18,
+              followerCount: 74,
+              followingCount: 134,
+            }}
+          >
+            <User />
+          </UserContext.Provider>
+        </MemoryRouter>
       );
     });
   });
