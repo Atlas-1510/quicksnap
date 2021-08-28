@@ -55,12 +55,14 @@ function Login({ setUID }) {
   const handleSignUp = (e) => {
     e.preventDefault();
     console.log(e);
-    const name = e.target[0].value;
-    const email = e.target[1].value;
-    const pw = e.target[2].value;
+    const email = e.target[0].value;
+    const fullName = e.target[1].value;
+    const name = e.target[2].value;
+    const pw = e.target[3].value;
     auth.createUserWithEmailAndPassword(email, pw).then((cred) => {
       firestore.collection("users").doc(cred.user.uid).set({
         name,
+        fullName,
         followerCount: 0,
         followingCount: 0,
         postCount: 0,
@@ -154,13 +156,18 @@ function Login({ setUID }) {
               >
                 <input
                   className=" w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
-                  type="text"
-                  placeholder="Choose your username"
+                  type="email"
+                  placeholder="Email"
                 />
                 <input
                   className=" w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
-                  type="email"
-                  placeholder="Email"
+                  type="text"
+                  placeholder="Full Name"
+                />
+                <input
+                  className=" w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
+                  type="text"
+                  placeholder="Username"
                 />
                 <input
                   className="w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
