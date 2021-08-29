@@ -8,17 +8,20 @@ import Button from "../../../components/Button";
 import ButtonSecondary from "../../../components/ButtonSecondary";
 
 import generateProfileImage from "../../../utils/generateProfileImage/generateProfileImage";
+import postToStorage from "../../../firebase/postToStorage";
+import postToFirestore from "../../../firebase/postToFirestore";
 
 function EditProfile({ exit }) {
   const { ref, isComponentVisible } = useComponentVisible(true, () => exit());
-  const { profileImage, name, fullName } = useContext(UserContext);
+  const { profileImage, name, fullName, uid, customProfileImage } =
+    useContext(UserContext);
   const [newProfileImage, setNewProfileImage] = useState(null);
+  const [defaultImage, setDefaultImage] = useState(false);
   const [formFullName, setFormFullName] = useState(fullName);
   const [formUserName, setFormUserName] = useState(name);
   const [formEmail, setFormEmail] = useState(auth.currentUser.email);
   const [formCurrentPassword, setFormCurrentPassword] = useState("");
   const [formNewPassword, setFormNewPassword] = useState("");
-
   const [section, setSection] = useState("nameAndImage");
 
   const handleChooseProfileButtonClick = (e) => {
@@ -30,16 +33,19 @@ function EditProfile({ exit }) {
   const handleUseDefaultButtonClick = (e) => {
     e.preventDefault();
     const initialsImage = generateProfileImage(fullName);
+    setDefaultImage(true);
     setNewProfileImage(initialsImage);
   };
 
   const handleImageSelection = () => {
     const chosenImage = document.querySelector("#profile-image-input").files[0];
-    setNewProfileImage(URL.createObjectURL(chosenImage));
+    setNewProfileImage(chosenImage);
+    setDefaultImage(false);
   };
 
-  const handleNameOrImageChange = (e) => {
+  const handleNameOrImageChange = async (e) => {
     e.preventDefault();
+    console.log(newProfileImage);
     // use newProfileImage state to update user document, not the value from the image input.
     const newUserDoc = {};
     if (formFullName !== fullName) {
@@ -49,9 +55,14 @@ function EditProfile({ exit }) {
       newUserDoc.userName = formUserName;
     }
     if (newProfileImage) {
+      const uploadURL = await postToStorage(
+        newProfileImage,
+        `${uid}/profileImages/`
+      );
+      newUserDoc.profileImage = uploadURL;
       // TODO: add image compression to new profile image if file is too big
-      // upload new profile image to firestore
     }
+    postToFirestore(newUserDoc, `/users/${uid}`, true);
     console.log(newUserDoc);
   };
 
@@ -98,8 +109,16 @@ function EditProfile({ exit }) {
           {section === "nameAndImage" && (
             <div className="flex flex-col items-center">
               <div className="relative h-20 w-20 md:h-36 md:w-36 border rounded-full overflow-hidden my-2">
+                {/* ternary operators below necessary because the SVG from the default image needs to be loaded
+                differently (as a normal image), while a user input image needs to be loaded as a file blob */}
                 <img
-                  src={newProfileImage ? newProfileImage : profileImage}
+                  src={
+                    newProfileImage
+                      ? defaultImage
+                        ? newProfileImage
+                        : URL.createObjectURL(newProfileImage)
+                      : profileImage
+                  }
                   alt="chosen display for current user"
                 />
                 <input
