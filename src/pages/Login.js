@@ -87,11 +87,13 @@ function Login({ setUID }) {
                 <input
                   className=" w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
                   placeholder="Email or username"
+                  required
                 />
                 <input
                   className="w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
                   type="password"
                   placeholder="Password"
+                  required
                 />
                 <input
                   value="Log In"
@@ -158,21 +160,25 @@ function Login({ setUID }) {
                   className=" w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
                   type="email"
                   placeholder="Email"
+                  required
                 />
                 <input
                   className=" w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
                   type="text"
                   placeholder="Full Name"
+                  required
                 />
                 <input
                   className=" w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
                   type="text"
                   placeholder="Username"
+                  required
                 />
                 <input
                   className="w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
                   type="password"
                   placeholder="Password"
+                  required
                 />
                 <input
                   value="Sign Up"
