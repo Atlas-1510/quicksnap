@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
 import Main from "./pages/Main";
-import Login from "./pages/Login";
+import Login from "./pages/Login/Login";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase/firebase";
