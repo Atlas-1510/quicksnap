@@ -19,15 +19,22 @@ function Main({ uid }) {
     if (packedUser) {
       (async () => {
         const unpackedUser = packedUser.data();
-        const gsProfileImageURL = unpackedUser.profileImage;
-        let ref = gsProfileImageURL
-          ? await storage.refFromURL(gsProfileImageURL).getDownloadURL()
-          : null;
-        setUser({
-          ...unpackedUser,
-          uid,
-          profileImage: ref,
-        });
+        if (unpackedUser.customProfileImage) {
+          const gsProfileImageURL = unpackedUser.profileImage;
+          let ref = await storage
+            .refFromURL(gsProfileImageURL)
+            .getDownloadURL();
+          setUser({
+            ...unpackedUser,
+            uid,
+            profileImage: ref,
+          });
+        } else {
+          setUser({
+            ...unpackedUser,
+            uid,
+          });
+        }
       })();
     }
   }, [packedUser]);

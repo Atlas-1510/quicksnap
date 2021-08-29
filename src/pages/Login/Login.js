@@ -10,6 +10,8 @@ import github from "../../images/login-auth-icons/github.png";
 import { auth, firestore } from "../../firebase/firebase";
 import firebase from "firebase";
 
+import generateProfileImage from "./generateProfileImage/generateProfileImage";
+
 // TODO: set up login with either email address or username
 
 function Login({ setUID }) {
@@ -62,14 +64,18 @@ function Login({ setUID }) {
     const name = e.target[2].value;
     const pw = e.target[3].value;
     auth.createUserWithEmailAndPassword(email, pw).then((cred) => {
-      firestore.collection("users").doc(cred.user.uid).set({
-        name,
-        fullName,
-        followerCount: 0,
-        followingCount: 0,
-        postCount: 0,
-        profileImage: null,
-      });
+      firestore
+        .collection("users")
+        .doc(cred.user.uid)
+        .set({
+          name,
+          fullName,
+          followerCount: 0,
+          followingCount: 0,
+          postCount: 0,
+          profileImage: generateProfileImage(fullName),
+          customProfileImage: false,
+        });
       setUID(cred.user.uid);
     });
   };
