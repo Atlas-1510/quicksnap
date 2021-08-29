@@ -10,7 +10,7 @@ import github from "../../images/login-auth-icons/github.png";
 import { auth, firestore } from "../../firebase/firebase";
 import firebase from "firebase";
 
-import generateProfileImage from "./generateProfileImage/generateProfileImage";
+import generateProfileImage from "../../utils/generateProfileImage/generateProfileImage";
 
 // TODO: set up login with either email address or username
 
