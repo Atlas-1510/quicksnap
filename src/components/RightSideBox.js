@@ -1,7 +1,7 @@
 import React from "react";
 
 function RightSideBox({ user, followSuggestions }) {
-  const { displayImage, name, fullName } = user;
+  const { profileImage, name, fullName } = user;
 
   return (
     <div className="fixed w-screen flex justify-center top-16 left-0 invisible lg:visible pointer-events-none">
@@ -9,7 +9,7 @@ function RightSideBox({ user, followSuggestions }) {
         <div className="text-sm w-1/3 mr-2">
           <div className="flex items-center py-2">
             <img
-              src={displayImage}
+              src={profileImage}
               alt="User"
               className=" h-14 w-14 border rounded-full"
             />
