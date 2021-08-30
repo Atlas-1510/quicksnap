@@ -100,14 +100,14 @@ function EditProfile({ exit }) {
   };
 
   return (
-    <div ref={ref} className="w-1/3">
+    <div ref={ref} className="w-1/4">
       {isComponentVisible && (
         <div
-          className="bg-white border rounded-md border-gray-300 w-full h-full p-4"
+          className="bg-white border rounded-md border-gray-300 w-full h-full p-4 flex flex-col items-center"
           onClick={(e) => e.stopPropagation()}
         >
           {section === "nameAndImage" && (
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center w-full">
               <div className="relative h-20 w-20 md:h-36 md:w-36 border rounded-full overflow-hidden my-2">
                 {/* ternary operators below necessary because the SVG from the default image needs to be loaded
                 differently (as a normal image), while a user input image needs to be loaded as a file blob */}
@@ -139,7 +139,7 @@ function EditProfile({ exit }) {
               <span className="font-roboto text-xl md:text-2xl font-light my-2">
                 {name}
               </span>
-              <form>
+              <form className="flex flex-col items-center">
                 <div className="flex items-center justify-center my-2">
                   <button
                     className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
@@ -148,31 +148,34 @@ function EditProfile({ exit }) {
                     Use Default Image
                   </button>
                 </div>
-                <label htmlFor="fullName">Full Name</label>
-                <input
-                  type="text"
-                  name="fullName"
-                  className="border rounded-md border-gray-300 w-full p-1 my-1"
-                  value={formFullName}
-                  onChange={(e) => setFormFullName(e.target.value)}
-                />
-                <label htmlFor="userName">User Name</label>
-                <input
-                  type="text"
-                  name="userName"
-                  className="border rounded-md border-gray-300 w-full p-1 my-1"
-                  value={formUserName}
-                  onChange={(e) => setFormUserName(e.target.value)}
-                />
-                <div className="flex items-center justify-center my-2">
+                <div className="w-full flex flex-col justify-center">
+                  <label htmlFor="fullName">Full Name</label>
+                  <input
+                    type="text"
+                    name="fullName"
+                    className="border rounded-md border-gray-300 w-full p-1 my-1"
+                    value={formFullName}
+                    onChange={(e) => setFormFullName(e.target.value)}
+                  />
+                  <label htmlFor="userName">User Name</label>
+                  <input
+                    type="text"
+                    name="userName"
+                    className="border rounded-md border-gray-300 w-full p-1 my-1"
+                    value={formUserName}
+                    onChange={(e) => setFormUserName(e.target.value)}
+                  />
+                </div>
+
+                <div className="flex items-center justify-center my-4">
                   <button
-                    className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold md:hover:bg-gray-300 md:hover:shadow-inner"
+                    className="border border-gray-300 rounded-md py-1 px-2 mr-1 text-sm font-semibold md:hover:bg-gray-300 md:hover:shadow-inner"
                     onClick={() => setSection("email")}
                   >
                     Change Email
                   </button>
                   <button
-                    className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
+                    className="border border-gray-300 rounded-md py-1 px-2 ml-1  text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
                     onClick={() => setSection("password")}
                   >
                     Change Password
@@ -194,7 +197,10 @@ function EditProfile({ exit }) {
             </div>
           )}
           {section === "email" && (
-            <form id="email-form">
+            <form
+              id="email-form"
+              className="w-full flex flex-col justify-center"
+            >
               <div className="flex w-full items-center my-2">
                 <div className="w-full h-px bg-gray-400"></div>
                 <span className="whitespace-nowrap mx-4 text-gray-400 font-semibold">
@@ -264,6 +270,9 @@ function EditProfile({ exit }) {
                 value={formNewPassword}
                 onChange={(e) => setFormNewPassword(e.target.value)}
               />
+              <div className="flex w-full items-center mt-4 mb-2">
+                <div className="w-full h-px bg-gray-400"></div>
+              </div>
               <div className="flex items-center justify-center">
                 <div className="m-2" onClick={(e) => handlePasswordChange(e)}>
                   <Button>Save</Button>
