@@ -24,6 +24,10 @@ function EditProfile({ exit }) {
   const [formCurrentPassword, setFormCurrentPassword] = useState("");
   const [formNewPassword, setFormNewPassword] = useState("");
   const [section, setSection] = useState("nameAndImage");
+  const [resultPrompt, setResultPrompt] = useState({
+    text: "",
+    color: "green",
+  });
 
   const isFirstRender = useIsFirstRender();
   const [showChangeEmailOrPassword, setShowChangeEmailOrPassword] =
@@ -46,9 +50,16 @@ function EditProfile({ exit }) {
 
   const handleUseDefaultButtonClick = (e) => {
     e.preventDefault();
-    const initialsImage = generateProfileImage(fullName);
-    setDefaultImage(true);
-    setNewProfileImage(initialsImage);
+    if (formFullName.match(/\w+\s\w+/)) {
+      const initialsImage = generateProfileImage(fullName);
+      setDefaultImage(true);
+      setNewProfileImage(initialsImage);
+    } else {
+      setResultPrompt({
+        text: "To use a default profile image, your full name input must be two words.",
+        color: "red",
+      });
+    }
   };
 
   const handleImageSelection = () => {
@@ -59,39 +70,50 @@ function EditProfile({ exit }) {
 
   const handleNameOrImageChange = async (e) => {
     e.preventDefault();
+    setResultPrompt(null);
     // use newProfileImage state to update user document, not the value from the image input.
-    const newUserDoc = {};
-    if (formFullName !== fullName) {
-      newUserDoc.fullName = formFullName;
+    try {
+      const newUserDoc = {};
+      if (formFullName !== fullName) {
+        newUserDoc.fullName = formFullName;
+      }
+      if (formUserName !== name) {
+        newUserDoc.name = formUserName;
+      }
+      if (newProfileImage) {
+        const uploadURL = await postToStorage(
+          newProfileImage,
+          `${uid}/profileImages/`
+        );
+        newUserDoc.profileImage = uploadURL;
+        // TODO: add image compression to new profile image if file is too big
+      }
+      postToFirestore(newUserDoc, `/users/${uid}`, true);
+      confirmChange();
+    } catch {
+      warnChangeFailure();
     }
-    if (formUserName !== name) {
-      newUserDoc.name = formUserName;
-    }
-    if (newProfileImage) {
-      const uploadURL = await postToStorage(
-        newProfileImage,
-        `${uid}/profileImages/`
-      );
-      newUserDoc.profileImage = uploadURL;
-      // TODO: add image compression to new profile image if file is too big
-    }
-    postToFirestore(newUserDoc, `/users/${uid}`, true);
-    exit();
   };
 
   const handleEmailChange = (e) => {
     e.preventDefault();
-    console.log(`email changed: ${formEmail}`);
-    const cred = firebase.auth.EmailAuthProvider.credential(
-      auth.currentUser.email,
-      formCurrentPassword
-    );
-    auth.currentUser
-      .reauthenticateWithCredential(cred)
-      .then(() => auth.currentUser.updateEmail(formEmail));
+    setResultPrompt(null);
+    try {
+      const cred = firebase.auth.EmailAuthProvider.credential(
+        auth.currentUser.email,
+        formCurrentPassword
+      );
+      auth.currentUser
+        .reauthenticateWithCredential(cred)
+        .then(() => auth.currentUser.updateEmail(formEmail));
+      confirmChange();
+    } catch {
+      warnChangeFailure();
+    }
   };
 
   const cancelEmailChange = () => {
+    setResultPrompt(null);
     setFormEmail(auth.currentUser.email);
     setFormCurrentPassword("");
     setSection("nameAndImage");
@@ -99,19 +121,45 @@ function EditProfile({ exit }) {
 
   const handlePasswordChange = (e) => {
     e.preventDefault();
-    const cred = firebase.auth.EmailAuthProvider.credential(
-      auth.currentUser.email,
-      formCurrentPassword
-    );
-    auth.currentUser
-      .reauthenticateWithCredential(cred)
-      .then(() => auth.currentUser.updatePassword(formNewPassword));
+    try {
+      setResultPrompt(null);
+      const cred = firebase.auth.EmailAuthProvider.credential(
+        auth.currentUser.email,
+        formCurrentPassword
+      );
+      auth.currentUser
+        .reauthenticateWithCredential(cred)
+        .then(() => auth.currentUser.updatePassword(formNewPassword));
+      confirmChange();
+    } catch {
+      warnChangeFailure();
+    }
   };
 
   const cancelPasswordChange = () => {
+    setResultPrompt(null);
     setFormCurrentPassword("");
     setFormNewPassword("");
     setSection("nameAndImage");
+  };
+
+  const confirmChange = () => {
+    setResultPrompt({
+      text: "Your changes have been saved.",
+      color: "green",
+    });
+  };
+
+  const warnChangeFailure = () => {
+    setResultPrompt({
+      text: "Something went wrong, your changes have not been saved.",
+      color: "red",
+    });
+  };
+
+  const loadSection = (section) => {
+    setResultPrompt(null);
+    setSection(section);
   };
 
   return (
@@ -186,16 +234,26 @@ function EditProfile({ exit }) {
                   <div className="flex items-center justify-center my-4">
                     <button
                       className="border border-gray-300 rounded-md py-1 px-2 mr-1 text-sm font-semibold md:hover:bg-gray-300 md:hover:shadow-inner"
-                      onClick={() => setSection("email")}
+                      onClick={() => loadSection("email")}
                     >
                       Change Email
                     </button>
                     <button
                       className="border border-gray-300 rounded-md py-1 px-2 ml-1  text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
-                      onClick={() => setSection("password")}
+                      onClick={() => loadSection("password")}
                     >
                       Change Password
                     </button>
+                  </div>
+                )}
+                {resultPrompt && (
+                  <div>
+                    <span
+                      className="text-xs text-center mt-2"
+                      style={{ color: resultPrompt.color }}
+                    >
+                      {resultPrompt.text}
+                    </span>
                   </div>
                 )}
                 {!showChangeEmailOrPassword && (
@@ -253,19 +311,27 @@ function EditProfile({ exit }) {
               <div className="flex w-full items-center mt-4 mb-2">
                 <div className="w-full h-px bg-gray-400"></div>
               </div>
+              {resultPrompt && (
+                <span
+                  className="text-xs text-center mt-2"
+                  style={{ color: resultPrompt.color }}
+                >
+                  {resultPrompt.text}
+                </span>
+              )}
               <div className="flex items-center justify-center">
                 <div className="m-2" onClick={(e) => handleEmailChange(e)}>
                   <Button>Save</Button>
                   <input type="submit" className="hidden" id="submit-form" />
                 </div>
                 <div className="m-2" onClick={() => cancelEmailChange()}>
-                  <ButtonSecondary>Cancel</ButtonSecondary>
+                  <ButtonSecondary>Return</ButtonSecondary>
                 </div>
               </div>
             </form>
           )}
           {section === "password" && (
-            <form>
+            <form className="flex flex-col justify-center w-full">
               <div className="flex w-full items-center my-2">
                 <div className="w-full h-px bg-gray-400"></div>
                 <span className="whitespace-nowrap mx-4 text-gray-400 font-semibold">
@@ -296,13 +362,21 @@ function EditProfile({ exit }) {
               <div className="flex w-full items-center mt-4 mb-2">
                 <div className="w-full h-px bg-gray-400"></div>
               </div>
+              {resultPrompt && (
+                <span
+                  className="text-xs text-center mt-2"
+                  style={{ color: resultPrompt.color }}
+                >
+                  {resultPrompt.text}
+                </span>
+              )}
               <div className="flex items-center justify-center">
                 <div className="m-2" onClick={(e) => handlePasswordChange(e)}>
                   <Button>Save</Button>
                   <input type="submit" className="hidden" id="submit-form" />
                 </div>
                 <div className="m-2" onClick={(e) => cancelPasswordChange(e)}>
-                  <ButtonSecondary>Cancel</ButtonSecondary>
+                  <ButtonSecondary>Return</ButtonSecondary>
                 </div>
               </div>
             </form>
