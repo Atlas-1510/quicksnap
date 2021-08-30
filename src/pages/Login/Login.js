@@ -8,7 +8,7 @@ import apple from "../../images/login-auth-icons/apple.svg";
 import github from "../../images/login-auth-icons/github.png";
 
 import { auth, firestore } from "../../firebase/firebase";
-import firebase from "firebase";
+import firebase from "firebase/app";
 
 import generateProfileImage from "../../utils/generateProfileImage/generateProfileImage";
 
