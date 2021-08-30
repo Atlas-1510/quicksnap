@@ -14,8 +14,7 @@ import postToFirestore from "../../../firebase/postToFirestore";
 
 function EditProfile({ exit }) {
   const { ref, isComponentVisible } = useComponentVisible(true, () => exit());
-  const { profileImage, name, fullName, uid, customProfileImage } =
-    useContext(UserContext);
+  const { profileImage, name, fullName, uid } = useContext(UserContext);
   const [newProfileImage, setNewProfileImage] = useState(null);
   const [defaultImage, setDefaultImage] = useState(false);
   const [formFullName, setFormFullName] = useState(fullName);
@@ -59,14 +58,13 @@ function EditProfile({ exit }) {
 
   const handleNameOrImageChange = async (e) => {
     e.preventDefault();
-    console.log(newProfileImage);
     // use newProfileImage state to update user document, not the value from the image input.
     const newUserDoc = {};
     if (formFullName !== fullName) {
       newUserDoc.fullName = formFullName;
     }
     if (formUserName !== name) {
-      newUserDoc.userName = formUserName;
+      newUserDoc.name = formUserName;
     }
     if (newProfileImage) {
       const uploadURL = await postToStorage(
@@ -77,7 +75,7 @@ function EditProfile({ exit }) {
       // TODO: add image compression to new profile image if file is too big
     }
     postToFirestore(newUserDoc, `/users/${uid}`, true);
-    console.log(newUserDoc);
+    exit();
   };
 
   const handleEmailChange = () => {
@@ -114,7 +112,7 @@ function EditProfile({ exit }) {
   };
 
   return (
-    <div ref={ref} className="w-1/4">
+    <div ref={ref} className="w-full h-full md:w-1/3 md:h-auto ">
       {isComponentVisible && (
         <div
           className="bg-white border rounded-md border-gray-300 w-full h-full p-4 flex flex-col items-center"
