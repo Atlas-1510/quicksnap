@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../Main";
 import useComponentVisible from "../../../hooks/useComponentVisible/useComponentVisible";
+import useIsFirstRender from "../../../hooks/useIsFirstRender/useIsFirstRender";
 
 import { auth } from "../../../firebase/firebase";
 import firebase from "firebase";
@@ -23,6 +24,19 @@ function EditProfile({ exit }) {
   const [formCurrentPassword, setFormCurrentPassword] = useState("");
   const [formNewPassword, setFormNewPassword] = useState("");
   const [section, setSection] = useState("nameAndImage");
+
+  const isFirstRender = useIsFirstRender();
+  const [showChangeEmailOrPassword, setShowChangeEmailOrPassword] =
+    useState(false);
+
+  useEffect(() => {
+    if (isFirstRender) {
+      const user = auth.currentUser;
+      if (!user.providerData[0].providerId === "password") {
+        setShowChangeEmailOrPassword(false);
+      }
+    }
+  }, [showChangeEmailOrPassword]);
 
   const handleChooseProfileButtonClick = (e) => {
     e.preventDefault();
@@ -107,7 +121,7 @@ function EditProfile({ exit }) {
           onClick={(e) => e.stopPropagation()}
         >
           {section === "nameAndImage" && (
-            <div className="flex flex-col items-center w-full">
+            <div className="flex flex-col items-center w-full px-2">
               <div className="relative h-20 w-20 md:h-36 md:w-36 border rounded-full overflow-hidden my-2">
                 {/* ternary operators below necessary because the SVG from the default image needs to be loaded
                 differently (as a normal image), while a user input image needs to be loaded as a file blob */}
@@ -139,7 +153,7 @@ function EditProfile({ exit }) {
               <span className="font-roboto text-xl md:text-2xl font-light my-2">
                 {name}
               </span>
-              <form className="flex flex-col items-center">
+              <form className="w-full flex flex-col items-center">
                 <div className="flex items-center justify-center my-2">
                   <button
                     className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
@@ -167,20 +181,28 @@ function EditProfile({ exit }) {
                   />
                 </div>
 
-                <div className="flex items-center justify-center my-4">
-                  <button
-                    className="border border-gray-300 rounded-md py-1 px-2 mr-1 text-sm font-semibold md:hover:bg-gray-300 md:hover:shadow-inner"
-                    onClick={() => setSection("email")}
-                  >
-                    Change Email
-                  </button>
-                  <button
-                    className="border border-gray-300 rounded-md py-1 px-2 ml-1  text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
-                    onClick={() => setSection("password")}
-                  >
-                    Change Password
-                  </button>
-                </div>
+                {showChangeEmailOrPassword && (
+                  <div className="flex items-center justify-center my-4">
+                    <button
+                      className="border border-gray-300 rounded-md py-1 px-2 mr-1 text-sm font-semibold md:hover:bg-gray-300 md:hover:shadow-inner"
+                      onClick={() => setSection("email")}
+                    >
+                      Change Email
+                    </button>
+                    <button
+                      className="border border-gray-300 rounded-md py-1 px-2 ml-1  text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
+                      onClick={() => setSection("password")}
+                    >
+                      Change Password
+                    </button>
+                  </div>
+                )}
+                {!showChangeEmailOrPassword && (
+                  <span className="text-gray-400 text-xs text-center mt-2">
+                    Because you have signed in with an external provider, you
+                    don't have the ability to change your email or password.
+                  </span>
+                )}
                 <div className="flex items-center justify-center">
                   <div
                     className="m-2"
