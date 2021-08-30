@@ -4,7 +4,8 @@ import useComponentVisible from "../../../hooks/useComponentVisible/useComponent
 import useIsFirstRender from "../../../hooks/useIsFirstRender/useIsFirstRender";
 
 import { auth } from "../../../firebase/firebase";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import Button from "../../../components/Button";
 import ButtonSecondary from "../../../components/ButtonSecondary";
 
@@ -26,12 +27,12 @@ function EditProfile({ exit }) {
 
   const isFirstRender = useIsFirstRender();
   const [showChangeEmailOrPassword, setShowChangeEmailOrPassword] =
-    useState(false);
+    useState(true);
 
   useEffect(() => {
     if (isFirstRender) {
       const user = auth.currentUser;
-      if (!user.providerData[0].providerId === "password") {
+      if (user.providerData[0].providerId !== "password") {
         setShowChangeEmailOrPassword(false);
       }
     }
@@ -78,7 +79,8 @@ function EditProfile({ exit }) {
     exit();
   };
 
-  const handleEmailChange = () => {
+  const handleEmailChange = (e) => {
+    e.preventDefault();
     console.log(`email changed: ${formEmail}`);
     const cred = firebase.auth.EmailAuthProvider.credential(
       auth.currentUser.email,
@@ -95,7 +97,8 @@ function EditProfile({ exit }) {
     setSection("nameAndImage");
   };
 
-  const handlePasswordChange = () => {
+  const handlePasswordChange = (e) => {
+    e.preventDefault();
     const cred = firebase.auth.EmailAuthProvider.credential(
       auth.currentUser.email,
       formCurrentPassword
