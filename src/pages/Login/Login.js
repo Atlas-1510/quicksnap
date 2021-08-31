@@ -58,7 +58,6 @@ function Login({ setUID }) {
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    console.log(e);
     const email = e.target[0].value;
     const fullName = e.target[1].value;
     const name = e.target[2].value;

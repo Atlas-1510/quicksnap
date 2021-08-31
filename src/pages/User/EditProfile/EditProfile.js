@@ -90,7 +90,6 @@ function ChangeNameOrImage({ exit, setSection }) {
   const handleImageSelection = () => {
     const chosenImage = document.querySelector("#profile-image-input").files[0];
     if (chosenImage) {
-      console.log(chosenImage);
       setNewProfileImage({
         source: chosenImage,
         type: "custom",
