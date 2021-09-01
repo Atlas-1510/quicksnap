@@ -1,7 +1,7 @@
 import React, { useState, createContext, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Header from "../components/Header/Header";
-import Home from "./Home";
+import Home from "./Home/Home";
 import Messenger from "./Messenger/Messenger";
 import User from "./User/User";
 import { useDocument } from "react-firebase-hooks/firestore";
