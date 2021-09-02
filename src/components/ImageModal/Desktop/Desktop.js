@@ -3,7 +3,6 @@ import ModalBackground from "../../ModalBackground";
 import useComponentVisible from "../../../hooks/useComponentVisible/useComponentVisible";
 import ThreeDots from "../../../images/SVG/ThreeDots";
 import Heart from "../../../images/SVG/Heart/Heart";
-import TextBubble from "../../../images/SVG/TextBubble";
 import PaperAirplane from "../../../images/SVG/PaperAirplane/PaperAirplane";
 import Bookmark from "../../../images/SVG/Bookmark/Bookmark";
 

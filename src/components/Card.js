@@ -2,7 +2,6 @@ import React, { useState, useContext, useEffect } from "react";
 
 import Heart from "../images/SVG/Heart/Heart";
 import PaperAirplane from "../images/SVG/PaperAirplane/PaperAirplane";
-import TextBubble from "../images/SVG/TextBubble";
 import Bookmark from "../images/SVG/Bookmark/Bookmark";
 import ThreeDots from "../images/SVG/ThreeDots";
 import { Link } from "react-router-dom";
@@ -61,9 +60,6 @@ function Card({ card }) {
           <div className="flex">
             <div className="w-8 m-2">
               <Heart />
-            </div>
-            <div className="w-8 m-2">
-              <TextBubble />
             </div>
             <div className="w-8 m-2">
               <PaperAirplane />
