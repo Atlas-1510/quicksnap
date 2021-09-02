@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../Main";
-import { auth } from "../../firebase/firebase";
 import useGetUserPosts from "../../hooks/useGetUserPosts/useGetUserPosts";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getPostInfo from "../../utils/getPostInfo/getPostInfo";
@@ -9,6 +8,7 @@ import BottomMobileNav from "../../components/BottomMobileNav";
 import { Link } from "react-router-dom";
 import ModalBackground from "../../components/ModalBackground";
 import EditProfile from "./EditProfile/EditProfile";
+import handleLogOut from "../../utils/handleLogOut/handleLogOut";
 
 function User() {
   const {
@@ -26,12 +26,6 @@ function User() {
   const [grid, setGrid] = useState("posts");
   const [activePost, setActivePost] = useState(null);
   const [editProfileModal, setEditProfileModal] = useState(false);
-
-  const handleLogOut = () => {
-    auth.signOut();
-    const returnHome = document.getElementById("returnHome");
-    returnHome.click();
-  };
 
   const switchGrid = (type) => {
     switch (type) {
