@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import Heart from "../images/SVG/Heart/Heart";
 import PaperAirplane from "../images/SVG/PaperAirplane/PaperAirplane";
@@ -13,13 +13,29 @@ import { v4 as uuidv4 } from "uuid";
 // TODO: Add timestamp display to post
 
 function Card({ card }) {
-  const { author, image, comments, likeCount, id } = card;
+  const [post, setPost] = useState(card);
+  const { author, image, comments, likeCount, id } = post;
   const { uid, name } = useContext(UserContext);
   const [commentInput, setCommentInput] = useState("");
+  const [handleChange, setHandleChange] = useState(false);
 
-  const submitComment = async (e) => {
+  useEffect(() => {
+    if (handleChange) {
+      (async () => {
+        await submitComment();
+        await updatePost();
+        setCommentInput("");
+      })();
+    }
+    setHandleChange(false);
+  }, [handleChange]);
+
+  const initCommentSubmit = (e) => {
     e.preventDefault();
-    console.log(commentInput);
+    setHandleChange(true);
+  };
+
+  const submitComment = async () => {
     const comment = {
       author: {
         id: uid,
@@ -33,7 +49,17 @@ function Card({ card }) {
     await postRef.update({
       comments: FieldValue.arrayUnion(comment),
     });
-    setCommentInput("");
+
+    updatePost();
+  };
+
+  const updatePost = async () => {
+    const postRef = firestore.collection("posts").doc(id);
+    const post = await postRef.get();
+    setPost({
+      ...post.data(),
+      id: post.id,
+    });
   };
 
   return (
@@ -77,11 +103,17 @@ function Card({ card }) {
           Liked by <span className="font-bold">XYZ</span> and{" "}
           <span className="font-bold">{likeCount} others</span>
         </span>
-        <div className="mx-3 mt-1 mb-3">
+        <div className="mx-3 mt-1 mb-3 max-h-20 overflow-y-scroll">
           {comments &&
             comments.map((comment) => (
               <div key={comment.id}>
-                <Link to={`/view-user/${comment.author.id}`}>
+                <Link
+                  to={
+                    comment.author.id === uid
+                      ? "/user"
+                      : `/view-user/${comment.author.id}`
+                  }
+                >
                   <span className="font-bold ">{comment.author.name}</span>
                 </Link>
                 <span> {comment.content}</span>
@@ -100,7 +132,7 @@ function Card({ card }) {
           />
           <button
             className="mx-3 text-blue-500 font-semibold cursor-pointer"
-            onClick={(e) => submitComment(e)}
+            onClick={(e) => initCommentSubmit(e)}
           >
             Post
           </button>
