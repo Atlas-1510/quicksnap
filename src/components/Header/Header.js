@@ -27,7 +27,9 @@ function Header({ currentPage, setCurrentPage }) {
       {/* Desktop Header */}
       <nav className="hidden md:flex justify-center w-full bg-white border-b border-gray-300 py-1">
         <div className="flex items-center justify-between w-2/3 md:max-w-4xl">
-          <h1 className=" font-curly text-4xl">QuickSnap</h1>
+          <Link to="/" onClick={() => setCurrentPage("home")}>
+            <h1 className=" font-curly text-4xl">QuickSnap</h1>
+          </Link>
           <form>
             <input
               className=" w-4/5 mx-3.5 border border-gray-300 rounded-sm p-1 bg-gray-50 text-center"
