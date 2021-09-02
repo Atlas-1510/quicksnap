@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useContext } from "react";
 
 import Heart from "../images/SVG/Heart/Heart";
 import PaperAirplane from "../images/SVG/PaperAirplane/PaperAirplane";
@@ -6,11 +6,35 @@ import TextBubble from "../images/SVG/TextBubble";
 import Bookmark from "../images/SVG/Bookmark/Bookmark";
 import ThreeDots from "../images/SVG/ThreeDots";
 import { Link } from "react-router-dom";
+import { UserContext } from "../pages/Main";
+import { firestore, FieldValue } from "../firebase/firebase";
+import { v4 as uuidv4 } from "uuid";
 
 // TODO: Add timestamp display to post
 
 function Card({ card }) {
-  const { author, image, comments, likeCount } = card;
+  const { author, image, comments, likeCount, id } = card;
+  const { uid, name } = useContext(UserContext);
+  const [commentInput, setCommentInput] = useState("");
+
+  const submitComment = async (e) => {
+    e.preventDefault();
+    console.log(commentInput);
+    const comment = {
+      author: {
+        id: uid,
+        name: name,
+      },
+      content: commentInput,
+      id: uuidv4(),
+    };
+    const postRef = firestore.collection("posts").doc(id);
+
+    await postRef.update({
+      comments: FieldValue.arrayUnion(comment),
+    });
+    setCommentInput("");
+  };
 
   return (
     <div className="flex flex-col md:border border-gray-300 rounded-sm mb-3 md:mt-7 text-sm ">
@@ -54,22 +78,30 @@ function Card({ card }) {
           <span className="font-bold">{likeCount} others</span>
         </span>
         <div className="mx-3 mt-1 mb-3">
-          {comments.map((comment) => (
-            <div key={comment.id}>
-              <Link to={`/view-user/${comment.author.id}`}>
-                <span className="font-bold ">{comment.author.name}</span>
-              </Link>
-              <span> {comment.content}</span>
-            </div>
-          ))}
+          {comments &&
+            comments.map((comment) => (
+              <div key={comment.id}>
+                <Link to={`/view-user/${comment.author.id}`}>
+                  <span className="font-bold ">{comment.author.name}</span>
+                </Link>
+                <span> {comment.content}</span>
+              </div>
+            ))}
         </div>
         <div className="flex p-1 border-t border-gray-200">
           <input
             type="text"
             placeholder="Add a comment..."
             className="w-full p-2  focus:outline-none focus:ring-1 focus:border-blue-300 border-0 rounded-md"
+            value={commentInput}
+            onChange={(e) => {
+              setCommentInput(e.target.value);
+            }}
           />
-          <button className="mx-3 text-blue-500 font-semibold cursor-pointer">
+          <button
+            className="mx-3 text-blue-500 font-semibold cursor-pointer"
+            onClick={(e) => submitComment(e)}
+          >
             Post
           </button>
         </div>
