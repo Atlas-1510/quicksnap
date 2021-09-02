@@ -7,7 +7,7 @@ export default async function getPostInfo(id) {
   const doc = await ref.get();
   const imgRef = doc.data().image;
   const image = await storage.refFromURL(imgRef).getDownloadURL();
-  return { ...doc.data(), image };
+  return { ...doc.data(), image, id: doc.id };
 }
 
 // TODO: paginate this to return 12 results at a time (to fill grid, and then scroll down for more)

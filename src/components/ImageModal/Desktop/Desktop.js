@@ -9,7 +9,13 @@ import Bookmark from "../../../images/SVG/Bookmark/Bookmark";
 
 // TODO: Add tests for this component
 
-function Desktop({ post, exit }) {
+function Desktop({
+  post,
+  exit,
+  initCommentSubmit,
+  setCommentInput,
+  commentInput,
+}) {
   const { ref, isComponentVisible } = useComponentVisible(true, exit);
   return (
     <ModalBackground exit={exit}>
@@ -48,9 +54,6 @@ function Desktop({ post, exit }) {
                       <Heart />
                     </div>
                     <div className="w-8 m-2">
-                      <TextBubble />
-                    </div>
-                    <div className="w-8 m-2">
                       <PaperAirplane />
                     </div>
                   </div>
@@ -69,6 +72,23 @@ function Desktop({ post, exit }) {
                       <span> {comment.content}</span>
                     </div>
                   ))}
+                </div>
+                <div className="flex p-1 border-t border-gray-200">
+                  <input
+                    type="text"
+                    placeholder="Add a comment..."
+                    className="w-full p-2  focus:outline-none focus:ring-1 focus:border-blue-300 border-0 rounded-md"
+                    value={commentInput}
+                    onChange={(e) => {
+                      setCommentInput(e.target.value);
+                    }}
+                  />
+                  <button
+                    className="mx-3 text-blue-500 font-semibold cursor-pointer"
+                    onClick={(e) => initCommentSubmit(e)}
+                  >
+                    Post
+                  </button>
                 </div>
               </div>
             </div>

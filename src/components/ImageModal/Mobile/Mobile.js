@@ -6,7 +6,13 @@ import PaperAirplane from "../../../images/SVG/PaperAirplane/PaperAirplane";
 import Bookmark from "../../../images/SVG/Bookmark/Bookmark";
 import ChevronLeft from "../../../images/SVG/ChevronLeft";
 
-function Mobile({ post, exit }) {
+function Mobile({
+  post,
+  exit,
+  initCommentSubmit,
+  setCommentInput,
+  commentInput,
+}) {
   return (
     <div
       className=" bg-white absolute top-0 w-full h-full"
@@ -43,9 +49,6 @@ function Mobile({ post, exit }) {
                 <Heart />
               </div>
               <div className="w-8 m-2">
-                <TextBubble />
-              </div>
-              <div className="w-8 m-2">
                 <PaperAirplane />
               </div>
             </div>
@@ -64,6 +67,23 @@ function Mobile({ post, exit }) {
                 <span> {comment.content}</span>
               </div>
             ))}
+          </div>
+          <div className="flex p-1 border-t border-gray-200">
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              className="w-full p-2  focus:outline-none focus:ring-1 focus:border-blue-300 border-0 rounded-md"
+              value={commentInput}
+              onChange={(e) => {
+                setCommentInput(e.target.value);
+              }}
+            />
+            <button
+              className="mx-3 text-blue-500 font-semibold cursor-pointer"
+              onClick={(e) => initCommentSubmit(e)}
+            >
+              Post
+            </button>
           </div>
         </div>
       </div>
