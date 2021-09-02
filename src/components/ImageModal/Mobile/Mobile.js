@@ -60,7 +60,7 @@ function Mobile({ post, exit }) {
           <div className="mx-3 mt-1 mb-3 flex-grow">
             {post.comments.map((comment) => (
               <div key={comment.id}>
-                <span className="font-bold ">{comment.author}</span>
+                <span className="font-bold ">{comment.author.name}</span>
                 <span> {comment.content}</span>
               </div>
             ))}

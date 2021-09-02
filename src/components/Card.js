@@ -7,8 +7,8 @@ import Bookmark from "../images/SVG/Bookmark/Bookmark";
 import ThreeDots from "../images/SVG/ThreeDots";
 import { Link } from "react-router-dom";
 import { UserContext } from "../pages/Main";
-import { firestore, FieldValue } from "../firebase/firebase";
-import { v4 as uuidv4 } from "uuid";
+import submitComment from "../utils/submitComment/submitComment";
+import updatePost from "../utils/updatePost/updatePost";
 
 // TODO: Add timestamp display to post
 
@@ -22,8 +22,9 @@ function Card({ card }) {
   useEffect(() => {
     if (handleChange) {
       (async () => {
-        await submitComment();
-        await updatePost();
+        await submitComment(id, uid, name, commentInput);
+        const post = await updatePost(id);
+        setPost(post);
         setCommentInput("");
       })();
     }
@@ -33,33 +34,6 @@ function Card({ card }) {
   const initCommentSubmit = (e) => {
     e.preventDefault();
     setHandleChange(true);
-  };
-
-  const submitComment = async () => {
-    const comment = {
-      author: {
-        id: uid,
-        name: name,
-      },
-      content: commentInput,
-      id: uuidv4(),
-    };
-    const postRef = firestore.collection("posts").doc(id);
-
-    await postRef.update({
-      comments: FieldValue.arrayUnion(comment),
-    });
-
-    updatePost();
-  };
-
-  const updatePost = async () => {
-    const postRef = firestore.collection("posts").doc(id);
-    const post = await postRef.get();
-    setPost({
-      ...post.data(),
-      id: post.id,
-    });
   };
 
   return (
