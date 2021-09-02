@@ -6,6 +6,7 @@ import Messenger from "./Messenger/Messenger";
 import User from "./User/User";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { firestore, storage } from "../firebase/firebase";
+import ViewAnotherUser from "./ViewAnotherUser/ViewAnotherUser";
 
 export const UserContext = createContext(null);
 
@@ -52,9 +53,8 @@ function Main({ uid }) {
                   <Route exact path="/messenger">
                     <Messenger setCurrentPage={setCurrentPage} />
                   </Route>
-                  <Route exact path="/user">
-                    <User />
-                  </Route>
+                  <Route exact path="/user" component={User} />
+                  <Route path="/view-user/:id" component={ViewAnotherUser} />
                 </Switch>
               </div>
             </div>

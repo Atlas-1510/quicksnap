@@ -1,4 +1,4 @@
-import { firestore, storage } from "../../../firebase/firebase";
+import { firestore, storage } from "../../firebase/firebase";
 
 import { useState, useEffect } from "react";
 

@@ -5,6 +5,7 @@ import PaperAirplane from "../images/SVG/PaperAirplane/PaperAirplane";
 import TextBubble from "../images/SVG/TextBubble";
 import Bookmark from "../images/SVG/Bookmark/Bookmark";
 import ThreeDots from "../images/SVG/ThreeDots";
+import { Link } from "react-router-dom";
 
 function Card({ card }) {
   const { author, image, comments, likeCount } = card;
@@ -18,7 +19,9 @@ function Card({ card }) {
             src={author.profileImage}
             alt="Author profile"
           />
-          <span className="mx-3">{author.name}</span>
+          <Link to={`/view-user/${author.id}`}>
+            <span className="mx-3">{author.name}</span>
+          </Link>
         </div>
         <div className="w-7 m-2">
           <ThreeDots />

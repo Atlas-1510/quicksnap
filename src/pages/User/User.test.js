@@ -2,9 +2,9 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import User from "./User";
 import { UserContext } from "../Main";
 import testUserProfileImage from "../../images/test-images/testUserProfileImage.jpg";
-import useGetUserPosts from "./useGetUserPosts/useGetUserPosts";
+import useGetUserPosts from "../../hooks/useGetUserPosts/useGetUserPosts";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";
-import getPostInfo from "./getPostInfo/getPostInfo";
+import getPostInfo from "../../utils/getPostInfo/getPostInfo";
 import redFlowers from "../../images/test-images/redFlowers.jpg";
 import plane from "../../images/test-images/plane.jpeg";
 
@@ -15,9 +15,9 @@ import { MemoryRouter } from "react-router-dom";
 // Note: Some tests encapsulated in async/await blocks due to issue outlined here:
 // https://github.com/facebook/react/issues/15379
 
-jest.mock("./useGetUserPosts/useGetUserPosts", () => jest.fn());
+jest.mock("../../hooks/useGetUserPosts/useGetUserPosts", () => jest.fn());
 jest.mock("./getLikedPosts/getLikedPosts", () => jest.fn());
-jest.mock("./getPostInfo/getPostInfo", () => jest.fn());
+jest.mock("../../utils/getPostInfo/getPostInfo", () => jest.fn());
 jest.mock("../../firebase/firebase", () => ({
   __esModule: true,
   auth: {
