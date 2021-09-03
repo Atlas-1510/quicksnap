@@ -14,8 +14,11 @@ function Desktop({
   initCommentSubmit,
   setCommentInput,
   commentInput,
+  handleHeartClick,
+  liked,
 }) {
   const { ref, isComponentVisible } = useComponentVisible(true, exit);
+
   return (
     <ModalBackground exit={exit}>
       <div ref={ref} className="w-2/3 max-w-4xl">
@@ -49,8 +52,11 @@ function Desktop({
               <div className="flex flex-col bg-white text-gray-700 flex-grow">
                 <div className="flex justify-between">
                   <div className="flex">
-                    <div className="w-8 m-2">
-                      <Heart />
+                    <div
+                      className="w-8 m-2 cursor-pointer"
+                      onClick={handleHeartClick}
+                    >
+                      <Heart liked={liked} />
                     </div>
                     <div className="w-8 m-2">
                       <PaperAirplane />

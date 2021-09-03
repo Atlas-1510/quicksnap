@@ -7,6 +7,10 @@ import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
 import Desktop from "./Desktop/Desktop";
 import Mobile from "./Mobile/Mobile";
 
+import useGetPostHeartStatus from "../../hooks/useGetPostHeartStatus/useGetPostHeartStatus";
+import likePost from "../../utils/likePost/likePost";
+import unlikePost from "../../utils/unlikePost/unlikePost";
+
 function ImageModal({ post, setActivePost }) {
   const { width } = useWindowSize();
   const [postInfo, setPostInfo] = useState(post);
@@ -36,6 +40,16 @@ function ImageModal({ post, setActivePost }) {
     setActivePost(null);
   };
 
+  const liked = useGetPostHeartStatus(uid, id);
+
+  const handleHeartClick = async () => {
+    if (liked) {
+      await unlikePost(uid, id);
+    } else {
+      await likePost(uid, id);
+    }
+  };
+
   if (width > 768) {
     return (
       <Desktop
@@ -44,6 +58,8 @@ function ImageModal({ post, setActivePost }) {
         initCommentSubmit={initCommentSubmit}
         setCommentInput={setCommentInput}
         commentInput={commentInput}
+        handleHeartClick={handleHeartClick}
+        liked={liked}
       />
     );
   } else {
@@ -54,6 +70,8 @@ function ImageModal({ post, setActivePost }) {
         initCommentSubmit={initCommentSubmit}
         setCommentInput={setCommentInput}
         commentInput={commentInput}
+        handleHeartClick={handleHeartClick}
+        liked={liked}
       />
     );
   }

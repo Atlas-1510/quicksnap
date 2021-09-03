@@ -15,6 +15,12 @@ import { MemoryRouter } from "react-router-dom";
 // Note: Some tests encapsulated in async/await blocks due to issue outlined here:
 // https://github.com/facebook/react/issues/15379
 
+jest.mock("../../components/ImageModal/ImageModal", () => () => (
+  <div>
+    <span>Mock Image Modal</span>
+    <img data-testid={"test-image-modal-desktop"} src={"test_source"} />
+  </div>
+));
 jest.mock("../../hooks/useGetUserPosts/useGetUserPosts", () => jest.fn());
 jest.mock("./getLikedPosts/getLikedPosts", () => jest.fn());
 jest.mock("../../utils/getPostInfo/getPostInfo", () => jest.fn());
@@ -120,6 +126,6 @@ describe("User", () => {
     const thumbnail = screen.getByTestId("testID");
     fireEvent.click(thumbnail);
     const image = await screen.findByTestId("test-image-modal-desktop");
-    expect(image.src).toContain(plane);
+    expect(image.src).toContain("test_source");
   });
 });
