@@ -1,5 +1,3 @@
-// TODO: Relocate this so that it can be used by the Home page to get get post information for each Card component
-
 import { firestore, storage } from "../../firebase/firebase";
 
 export default async function getPostInfo(id) {
