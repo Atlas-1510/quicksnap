@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import Heart from "./Heart";
 
 it("renders outline when not current page", () => {
-  render(<Heart currentPage="home" />);
+  render(<Heart liked={false} />);
 
   const icon = screen.getByTitle("like");
 
@@ -10,7 +10,7 @@ it("renders outline when not current page", () => {
 });
 
 it("renders outline when current page", () => {
-  render(<Heart currentPage="liked" />);
+  render(<Heart liked={true} />);
 
   const icon = screen.getByTitle("like");
 

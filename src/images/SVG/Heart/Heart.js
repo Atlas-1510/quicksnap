@@ -39,13 +39,14 @@ function Outline() {
   );
 }
 
-function Add({ currentPage }) {
-  return (
-    <>
-      {currentPage === "liked" && <Filled />}
-      {currentPage !== "liked" && <Outline />}
-    </>
-  );
+function Add({ liked }) {
+  if (liked) {
+    return <Filled />;
+  } else if (!liked) {
+    return <Outline />;
+  } else {
+    throw new Error("like status not passed to Heart.svg loader");
+  }
 }
 
 export default Add;

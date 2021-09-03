@@ -8,6 +8,9 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../pages/Main";
 import submitComment from "../utils/submitComment/submitComment";
 import updatePost from "../utils/updatePost/updatePost";
+import useGetPostHeartStatus from "../hooks/useGetPostHeartStatus/useGetPostHeartStatus";
+import likePost from "../utils/likePost/likePost";
+import unlikePost from "../utils/unlikePost/unlikePost";
 
 // TODO: Add timestamp display to post
 
@@ -17,6 +20,7 @@ function Card({ card }) {
   const { uid, name } = useContext(UserContext);
   const [commentInput, setCommentInput] = useState("");
   const [handleChange, setHandleChange] = useState(false);
+  const liked = useGetPostHeartStatus(uid, id);
 
   useEffect(() => {
     if (handleChange) {
@@ -33,6 +37,14 @@ function Card({ card }) {
   const initCommentSubmit = (e) => {
     e.preventDefault();
     setHandleChange(true);
+  };
+
+  const handleHeartClick = async () => {
+    if (liked) {
+      await unlikePost(uid, id);
+    } else {
+      await likePost(uid, id);
+    }
   };
 
   return (
@@ -58,8 +70,8 @@ function Card({ card }) {
       <div className="flex flex-col bg-white text-gray-700">
         <div className="flex justify-between">
           <div className="flex">
-            <div className="w-8 m-2">
-              <Heart />
+            <div className="w-8 m-2 cursor-pointer" onClick={handleHeartClick}>
+              <Heart liked={liked} />
             </div>
             <div className="w-8 m-2">
               <PaperAirplane />
