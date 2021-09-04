@@ -10,8 +10,9 @@ admin.initializeApp();
 //   response.send("Hello from Firebase!");
 // });
 
-exports.addUserToLikedBy = functions.firestore
-  .document("hearts/{heartID}")
+exports.addUserToLikedBy = functions
+  .region("australia-southeast1")
+  .firestore.document("hearts/{heartID}")
   .onCreate((snap) => {
     try {
       const { pid, uid } = snap.data();
@@ -24,8 +25,9 @@ exports.addUserToLikedBy = functions.firestore
     }
   });
 
-exports.removeUserFromLikedBy = functions.firestore
-  .document("hearts/{heartID}")
+exports.removeUserFromLikedBy = functions
+  .region("australia-southeast1")
+  .firestore.document("hearts/{heartID}")
   .onDelete((snap) => {
     try {
       const { pid, uid } = snap.data();
@@ -38,5 +40,35 @@ exports.removeUserFromLikedBy = functions.firestore
     }
   });
 
-// exports.updateFeeds = functions.firestore.document("posts/{postID}")
-// .onWrite((change))
+exports.updateFeeds = functions
+  .region("australia-southeast1")
+  .firestore.document("posts/{postID}")
+  .onCreate(async (snap, context) => {
+    try {
+      const authorID = snap.data().author.id;
+      const user = await admin
+        .firestore()
+        .collection("users")
+        .doc(authorID)
+        .get()
+        .then((result) => {
+          return result.data();
+        });
+      const followerIDs = user.followers;
+      const promises = [];
+      followerIDs.forEach((id) => {
+        const feedRef = admin
+          .firestore()
+          .collection("feeds")
+          .doc(id)
+          .collection("feedItems");
+        const feedItemPromise = feedRef.doc(context.params.postID).set({
+          timestamp: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        promises.push(feedItemPromise);
+      });
+      return Promise.all(promises);
+    } catch (error) {
+      console.log(error);
+    }
+  });

@@ -1,6 +1,8 @@
 import { firestore } from "../../../firebase/firebase";
 import { useState, useEffect } from "react";
 
+// TODO: add pagination, remove limit of 5 most recent feed items
+
 const useUpdateFeed = (uid) => {
   const [feed, setFeed] = useState([]);
   useEffect(() => {
@@ -8,7 +10,9 @@ const useUpdateFeed = (uid) => {
       const docRef = firestore
         .collection("feeds")
         .doc(uid)
-        .collection("feedItems");
+        .collection("feedItems")
+        .orderBy("timestamp", "desc")
+        .limit(5);
       const doc = await docRef.get();
       const feedItems = [];
       doc.forEach((item) => {
