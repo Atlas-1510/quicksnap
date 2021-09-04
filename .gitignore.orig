@@ -20,9 +20,10 @@
 
 npm-debug.log*
 yarn-debug.log*
+yarn-error.log*
 <<<<<<< HEAD
-yarn-error.log*
+functions/node_modules
+src/utils/fb_tut_backup.js
 =======
-yarn-error.log*
 .firebaserc
 >>>>>>> 614940d... Add firebase cloud function to update likedBy array on posts

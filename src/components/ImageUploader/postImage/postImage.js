@@ -18,5 +18,6 @@ export default async function postImage(user, image) {
     image: imageURL,
     likeCount: 0,
     comments: [],
+    likedBy: [],
   });
 }
