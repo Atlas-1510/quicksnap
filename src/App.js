@@ -5,13 +5,9 @@ import "./App.css";
 import Main from "./pages/Main";
 import Login from "./pages/Login/Login";
 
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase/firebase";
-
 // export const UserContext = createContext(null);
 
 function App() {
-  const [session] = useAuthState(auth);
   const [uid, setUID] = useState(null);
 
   return (
@@ -20,7 +16,7 @@ function App() {
         <Route
           path=""
           render={() => {
-            if (session) {
+            if (uid) {
               return <Main uid={uid} />;
             } else {
               return <Login setUID={setUID} />;

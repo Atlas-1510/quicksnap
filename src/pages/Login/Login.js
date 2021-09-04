@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImageBanner from "../../components/ImageBanner/ImageBanner";
 import GlassBox from "../../components/GlassBox/GlassBox";
 
@@ -11,21 +11,26 @@ import { auth, firestore } from "../../firebase/firebase";
 import firebase from "firebase/app";
 
 import generateProfileImage from "../../utils/generateProfileImage/generateProfileImage";
+import loadUserProfile from "./loadUserProfile/loadUserProfile";
 
 // TODO: set up login with either email address or username
 
 function Login({ setUID }) {
   const [modal, setModal] = useState("login");
 
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      setUID(user.uid);
-    }
-  });
+  useEffect(() => {
+    const unlisten = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        await loadUserProfile(user);
+        setUID(user.uid);
+      }
+    });
+    return () => unlisten();
+  }, []);
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
+    await auth.signInWithPopup(provider);
   };
 
   // TODO: Verify that facebook log in works in a production environment
@@ -56,27 +61,32 @@ function Login({ setUID }) {
     auth.signInWithEmailAndPassword(email, pw);
   };
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
     const email = e.target[0].value;
     const fullName = e.target[1].value;
     const name = e.target[2].value;
     const pw = e.target[3].value;
-    auth.createUserWithEmailAndPassword(email, pw).then((cred) => {
-      firestore
-        .collection("users")
-        .doc(cred.user.uid)
-        .set({
-          name,
-          fullName,
-          followerCount: 0,
-          followingCount: 0,
-          postCount: 0,
-          profileImage: generateProfileImage(fullName),
-          customProfileImage: false,
-        });
-      setUID(cred.user.uid);
-    });
+    const uid = await auth
+      .createUserWithEmailAndPassword(email, pw)
+      .then((cred) => {
+        firestore
+          .collection("users")
+          .doc(cred.user.uid)
+          .set({
+            name,
+            fullName,
+            followerCount: 0,
+            followingCount: 0,
+            postCount: 0,
+            profileImage: generateProfileImage(fullName),
+            customProfileImage: false,
+          })
+          .then(() => {
+            return cred.user.uid;
+          });
+      });
+    setUID(uid);
   };
 
   const detectFullNameValid = (e) => {
