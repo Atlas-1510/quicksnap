@@ -21,6 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 <<<<<<< HEAD
+<<<<<<< HEAD
 yarn-error.log*
 <<<<<<< HEAD
 =======
@@ -31,3 +32,6 @@ yarn-error.log*
 .firebaserc
 src/utils/fb_tut_backup.js
 >>>>>>> 71045ee... Add firebase cloud fn tutorial to gitignore
+=======
+yarn-error.log*
+>>>>>>> 7a40cf0... Undo gitignore change ahead of rebase
