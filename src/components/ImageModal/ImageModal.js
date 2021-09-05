@@ -10,6 +10,7 @@ import Mobile from "./Mobile/Mobile";
 import useGetPostHeartStatus from "../../hooks/useGetPostHeartStatus/useGetPostHeartStatus";
 import likePost from "../../utils/likePost/likePost";
 import unlikePost from "../../utils/unlikePost/unlikePost";
+import getLikedByInfo from "../../utils/getLikedByInfo/getLikedByInfo";
 
 function ImageModal({ post, setActivePost }) {
   const { width } = useWindowSize();
@@ -20,6 +21,8 @@ function ImageModal({ post, setActivePost }) {
   const [handleNewComment, setHandleNewComment] = useState(false);
   const [handleLikeChange, setHandleLikeChange] = useState(false);
   const [likeCountDisplay, setLikeCountDisplay] = useState(likeCount);
+  const liked = useGetPostHeartStatus(uid, id);
+  const [showLikedByModal, setShowLikedByModal] = useState(false);
 
   useEffect(() => {
     if (handleNewComment) {
@@ -57,7 +60,11 @@ function ImageModal({ post, setActivePost }) {
     setActivePost(null);
   };
 
-  const liked = useGetPostHeartStatus(uid, id);
+  const handleShowLikedByModal = async () => {
+    // invoke getLikedByInfo to get user info of each user in the likedBy array (display photos, name, userName, following status)
+    const likedByInfo = await getLikedByInfo(id);
+    console.log(likedByInfo);
+  };
 
   if (width > 768) {
     return (
@@ -70,6 +77,7 @@ function ImageModal({ post, setActivePost }) {
         setHandleLikeChange={setHandleLikeChange}
         liked={liked}
         likeCountDisplay={likeCountDisplay}
+        handleShowLikedByModal={handleShowLikedByModal}
       />
     );
   } else {
@@ -83,6 +91,7 @@ function ImageModal({ post, setActivePost }) {
         setHandleLikeChange={setHandleLikeChange}
         liked={liked}
         likeCountDisplay={likeCountDisplay}
+        handleShowLikedByModal={handleShowLikedByModal}
       />
     );
   }

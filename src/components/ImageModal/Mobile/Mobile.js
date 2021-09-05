@@ -14,6 +14,7 @@ function Mobile({
   handleHeartClick,
   liked,
   likeCountDisplay,
+  handleShowLikedByModal,
 }) {
   return (
     <div
@@ -58,18 +59,20 @@ function Mobile({
               <Bookmark />
             </div>
           </div>
-          {likeCountDisplay === 1 && (
-            <span className="mx-3 my-1">
-              Liked by{" "}
-              <span className="font-bold">{likeCountDisplay} user</span>
-            </span>
-          )}
-          {likeCountDisplay > 1 && (
-            <span className="mx-3 my-1">
-              Liked by{" "}
-              <span className="font-bold">{likeCountDisplay} users</span>
-            </span>
-          )}
+          <div onClick={handleShowLikedByModal}>
+            {likeCountDisplay === 1 && (
+              <span className="mx-3 my-1">
+                Liked by{" "}
+                <span className="font-bold">{likeCountDisplay} user</span>
+              </span>
+            )}
+            {likeCountDisplay > 1 && (
+              <span className="mx-3 my-1">
+                Liked by{" "}
+                <span className="font-bold">{likeCountDisplay} users</span>
+              </span>
+            )}
+          </div>
           <div className="mx-3 mt-1 mb-3 flex-grow">
             {post.comments.map((comment) => (
               <div key={comment.id}>
