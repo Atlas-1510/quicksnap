@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ModalBackground from "../../ModalBackground";
 import useComponentVisible from "../../../hooks/useComponentVisible/useComponentVisible";
 import ThreeDots from "../../../images/SVG/ThreeDots";
@@ -14,10 +14,16 @@ function Desktop({
   initCommentSubmit,
   setCommentInput,
   commentInput,
-  handleHeartClick,
+  setHandleLikeChange,
   liked,
+  likeCountDisplay,
 }) {
   const { ref, isComponentVisible } = useComponentVisible(true, exit);
+  const [likedByModal, setLikedByModal] = useState(false);
+
+  // const viewLikedBy = () => {
+  //   const postRef =
+  // }
 
   return (
     <ModalBackground exit={exit}>
@@ -54,7 +60,7 @@ function Desktop({
                   <div className="flex">
                     <div
                       className="w-8 m-2 cursor-pointer"
-                      onClick={handleHeartClick}
+                      onClick={setHandleLikeChange}
                     >
                       <Heart liked={liked} />
                     </div>
@@ -66,10 +72,18 @@ function Desktop({
                     <Bookmark />
                   </div>
                 </div>
-                <span className="mx-3 my-1">
-                  Liked by{" "}
-                  <span className="font-bold">{post.likeCount} users</span>
-                </span>
+                {likeCountDisplay === 1 && (
+                  <span className="mx-3 my-1">
+                    Liked by{" "}
+                    <span className="font-bold">{likeCountDisplay} user</span>
+                  </span>
+                )}
+                {likeCountDisplay > 1 && (
+                  <span className="mx-3 my-1">
+                    Liked by{" "}
+                    <span className="font-bold">{likeCountDisplay} users</span>
+                  </span>
+                )}
                 <div className="mx-3 mt-1 mb-3 flex-grow">
                   {post.comments.map((comment) => (
                     <div key={comment.id}>

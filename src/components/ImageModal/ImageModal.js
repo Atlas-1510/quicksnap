@@ -14,13 +14,15 @@ import unlikePost from "../../utils/unlikePost/unlikePost";
 function ImageModal({ post, setActivePost }) {
   const { width } = useWindowSize();
   const [postInfo, setPostInfo] = useState(post);
-  const { id } = postInfo;
+  const { id, likeCount } = postInfo;
   const { uid, name } = useContext(UserContext);
   const [commentInput, setCommentInput] = useState("");
-  const [handleChange, setHandleChange] = useState(false);
+  const [handleNewComment, setHandleNewComment] = useState(false);
+  const [handleLikeChange, setHandleLikeChange] = useState(false);
+  const [likeCountDisplay, setLikeCountDisplay] = useState(likeCount);
 
   useEffect(() => {
-    if (handleChange) {
+    if (handleNewComment) {
       (async () => {
         await submitComment(id, uid, name, commentInput);
         const post = await updatePost(id);
@@ -28,12 +30,27 @@ function ImageModal({ post, setActivePost }) {
         setCommentInput("");
       })();
     }
-    setHandleChange(false);
-  }, [handleChange]);
+    setHandleNewComment(false);
+  }, [handleNewComment]);
+
+  useEffect(() => {
+    if (handleLikeChange) {
+      (async () => {
+        if (liked) {
+          await unlikePost(uid, id);
+          setLikeCountDisplay(likeCountDisplay - 1);
+        } else {
+          await likePost(uid, id);
+          setLikeCountDisplay(likeCountDisplay + 1);
+        }
+      })();
+    }
+    setHandleLikeChange(false);
+  }, [handleLikeChange]);
 
   const initCommentSubmit = (e) => {
     e.preventDefault();
-    setHandleChange(true);
+    setHandleNewComment(true);
   };
 
   const exit = () => {
@@ -41,14 +58,6 @@ function ImageModal({ post, setActivePost }) {
   };
 
   const liked = useGetPostHeartStatus(uid, id);
-
-  const handleHeartClick = async () => {
-    if (liked) {
-      await unlikePost(uid, id);
-    } else {
-      await likePost(uid, id);
-    }
-  };
 
   if (width > 768) {
     return (
@@ -58,8 +67,9 @@ function ImageModal({ post, setActivePost }) {
         initCommentSubmit={initCommentSubmit}
         setCommentInput={setCommentInput}
         commentInput={commentInput}
-        handleHeartClick={handleHeartClick}
+        setHandleLikeChange={setHandleLikeChange}
         liked={liked}
+        likeCountDisplay={likeCountDisplay}
       />
     );
   } else {
@@ -70,8 +80,9 @@ function ImageModal({ post, setActivePost }) {
         initCommentSubmit={initCommentSubmit}
         setCommentInput={setCommentInput}
         commentInput={commentInput}
-        handleHeartClick={handleHeartClick}
+        setHandleLikeChange={setHandleLikeChange}
         liked={liked}
+        likeCountDisplay={likeCountDisplay}
       />
     );
   }

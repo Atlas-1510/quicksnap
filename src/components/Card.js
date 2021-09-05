@@ -19,11 +19,13 @@ function Card({ card }) {
   const { author, image, comments, likeCount, id } = post;
   const { uid, name } = useContext(UserContext);
   const [commentInput, setCommentInput] = useState("");
-  const [handleChange, setHandleChange] = useState(false);
+  const [handleNewComment, setHandleNewComment] = useState(false);
+  const [handleLikeChange, setHandleLikeChange] = useState(false);
+  const [likeCountDisplay, setLikeCountDisplay] = useState(likeCount);
   const liked = useGetPostHeartStatus(uid, id);
 
   useEffect(() => {
-    if (handleChange) {
+    if (handleNewComment) {
       (async () => {
         await submitComment(id, uid, name, commentInput);
         const post = await updatePost(id);
@@ -31,20 +33,27 @@ function Card({ card }) {
         setCommentInput("");
       })();
     }
-    setHandleChange(false);
-  }, [handleChange]);
+    setHandleNewComment(false);
+  }, [handleNewComment]);
+
+  useEffect(() => {
+    if (handleLikeChange) {
+      (async () => {
+        if (liked) {
+          await unlikePost(uid, id);
+          setLikeCountDisplay(likeCountDisplay - 1);
+        } else {
+          await likePost(uid, id);
+          setLikeCountDisplay(likeCountDisplay + 1);
+        }
+      })();
+    }
+    setHandleLikeChange(false);
+  }, [handleLikeChange]);
 
   const initCommentSubmit = (e) => {
     e.preventDefault();
-    setHandleChange(true);
-  };
-
-  const handleHeartClick = async () => {
-    if (liked) {
-      await unlikePost(uid, id);
-    } else {
-      await likePost(uid, id);
-    }
+    setHandleLikeChange(true);
   };
 
   return (
@@ -70,7 +79,10 @@ function Card({ card }) {
       <div className="flex flex-col bg-white text-gray-700">
         <div className="flex justify-between">
           <div className="flex">
-            <div className="w-8 m-2 cursor-pointer" onClick={handleHeartClick}>
+            <div
+              className="w-8 m-2 cursor-pointer"
+              onClick={setHandleLikeChange}
+            >
               <Heart liked={liked} />
             </div>
             <div className="w-8 m-2">
@@ -81,10 +93,16 @@ function Card({ card }) {
             <Bookmark />
           </div>
         </div>
-        <span className="mx-3 my-1">
-          Liked by <span className="font-bold">XYZ</span> and{" "}
-          <span className="font-bold">{likeCount} others</span>
-        </span>
+        {likeCountDisplay === 1 && (
+          <span className="mx-3 my-1">
+            Liked by <span className="font-bold">{likeCountDisplay} user</span>
+          </span>
+        )}
+        {likeCountDisplay > 1 && (
+          <span className="mx-3 my-1">
+            Liked by <span className="font-bold">{likeCountDisplay} users</span>
+          </span>
+        )}
         <div className="mx-3 mt-1 mb-3 max-h-20 overflow-y-scroll">
           {comments &&
             comments.map((comment) => (

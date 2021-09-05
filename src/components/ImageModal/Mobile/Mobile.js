@@ -13,6 +13,7 @@ function Mobile({
   commentInput,
   handleHeartClick,
   liked,
+  likeCountDisplay,
 }) {
   return (
     <div
@@ -57,10 +58,18 @@ function Mobile({
               <Bookmark />
             </div>
           </div>
-          <span className="mx-3 my-1">
-            Liked by <span className="font-bold">XYZ</span> and{" "}
-            <span className="font-bold">{post.likeCount} others</span>
-          </span>
+          {likeCountDisplay === 1 && (
+            <span className="mx-3 my-1">
+              Liked by{" "}
+              <span className="font-bold">{likeCountDisplay} user</span>
+            </span>
+          )}
+          {likeCountDisplay > 1 && (
+            <span className="mx-3 my-1">
+              Liked by{" "}
+              <span className="font-bold">{likeCountDisplay} users</span>
+            </span>
+          )}
           <div className="mx-3 mt-1 mb-3 flex-grow">
             {post.comments.map((comment) => (
               <div key={comment.id}>
