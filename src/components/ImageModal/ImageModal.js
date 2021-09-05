@@ -161,7 +161,7 @@ function ImageModal({ post, setActivePost }) {
                     {likeCountDisplay === 1 && (
                       <span className="mx-3 my-1">
                         Liked by{" "}
-                        <span className="font-bold">
+                        <span className="font-bold cursor-pointer">
                           {likeCountDisplay} user
                         </span>
                       </span>
