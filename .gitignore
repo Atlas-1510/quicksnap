@@ -23,3 +23,4 @@ yarn-debug.log*
 yarn-error.log*
 .firebaserc
 src/utils/fb_tut_backup.js
+functions/node_modules
