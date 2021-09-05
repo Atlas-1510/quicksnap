@@ -78,6 +78,8 @@ function Login({ setUID }) {
             fullName,
             followerCount: 0,
             followingCount: 0,
+            followers: [],
+            following: [],
             postCount: 0,
             profileImage: generateProfileImage(fullName),
             customProfileImage: false,
