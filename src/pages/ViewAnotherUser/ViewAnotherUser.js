@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import useGetUserPosts from "../../hooks/useGetUserPosts/useGetUserPosts";
 import getPostInfo from "../../utils/getPostInfo/getPostInfo";
 import ImageModal from "../../components/ImageModal/ImageModal";
-import BottomMobileNav from "../../components/BottomMobileNav";
+
 import useGetUserInfo from "./useGetUserInfo/useGetUserInfo";
 import { useParams } from "react-router";
 import { UserContext } from "../Main";
@@ -127,7 +127,6 @@ function ViewAnotherUser() {
           )}
           {/* TODO: Implement Footer */}
           <footer>FOOTER</footer>
-          <BottomMobileNav />
         </div>
       )}
     </>

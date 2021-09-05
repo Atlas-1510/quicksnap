@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import Card from "../../components/Card";
 import RightSideBox from "../../components/RightSideBox";
-import BottomMobileNav from "../../components/BottomMobileNav";
 
 import davidBarrell from "../../images/test-images/RightSideBox/david.barrell.png";
 import deshith from "../../images/test-images/RightSideBox/deshith.png";
@@ -38,8 +37,6 @@ function Home() {
       <div className="w-full lg:w-3/5 mt-2 md:mt-auto">
         {feed && feed.map((card) => <Card key={card.id} card={card} />)}
       </div>
-
-      <BottomMobileNav />
     </div>
   );
 }

@@ -4,7 +4,6 @@ import useGetUserPosts from "../../hooks/useGetUserPosts/useGetUserPosts";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getPostInfo from "../../utils/getPostInfo/getPostInfo";
 import ImageModal from "../../components/ImageModal/ImageModal";
-import BottomMobileNav from "../../components/BottomMobileNav";
 import { Link } from "react-router-dom";
 import ModalBackground from "../../components/ModalBackground";
 import EditProfile from "./EditProfile/EditProfile";
@@ -145,7 +144,6 @@ function User() {
         )}
         {/* TODO: Implement Footer */}
         <footer>FOOTER</footer>
-        <BottomMobileNav />
       </div>
       {editProfileModal && (
         <ModalBackground exit={() => setEditProfileModal(false)}>
