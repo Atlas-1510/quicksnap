@@ -13,7 +13,7 @@ async function loadUserProfile(user) {
         customProfileImage: false,
         fullName: user.displayName,
         name: defaultUserName,
-        followers: [],
+        followers: [user.uid],
         following: [],
         followerCount: 0,
         followingCount: 0,
