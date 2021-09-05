@@ -76,7 +76,6 @@ function ImageModal({ post, setActivePost }) {
 
   const handleShowLikedByModal = async () => {
     const info = await getLikedByInfo(id);
-    console.log(info);
     setLikedByInfo(info);
     setShowLikedByModal(true);
   };
@@ -168,7 +167,7 @@ function ImageModal({ post, setActivePost }) {
                     {likeCountDisplay > 1 && (
                       <span className="mx-3 my-1">
                         Liked by{" "}
-                        <span className="font-bold">
+                        <span className="font-bold cursor-pointer">
                           {likeCountDisplay} users
                         </span>
                       </span>
@@ -261,9 +260,11 @@ function LikedByUser({ user, following }) {
   const { uid } = useContext(UserContext);
   useEffect(() => {
     if (following.includes(user.id)) {
-      setIsFollowing(true);
-    } else if (following.includes(uid)) {
-      setIsFollowing(null);
+      if (user.id === uid) {
+        setIsFollowing("current_user");
+      } else {
+        setIsFollowing(true);
+      }
     } else {
       setIsFollowing(false);
     }
@@ -283,7 +284,7 @@ function LikedByUser({ user, following }) {
         <span className="font-semibold">{user.name}</span>
         <span className="text-gray-500">{user.fullName}</span>
       </div>
-      {isFollowing && (
+      {isFollowing && isFollowing !== "current_user" && (
         <button className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner">
           Following
         </button>
