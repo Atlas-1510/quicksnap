@@ -67,8 +67,8 @@ function Desktop({
                   </div>
                 </div>
                 <span className="mx-3 my-1">
-                  Liked by <span className="font-bold">XYZ</span> and{" "}
-                  <span className="font-bold">{post.likeCount} others</span>
+                  Liked by{" "}
+                  <span className="font-bold">{post.likeCount} users</span>
                 </span>
                 <div className="mx-3 mt-1 mb-3 flex-grow">
                   {post.comments.map((comment) => (
