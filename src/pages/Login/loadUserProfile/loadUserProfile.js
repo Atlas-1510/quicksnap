@@ -11,6 +11,7 @@ async function loadUserProfile(user) {
       return await docRef.set({
         customProfileImage: false,
         fullName: user.displayName,
+        name: user.email,
         followers: [],
         following: [],
         followerCount: 0,

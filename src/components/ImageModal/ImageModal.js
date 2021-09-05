@@ -20,6 +20,8 @@ import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
 import Bookmark from "../../images/SVG/Bookmark/Bookmark";
 import ChevronLeft from "../../images/SVG/ChevronLeft";
 import Button from "../Button";
+import followUser from "../../utils/followUser/followUser";
+import unfollowUser from "../../utils/unfollowUser/unfollowUser";
 
 // ********
 
@@ -270,9 +272,18 @@ function LikedByUser({ user, following }) {
     }
   }, []);
 
-  const followUser = async (e) => {
+  const handleFollowUser = async (e) => {
     e.preventDefault();
+    await followUser(uid, user.id);
+    setIsFollowing(true);
   };
+
+  const handleUnfollowUser = async (e) => {
+    e.preventDefault();
+    await unfollowUser(uid, user.id);
+    setIsFollowing(false);
+  };
+
   return (
     <div className="flex m-2 items-center">
       <img
@@ -285,12 +296,15 @@ function LikedByUser({ user, following }) {
         <span className="text-gray-500">{user.fullName}</span>
       </div>
       {isFollowing && isFollowing !== "current_user" && (
-        <button className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner">
+        <button
+          onClick={(e) => handleUnfollowUser(e)}
+          className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
+        >
           Following
         </button>
       )}
       {!isFollowing && (
-        <div onClick={(e) => followUser(e)}>
+        <div className="mx-1" onClick={handleFollowUser}>
           <Button>Follow</Button>
         </div>
       )}

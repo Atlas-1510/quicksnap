@@ -7,6 +7,8 @@ import useGetUserInfo from "./useGetUserInfo/useGetUserInfo";
 import { useParams } from "react-router";
 import { UserContext } from "../Main";
 import { firestore, FieldValue } from "../../firebase/firebase";
+import followUser from "../../utils/followUser/followUser";
+import unfollowUser from "../../utils/unfollowUser/unfollowUser";
 
 function ViewAnotherUser() {
   const { id } = useParams();
@@ -28,18 +30,12 @@ function ViewAnotherUser() {
     }
   }, [following]);
 
-  const followUser = async () => {
-    const userRef = firestore.collection("users").doc(uid);
-    await userRef.update({
-      following: FieldValue.arrayUnion(id),
-    });
+  const handleFollowUser = async () => {
+    await followUser(uid, id);
   };
 
-  const unfollowUser = async () => {
-    const userRef = firestore.collection("users").doc(uid);
-    await userRef.update({
-      following: FieldValue.arrayRemove(id),
-    });
+  const handleUnfollowUser = async () => {
+    await unfollowUser(uid, id);
   };
 
   return (
@@ -65,7 +61,7 @@ function ViewAnotherUser() {
                 {follows && (
                   <button
                     className="border border-gray-300 rounded-md py-1 px-2 m-1 mr-3 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
-                    onClick={() => unfollowUser()}
+                    onClick={() => handleUnfollowUser()}
                   >
                     Stop Following
                   </button>
@@ -73,7 +69,7 @@ function ViewAnotherUser() {
                 {!follows && (
                   <button
                     className="border border-gray-300 rounded-md py-1 px-2 m-1 mr-3 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
-                    onClick={() => followUser()}
+                    onClick={() => handleFollowUser()}
                   >
                     Follow
                   </button>
