@@ -19,6 +19,7 @@ exports.addUserToLikedBy = functions
       const postRef = admin.firestore().collection("posts").doc(pid);
       return postRef.update({
         likedBy: admin.firestore.FieldValue.arrayUnion(uid),
+        likeCount: admin.firestore.FieldValue.increment(1),
       });
     } catch (error) {
       console.log(error);
@@ -34,6 +35,7 @@ exports.removeUserFromLikedBy = functions
       const postRef = admin.firestore().collection("posts").doc(pid);
       return postRef.update({
         likedBy: admin.firestore.FieldValue.arrayRemove(uid),
+        likeCount: admin.firestore.FieldValue.increment(-1),
       });
     } catch (error) {
       console.log(error);
