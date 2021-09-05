@@ -8,10 +8,11 @@ async function loadUserProfile(user) {
     if (doc.exists) {
       return;
     } else {
+      const defaultUserName = user.email.split(/@(?=[^@]*$)/)[0];
       return await docRef.set({
         customProfileImage: false,
         fullName: user.displayName,
-        name: user.email,
+        name: defaultUserName,
         followers: [],
         following: [],
         followerCount: 0,
