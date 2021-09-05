@@ -7,6 +7,7 @@ import User from "./User/User";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { firestore, storage } from "../firebase/firebase";
 import ViewAnotherUser from "./ViewAnotherUser/ViewAnotherUser";
+import BottomMobileNav from "../components/BottomMobileNav";
 
 export const UserContext = createContext(null);
 
@@ -47,15 +48,18 @@ function Main({ uid }) {
           <div className="flex flex-col h-screen overflow-auto relative">
             <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
             <div className="bg-gray-100 flex justify-center h-full flex-grow overflow-scroll">
-              <div className="md:w-2/3 md:max-w-4xl h-full w-full">
-                <Switch>
-                  <Route exact path="/" component={Home}></Route>
-                  <Route exact path="/messenger">
-                    <Messenger setCurrentPage={setCurrentPage} />
-                  </Route>
-                  <Route exact path="/user" component={User} />
-                  <Route path="/view-user/:id" component={ViewAnotherUser} />
-                </Switch>
+              <div className="md:w-2/3 md:max-w-4xl h-full w-full flex flex-col">
+                <div className="flex-grow">
+                  <Switch>
+                    <Route exact path="/" component={Home}></Route>
+                    <Route exact path="/messenger">
+                      <Messenger setCurrentPage={setCurrentPage} />
+                    </Route>
+                    <Route exact path="/user" component={User} />
+                    <Route path="/view-user/:id" component={ViewAnotherUser} />
+                  </Switch>
+                </div>
+                <BottomMobileNav />
               </div>
             </div>
           </div>

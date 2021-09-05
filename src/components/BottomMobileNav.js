@@ -7,7 +7,7 @@ import Profile from "../images/SVG/Profile/Profile";
 
 function BottomMobileNav() {
   return (
-    <nav className="fixed flex md:hidden bottom-0 w-full bg-white border-t border-gray-300 items-center justify-between">
+    <nav className="flex md:hidden w-full bg-white border-t border-gray-300 items-center justify-between">
       <div className="w-8 m-2">
         <Home />
       </div>
