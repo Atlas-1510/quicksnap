@@ -6,7 +6,6 @@ import ImageModal from "../../components/ImageModal/ImageModal";
 import useGetUserInfo from "./useGetUserInfo/useGetUserInfo";
 import { useParams } from "react-router";
 import { UserContext } from "../Main";
-import { firestore, FieldValue } from "../../firebase/firebase";
 import followUser from "../../utils/followUser/followUser";
 import unfollowUser from "../../utils/unfollowUser/unfollowUser";
 
