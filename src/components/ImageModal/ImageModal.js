@@ -19,6 +19,7 @@ import Heart from "../../images/SVG/Heart/Heart";
 import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
 import Bookmark from "../../images/SVG/Bookmark/Bookmark";
 import ChevronLeft from "../../images/SVG/ChevronLeft";
+import Button from "../Button";
 
 // ********
 
@@ -33,6 +34,7 @@ function ImageModal({ post, setActivePost }) {
   const [likeCountDisplay, setLikeCountDisplay] = useState(likeCount);
   const liked = useGetPostHeartStatus(uid, id);
   const [showLikedByModal, setShowLikedByModal] = useState(false);
+  const [likedByInfo, setLikedByInfo] = useState(null);
 
   useEffect(() => {
     if (handleNewComment) {
@@ -71,30 +73,32 @@ function ImageModal({ post, setActivePost }) {
   };
 
   const handleShowLikedByModal = async () => {
-    // invoke getLikedByInfo to get user info of each user in the likedBy array (display photos, name, userName, following status)
-    const likedByInfo = await getLikedByInfo(id);
-    console.log(likedByInfo);
+    const info = await getLikedByInfo(id);
+    console.log(info);
+    setLikedByInfo(info);
+    setShowLikedByModal(true);
   };
-  const { ref, isComponentVisible } = useComponentVisible(true, exit);
 
   return (
-    <ModalBackground exit={exit}>
-      <div
-        ref={ref}
-        className={
-          width > 768
-            ? "w-2/3 max-w-4xl"
-            : "bg-white absolute top-0 w-full h-full"
-        }
-      >
-        {isComponentVisible && (
+    <>
+      <ModalBackground exit={exit}>
+        <div
+          className={
+            width > 768
+              ? "w-2/3 max-w-4xl"
+              : "bg-white absolute top-0 w-full h-full flex flex-col"
+          }
+        >
           <>
             {width < 768 && (
-              <div className="border-b border-gray-300 flex  items-center justify-between py-2">
-                <div className="mx-2 w-7" onClick={() => exit()}>
+              <div className="relative border-b border-gray-300 flex items-center justify-center py-2">
+                <div
+                  className="absolute left-0 mx-2 w-7"
+                  onClick={() => exit()}
+                >
                   <ChevronLeft />
                 </div>
-                <div className="mx-3 flex items-center">
+                <div className="m-1 flex items-center">
                   <img
                     className="w-8 h-8 md:border rounded-full"
                     src={post.author.profileImage}
@@ -102,16 +106,13 @@ function ImageModal({ post, setActivePost }) {
                   />
                   <span className="mx-3">{post.author.name}</span>
                 </div>
-                <div className="w-7 m-2">
-                  <ThreeDots />
-                </div>
               </div>
             )}
             <div
               className={
                 width > 768
                   ? "grid grid-cols-3 grid-rows-1"
-                  : "flex flex-col text-sm"
+                  : "flex flex-col text-sm h-full flex-grow"
               }
               onClick={(e) => e.stopPropagation()}
             >
@@ -122,8 +123,7 @@ function ImageModal({ post, setActivePost }) {
                 src={post.image}
                 alt="Full size view of clicked thumbnail"
               />
-
-              <div className="flex flex-col text-sm">
+              <div className="flex flex-col text-sm flex-grow">
                 <div className="flex justify-between bg-white h-12 items-center">
                   <div className="mx-3 flex items-center">
                     <img
@@ -137,7 +137,7 @@ function ImageModal({ post, setActivePost }) {
                     <ThreeDots />
                   </div>
                 </div>
-                <div className="flex flex-col bg-white text-gray-700 flex-grow">
+                <div className="flex flex-col bg-white text-gray-700 h-full flex-grow">
                   <div className="flex justify-between">
                     <div className="flex">
                       <div
@@ -172,7 +172,7 @@ function ImageModal({ post, setActivePost }) {
                       </span>
                     )}
                   </div>
-                  <div className="mx-3 mt-1 mb-3 flex-grow">
+                  <div className="mx-3 mt-1 mb-3 flex-grow h-full overflow-y-scroll">
                     {post.comments.map((comment) => (
                       <div key={comment.id}>
                         <span className="font-bold">{comment.author.name}</span>
@@ -201,40 +201,96 @@ function ImageModal({ post, setActivePost }) {
               </div>
             </div>
           </>
-        )}
-      </div>
-    </ModalBackground>
+        </div>
+      </ModalBackground>
+      {showLikedByModal && (
+        <LikedByModal
+          exit={() => setShowLikedByModal(false)}
+          width={width}
+          likedByInfo={likedByInfo}
+        />
+      )}
+    </>
   );
-
-  // if (width > 768) {
-  //   return (
-  //     <Desktop
-  //       post={postInfo}
-  //       exit={exit}
-  //       initCommentSubmit={initCommentSubmit}
-  //       setCommentInput={setCommentInput}
-  //       commentInput={commentInput}
-  //       setHandleLikeChange={setHandleLikeChange}
-  //       liked={liked}
-  //       likeCountDisplay={likeCountDisplay}
-  //       handleShowLikedByModal={handleShowLikedByModal}
-  //     />
-  //   );
-  // } else {
-  //   return (
-  //     <Mobile
-  //       post={postInfo}
-  //       exit={exit}
-  //       initCommentSubmit={initCommentSubmit}
-  //       setCommentInput={setCommentInput}
-  //       commentInput={commentInput}
-  //       setHandleLikeChange={setHandleLikeChange}
-  //       liked={liked}
-  //       likeCountDisplay={likeCountDisplay}
-  //       handleShowLikedByModal={handleShowLikedByModal}
-  //     />
-  //   );
-  // }
 }
 
 export default ImageModal;
+
+function LikedByModal({ width, likedByInfo, exit }) {
+  const { ref, isComponentVisible } = useComponentVisible(true, exit);
+  const { following } = useContext(UserContext);
+
+  return (
+    <div
+      className="absolute top-0 left-0 w-full h-full grid place-items-center bg-black bg-opacity-50"
+      onClick={(e) => e.stopPropagation()}
+    >
+      <div
+        ref={ref}
+        className={
+          width > 768
+            ? "w-1/3 bg-white border rounded-md z-50"
+            : "bg-white absolute top-0 w-full h-full z-50"
+        }
+      >
+        {isComponentVisible && (
+          <div className={width > 768 ? "" : "flex flex-col text-sm"}>
+            <div className="flex flex-col text-sm">
+              <div className="border-b border-gray-300 flex items-center justify-center py-2 relative">
+                <div className=" absolute left-0 w-7" onClick={(e) => exit(e)}>
+                  <ChevronLeft />
+                </div>
+                <span className="font-semibold m-1">Likes</span>
+              </div>
+              {likedByInfo &&
+                likedByInfo.map((user) => (
+                  <LikedByUser user={user} following={following} />
+                ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function LikedByUser({ user, following }) {
+  const [isFollowing, setIsFollowing] = useState(null);
+  const { uid } = useContext(UserContext);
+  useEffect(() => {
+    if (following.includes(user.id)) {
+      setIsFollowing(true);
+    } else if (following.includes(uid)) {
+      setIsFollowing(null);
+    } else {
+      setIsFollowing(false);
+    }
+  }, []);
+
+  const followUser = async (e) => {
+    e.preventDefault();
+  };
+  return (
+    <div className="flex m-2 items-center">
+      <img
+        alt="User"
+        src={user.profileImage}
+        className="h-10 w-10 border rounded-full"
+      />
+      <div className="flex flex-col flex-grow ml-3">
+        <span className="font-semibold">{user.name}</span>
+        <span className="text-gray-500">{user.fullName}</span>
+      </div>
+      {isFollowing && (
+        <button className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner">
+          Following
+        </button>
+      )}
+      {!isFollowing && (
+        <div onClick={(e) => followUser(e)}>
+          <Button>Follow</Button>
+        </div>
+      )}
+    </div>
+  );
+}
