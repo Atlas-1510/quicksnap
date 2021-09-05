@@ -56,6 +56,8 @@ function ImageModal({ post, setActivePost }) {
           setLikeCountDisplay(likeCountDisplay - 1);
         } else {
           await likePost(uid, id);
+          const info = await getLikedByInfo(id);
+          setLikedByInfo(info);
           setLikeCountDisplay(likeCountDisplay + 1);
         }
       })();
