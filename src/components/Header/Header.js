@@ -87,7 +87,8 @@ function Header({ currentPage, setCurrentPage }) {
         </ModalBackground>
       )}
       {/* Search modal */}
-      <RecentSearchModal recentSearches={recentSearches} />
+      {/* <RecentSearchModal recentSearches={recentSearches} /> */}
+      <SearchModal searchResults={recentSearches} />
     </>
   );
 }
@@ -128,6 +129,34 @@ function RecentSearchModal({ recentSearches }) {
 
           {/*  */}
         </div>
+      </div>
+    </div>
+  );
+}
+
+function SearchModal({ searchResults }) {
+  return (
+    <div className="absolute left-96 top-14 flex flex-col items-center">
+      <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
+      <div className="w-96 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 overflow-y-scroll">
+        {searchResults.map((index) => {
+          return (
+            <div className="flex my-1 items-center w-full justify-between">
+              <img
+                alt="User"
+                src={testProfile}
+                className="h-10 w-10 border rounded-full"
+              />
+              <div className="flex flex-col flex-grow ml-3">
+                <span className="font-semibold text-sm">iamjasona</span>
+                <span className="text-gray-500 text-xs">Jason Aravanis</span>
+              </div>
+              <div className="w-7 m-2">
+                <Exit />
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
