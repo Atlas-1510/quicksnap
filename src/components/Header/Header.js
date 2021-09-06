@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import ModalBackground from "../ModalBackground";
 import Add from "../../images/SVG/Add/Add";
@@ -10,13 +10,51 @@ import ImageUploader from "../ImageUploader/ImageUploader";
 
 import testProfile from "../../images/test-images/testUserProfile.png";
 import Exit from "../../images/SVG/Exit";
+import useIsFirstRender from "../../hooks/useIsFirstRender/useIsFirstRender";
 
 function Header({ currentPage, setCurrentPage }) {
   const [uploadModal, setUploadModal] = useState(false);
+  const [recentSearchModal, setRecentSearchModal] = useState(false);
+  const [searchResultModal, setSearchResultModal] = useState(false);
+  const [searchInput, setSearchInput] = useState(null);
+  const isFirstRender = useIsFirstRender();
 
   const [recentSearches, setRecentSearches] = useState([
     1, 2, 3, 4, 5, 6, 7, 8, 9,
   ]);
+
+  const showRecentSearches = () => {
+    // make a call to get recent searches
+    setRecentSearchModal(true);
+  };
+
+  const hideSearch = (e) => {
+    e.target.value = "";
+    setRecentSearchModal(false);
+    setSearchResultModal(false);
+  };
+
+  useEffect(() => {
+    if (!isFirstRender) {
+      if (searchInput === "") {
+        setRecentSearchModal(true);
+      } else {
+        setSearchResultModal(true);
+      }
+    }
+  }, [searchInput]);
+
+  useEffect(() => {
+    if (recentSearchModal) {
+      setSearchResultModal(false);
+    }
+  }, [recentSearchModal]);
+
+  useEffect(() => {
+    if (searchResultModal) {
+      setRecentSearchModal(false);
+    }
+  }, [searchResultModal]);
 
   return (
     <>
@@ -41,6 +79,9 @@ function Header({ currentPage, setCurrentPage }) {
               className=" w-4/5 mx-3.5 border border-gray-300 rounded-sm p-1 bg-gray-50 text-center"
               type="text"
               placeholder="Search"
+              onFocus={showRecentSearches}
+              onBlur={(e) => hideSearch(e)}
+              onChange={(e) => setSearchInput(e.target.value)}
             />
           </form>
           <div className="flex">
@@ -87,8 +128,10 @@ function Header({ currentPage, setCurrentPage }) {
         </ModalBackground>
       )}
       {/* Search modal */}
-      {/* <RecentSearchModal recentSearches={recentSearches} /> */}
-      <SearchModal searchResults={recentSearches} />
+      {recentSearchModal && (
+        <RecentSearchModal recentSearches={recentSearches} />
+      )}
+      {searchResultModal && <SearchModal searchResults={recentSearches} />}
     </>
   );
 }
