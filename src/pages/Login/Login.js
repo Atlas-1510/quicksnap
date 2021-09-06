@@ -79,7 +79,7 @@ function Login({ setUID }) {
             followerCount: 0,
             followingCount: 0,
             followers: [cred.user.uid],
-            following: [],
+            following: [cred.user.uid],
             postCount: 0,
             profileImage: generateProfileImage(fullName),
             customProfileImage: false,
