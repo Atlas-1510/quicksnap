@@ -20,8 +20,34 @@ function Header({ currentPage, setCurrentPage }) {
   const [searchInput, setSearchInput] = useState("");
   const { searches } = useContext(UserContext);
   const [recentlyViewed, setRecentlyViewed] = useState(null);
+  const [searchResults, setSearchResults] = useState(null);
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false);
+
+  const updateSearch = (e) => {
+    setSearchInput(e.target.value);
+    const testSearchResults = [
+      {
+        name: "test1",
+        fullName: "Test One",
+        profileImage: testProfile,
+        id: "test1",
+      },
+      {
+        name: "test2",
+        fullName: "Test Two",
+        profileImage: testProfile,
+        id: "test2",
+      },
+    ];
+    setSearchResults(testSearchResults);
+
+    // make a query across firestore to get all users that have a name or username that matches the search input
+    // need to use algolia, because firestore doesn't support search for text fields. Would only find an exact match, which defeats
+    // the point of searching for a user.
+    // limit results to 10. paginate.
+    // save search results in a new state variable (like recentlyViewed but for new search), which is then used by SearchModal
+  };
 
   useEffect(() => {
     if (searchModal === "recent") {
@@ -76,13 +102,13 @@ function Header({ currentPage, setCurrentPage }) {
           <Link to="/" onClick={() => setCurrentPage("home")}>
             <h1 className=" font-curly text-4xl">QuickSnap</h1>
           </Link>
-          <form>
+          <form onSubmit={(e) => e.preventDefault()}>
             <input
               className=" w-4/5 mx-3.5 border border-gray-300 rounded-sm p-1 bg-gray-50 text-center"
               type="text"
               placeholder="Search"
               onClick={() => setIsComponentVisible(true)}
-              onChange={(e) => setSearchInput(e.target.value)}
+              onChange={(e) => updateSearch(e)}
             />
           </form>
           <div className="flex">
@@ -132,15 +158,20 @@ function Header({ currentPage, setCurrentPage }) {
       <div className="absolute top-14" ref={ref} style={{ left: "35%" }}>
         {isComponentVisible && (
           <div className="flex flex-col items-center">
-            <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
             {searchModal === "recent" && (
-              <RecentSearchModal
-                recentlyViewed={recentlyViewed}
-                setIsComponentVisible={setIsComponentVisible}
-              />
+              <>
+                <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
+                <RecentSearchModal
+                  recentlyViewed={recentlyViewed}
+                  setIsComponentVisible={setIsComponentVisible}
+                />
+              </>
             )}
-            {searchModal === "search" && (
-              <SearchModal searchResults={[1, 2, 3, 4, 5, 6]} />
+            {searchModal === "search" && searchResults && (
+              <>
+                <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
+                <SearchModal searchResults={searchResults} />
+              </>
             )}
           </div>
         )}
@@ -196,24 +227,28 @@ function RecentSearchModal({ recentlyViewed, setIsComponentVisible }) {
 function SearchModal({ searchResults }) {
   return (
     <div className="w-96 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 overflow-y-scroll">
-      {searchResults.map((index) => {
-        return (
-          <div className="flex my-1 items-center w-full justify-between">
-            <img
-              alt="User"
-              src={testProfile}
-              className="h-10 w-10 border rounded-full"
-            />
-            <div className="flex flex-col flex-grow ml-3">
-              <span className="font-semibold text-sm">iamjasona</span>
-              <span className="text-gray-500 text-xs">Jason Aravanis</span>
-            </div>
-            <div className="w-7 m-2">
-              <Exit />
-            </div>
-          </div>
-        );
-      })}
+      <div className="w-full overflow-y-scroll">
+        {searchResults.map((user) => {
+          return (
+            <Link>
+              <div className="flex my-1 items-center w-full justify-between">
+                <img
+                  alt="User"
+                  src={user.profileImage}
+                  className="h-10 w-10 border rounded-full"
+                />
+                <div className="flex flex-col flex-grow ml-3">
+                  <span className="font-semibold text-sm">{user.name}</span>
+                  <span className="text-gray-500 text-xs">{user.fullName}</span>
+                </div>
+                <div className="w-7 m-2">
+                  <Exit />
+                </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
     </div>
   );
 }
