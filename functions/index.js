@@ -18,7 +18,9 @@ exports.indexUser = functions
     const objectID = snap.id;
 
     return index.saveObject({
-      ...data,
+      name: data.name,
+      fullName: data.fullName,
+      profileImage: data.profileImage,
       objectID,
     });
   });
