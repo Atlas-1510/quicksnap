@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import testProfile from "../../../images/test-images/testUserProfile.png";
 import Exit from "../../../images/SVG/Exit";
 import { UserContext } from "../../../pages/Main";
 import getUserInfo from "../../../utils/getUserInfo/getUserInfo";
@@ -17,11 +16,26 @@ const index = searchClient.initIndex("quicksnap_users");
 function Search() {
   const [searchModal, setSearchModal] = useState(null);
   const [searchInput, setSearchInput] = useState("");
-  const { uid, searches } = useContext(UserContext);
-  const [recentlyViewed, setRecentlyViewed] = useState(null);
+  const { uid } = useContext(UserContext);
+  const [recentlyViewedUsers, setRecentlyViewedUsers] = useState([]);
+  const [previousSearches, setPreviousSearches] = useState([]);
   const [searchResults, setSearchResults] = useState(null);
   const { ref, isComponentVisible, setIsComponentVisible } =
     useComponentVisible(false);
+
+  useEffect(() => {
+    const unsub = firestore
+      .collection("users")
+      .doc(uid)
+      .onSnapshot((snap) => {
+        const unpacked = snap.data();
+        setPreviousSearches(unpacked.searches);
+      });
+
+    return () => {
+      unsub();
+    };
+  }, []);
 
   const updateSearch = async (e) => {
     setSearchInput(e.target.value);
@@ -38,20 +52,31 @@ function Search() {
     });
   };
 
+  const deleteSearchHistory = async () => {
+    const userRef = firestore.collection("users").doc(uid);
+    await userRef.update({
+      searches: [],
+    });
+  };
+
+  const deleteSingleSearch = async (id) => {
+    const userRef = firestore.collection("users").doc(uid);
+    await userRef.update({
+      searches: FieldValue.arrayRemove(id),
+    });
+  };
+
   useEffect(() => {
-    if (searchModal === "recent") {
-      (async () => {
-        // Make this a real time listener to updates in the user doc --> searches array
-        const promises = [];
-        searches.forEach((userID) => {
-          const promise = getUserInfo(userID);
-          promises.push(promise);
-        });
-        const users = await Promise.all(promises);
-        setRecentlyViewed(users);
-      })();
-    }
-  }, [searchModal]);
+    (async () => {
+      const promises = [];
+      previousSearches.forEach((userID) => {
+        const promise = getUserInfo(userID);
+        promises.push(promise);
+      });
+      const users = await Promise.all(promises);
+      setRecentlyViewedUsers(users);
+    })();
+  }, [previousSearches]);
 
   useEffect(() => {
     if (isComponentVisible && searchInput === "") {
@@ -94,8 +119,10 @@ function Search() {
               <>
                 <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
                 <RecentSearchModal
-                  recentlyViewed={recentlyViewed}
+                  recentlyViewedUsers={recentlyViewedUsers}
                   setIsComponentVisible={setIsComponentVisible}
+                  deleteSearchHistory={deleteSearchHistory}
+                  deleteSingleSearch={deleteSingleSearch}
                 />
               </>
             )}
@@ -117,44 +144,59 @@ function Search() {
 
 export default Search;
 
-function RecentSearchModal({ recentlyViewed, setIsComponentVisible }) {
+function RecentSearchModal({
+  recentlyViewedUsers,
+  setIsComponentVisible,
+  deleteSearchHistory,
+  deleteSingleSearch,
+}) {
   return (
     <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3">
       <div className="flex justify-between w-full">
         <span className="font-semibold text-lg">Recent</span>
-        <span className="font-semibold text-sm text-blue-500 cursor-pointer">
+        <span
+          className="font-semibold text-sm text-blue-500 cursor-pointer"
+          onClick={deleteSearchHistory}
+        >
           Clear All
         </span>
       </div>
       <div className="w-full overflow-y-scroll">
-        {recentlyViewed &&
-          recentlyViewed.map((user) => {
+        {recentlyViewedUsers &&
+          recentlyViewedUsers.map((user) => {
             return (
-              <Link
-                to={`/view-user/${user.id}`}
-                onClick={() => setIsComponentVisible(false)}
+              <div
+                className="flex my-2 items-center w-full justify-between"
                 key={user.id}
               >
-                <div className="flex my-2 items-center w-full justify-between">
-                  <img
-                    alt="User"
-                    src={user.profileImage}
-                    className="h-10 w-10 border rounded-full"
-                  />
-                  <div className="flex flex-col flex-grow ml-3">
-                    <span className="font-semibold text-sm">{user.name}</span>
-                    <span className="text-gray-500 text-xs">
-                      {user.fullName}
-                    </span>
+                <Link
+                  to={`/view-user/${user.id}`}
+                  onClick={() => setIsComponentVisible(false)}
+                >
+                  <div className="flex">
+                    <img
+                      alt="User"
+                      src={user.profileImage}
+                      className="h-10 w-10 border rounded-full"
+                    />
+                    <div className="flex flex-col flex-grow ml-3">
+                      <span className="font-semibold text-sm">{user.name}</span>
+                      <span className="text-gray-500 text-xs">
+                        {user.fullName}
+                      </span>
+                    </div>
                   </div>
-                  <div className="w-7 m-2">
-                    <Exit />
-                  </div>
+                </Link>
+                <div
+                  className="w-7 m-2"
+                  onClick={() => deleteSingleSearch(user.id)}
+                >
+                  <Exit />
                 </div>
-              </Link>
+              </div>
             );
           })}
-        {recentlyViewed === null && <div>No recent searches</div>}
+        {recentlyViewedUsers.length === 0 && <div>No recent searches</div>}
       </div>
     </div>
   );
@@ -166,26 +208,26 @@ function SearchModal({ searchResults, storeSearch }) {
       <div className="w-full overflow-y-scroll">
         {searchResults.map((user) => {
           return (
-            <Link
-              to={`/view-user/${user.id}`}
-              onClick={() => storeSearch(user.id)}
-              key={user.id}
-            >
-              <div className="flex my-1 items-center w-full justify-between">
-                <img
-                  alt="User"
-                  src={user.profileImage}
-                  className="h-10 w-10 border rounded-full"
-                />
-                <div className="flex flex-col flex-grow ml-3">
-                  <span className="font-semibold text-sm">{user.name}</span>
-                  <span className="text-gray-500 text-xs">{user.fullName}</span>
+            <div className="my-2" key={user.id}>
+              <Link
+                to={`/view-user/${user.id}`}
+                onClick={() => storeSearch(user.id)}
+              >
+                <div className="flex items-center w-full justify-between">
+                  <img
+                    alt="User"
+                    src={user.profileImage}
+                    className="h-10 w-10 border rounded-full"
+                  />
+                  <div className="flex flex-col flex-grow ml-3">
+                    <span className="font-semibold text-sm">{user.name}</span>
+                    <span className="text-gray-500 text-xs">
+                      {user.fullName}
+                    </span>
+                  </div>
                 </div>
-                <div className="w-7 m-2">
-                  <Exit />
-                </div>
-              </div>
-            </Link>
+              </Link>
+            </div>
           );
         })}
       </div>
