@@ -19,6 +19,7 @@ async function loadUserProfile(user) {
         followingCount: 0,
         postCount: 0,
         profileImage: generateProfileImage(user.displayName),
+        searches: [],
       });
     }
   } catch (error) {

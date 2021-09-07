@@ -83,6 +83,7 @@ function Login({ setUID }) {
             postCount: 0,
             profileImage: generateProfileImage(fullName),
             customProfileImage: false,
+            searches: [],
           })
           .then(() => {
             return cred.user.uid;
