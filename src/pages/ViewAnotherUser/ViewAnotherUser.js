@@ -3,7 +3,7 @@ import useGetUserPosts from "../../hooks/useGetUserPosts/useGetUserPosts";
 import getPostInfo from "../../utils/getPostInfo/getPostInfo";
 import ImageModal from "../../components/ImageModal/ImageModal";
 
-import useGetUserInfo from "./useGetUserInfo/useGetUserInfo";
+import useGetUserInfo from "../../hooks/useGetUserInfo/useGetUserInfo";
 import { useParams } from "react-router";
 import { UserContext } from "../Main";
 import followUser from "../../utils/followUser/followUser";

@@ -1,14 +1,12 @@
 import { useState, useEffect } from "react";
-import { firestore } from "../../../firebase/firebase";
+import getUserInfo from "../../utils/getUserInfo/getUserInfo";
 
 function useGetUserInfo(id) {
   const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
     (async () => {
-      const userRef = firestore.collection("users").doc(id);
-      const userDoc = await userRef.get();
-      const user = userDoc.data();
+      const user = await getUserInfo(id);
       setUserInfo(user);
     })();
   }, [id]);
