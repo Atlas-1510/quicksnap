@@ -21,6 +21,7 @@ exports.indexUser = functions
       name: data.name,
       fullName: data.fullName,
       profileImage: data.profileImage,
+      id: objectID,
       objectID,
     });
   });
