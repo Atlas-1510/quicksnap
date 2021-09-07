@@ -6,6 +6,7 @@ import getUserInfo from "../../../utils/getUserInfo/getUserInfo";
 import useComponentVisible from "../../../hooks/useComponentVisible/useComponentVisible";
 import { Link } from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
+import { firestore, FieldValue } from "../../../firebase/firebase";
 
 const searchClient = algoliasearch(
   "JB4UGTXL86",
@@ -27,6 +28,14 @@ function Search() {
     const { hits } = await index.search(searchInput);
     const filteredHits = hits.filter((hit) => hit.id !== uid);
     setSearchResults(filteredHits);
+  };
+
+  const storeSearch = async (id) => {
+    setIsComponentVisible(false);
+    const userRef = firestore.collection("users").doc(uid);
+    await userRef.update({
+      searches: FieldValue.arrayUnion(id),
+    });
   };
 
   useEffect(() => {
@@ -95,7 +104,7 @@ function Search() {
                 <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
                 <SearchModal
                   searchResults={searchResults}
-                  setIsComponentVisible={setIsComponentVisible}
+                  storeSearch={storeSearch}
                 />
               </>
             )}
@@ -151,7 +160,7 @@ function RecentSearchModal({ recentlyViewed, setIsComponentVisible }) {
   );
 }
 
-function SearchModal({ searchResults, setIsComponentVisible }) {
+function SearchModal({ searchResults, storeSearch }) {
   return (
     <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 overflow-y-scroll">
       <div className="w-full overflow-y-scroll">
@@ -159,7 +168,7 @@ function SearchModal({ searchResults, setIsComponentVisible }) {
           return (
             <Link
               to={`/view-user/${user.id}`}
-              onClick={() => setIsComponentVisible(false)}
+              onClick={() => storeSearch(user.id)}
               key={user.id}
             >
               <div className="flex my-1 items-center w-full justify-between">
