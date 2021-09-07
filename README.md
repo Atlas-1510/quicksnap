@@ -11,3 +11,4 @@ Notes about:
 - tailwind
 - testing coverage
 - firestore data modelling (for a follower/following relationship)
+- Algolia for search to find users. And maybe hashtags?

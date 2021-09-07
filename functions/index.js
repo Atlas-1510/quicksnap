@@ -1,14 +1,38 @@
+const algoliasearch = require("algoliasearch");
+
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
+const env = functions.config();
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", { structuredData: true });
-//   response.send("Hello from Firebase!");
-// });
+const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
+const index = client.initIndex("quicksnap_users");
+
+// *************************** Algolia ********************************
+
+exports.indexUser = functions
+  .region("australia-southeast1")
+  .firestore.document("users/{userID}")
+  .onCreate((snap, context) => {
+    const data = snap.data();
+    const objectID = snap.id;
+
+    return index.saveObject({
+      ...data,
+      objectID,
+    });
+  });
+
+exports.unindexUser = functions
+  .region("australia-southeast1")
+  .firestore.document("users/{userID}")
+  .onDelete((snap) => {
+    const objectID = snap.id;
+
+    return index.deleteObject(objectID);
+  });
+
+// *************************** Liking posts ********************************
 
 exports.addUserToLikedBy = functions
   .region("australia-southeast1")
@@ -41,6 +65,8 @@ exports.removeUserFromLikedBy = functions
       console.log(error);
     }
   });
+
+// *************************** User feed management ********************************
 
 exports.updateFeeds = functions
   .region("australia-southeast1")
