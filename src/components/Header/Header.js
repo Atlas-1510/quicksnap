@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import ModalBackground from "../ModalBackground";
 import Add from "../../images/SVG/Add/Add";
@@ -10,51 +10,53 @@ import ImageUploader from "../ImageUploader/ImageUploader";
 
 import testProfile from "../../images/test-images/testUserProfile.png";
 import Exit from "../../images/SVG/Exit";
-import useIsFirstRender from "../../hooks/useIsFirstRender/useIsFirstRender";
+import { UserContext } from "../../pages/Main";
+import getUserInfo from "../../utils/getUserInfo/getUserInfo";
+import useComponentVisible from "../../hooks/useComponentVisible/useComponentVisible";
 
 function Header({ currentPage, setCurrentPage }) {
   const [uploadModal, setUploadModal] = useState(false);
-  const [recentSearchModal, setRecentSearchModal] = useState(false);
-  const [searchResultModal, setSearchResultModal] = useState(false);
-  const [searchInput, setSearchInput] = useState(null);
-  const isFirstRender = useIsFirstRender();
-
-  const [recentSearches, setRecentSearches] = useState([
-    1, 2, 3, 4, 5, 6, 7, 8, 9,
-  ]);
-
-  const showRecentSearches = () => {
-    // make a call to get recent searches
-    setRecentSearchModal(true);
-  };
-
-  const hideSearch = (e) => {
-    e.target.value = "";
-    setRecentSearchModal(false);
-    setSearchResultModal(false);
-  };
+  const [searchModal, setSearchModal] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
+  const { searches } = useContext(UserContext);
+  const [recentlyViewed, setRecentlyViewed] = useState(null);
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useComponentVisible(false);
 
   useEffect(() => {
-    if (!isFirstRender) {
-      if (searchInput === "") {
-        setRecentSearchModal(true);
-      } else {
-        setSearchResultModal(true);
-      }
+    if (searchModal === "recent") {
+      (async () => {
+        // Make this a real time listener to updates in the user doc --> searches array
+        const promises = [];
+        searches.forEach((userID) => {
+          const promise = getUserInfo(userID);
+          promises.push(promise);
+        });
+        const users = await Promise.all(promises);
+        setRecentlyViewed(users);
+      })();
+    }
+  }, [searchModal]);
+
+  useEffect(() => {
+    if (isComponentVisible && searchInput === "") {
+      setSearchModal("recent");
+    } else if (isComponentVisible && searchInput !== "") {
+      setSearchModal("search");
     }
   }, [searchInput]);
 
   useEffect(() => {
-    if (recentSearchModal) {
-      setSearchResultModal(false);
+    if (isComponentVisible) {
+      if (searchInput === "") {
+        setSearchModal("recent");
+      } else {
+        setSearchModal("search");
+      }
+    } else {
+      setSearchModal(null);
     }
-  }, [recentSearchModal]);
-
-  useEffect(() => {
-    if (searchResultModal) {
-      setRecentSearchModal(false);
-    }
-  }, [searchResultModal]);
+  }, [isComponentVisible]);
 
   return (
     <>
@@ -79,8 +81,7 @@ function Header({ currentPage, setCurrentPage }) {
               className=" w-4/5 mx-3.5 border border-gray-300 rounded-sm p-1 bg-gray-50 text-center"
               type="text"
               placeholder="Search"
-              onFocus={showRecentSearches}
-              onBlur={(e) => hideSearch(e)}
+              onClick={() => setIsComponentVisible(true)}
               onChange={(e) => setSearchInput(e.target.value)}
             />
           </form>
@@ -128,50 +129,65 @@ function Header({ currentPage, setCurrentPage }) {
         </ModalBackground>
       )}
       {/* Search modal */}
-      {recentSearchModal && (
-        <RecentSearchModal recentSearches={recentSearches} />
-      )}
-      {searchResultModal && <SearchModal searchResults={recentSearches} />}
+      <div className="absolute top-14" ref={ref} style={{ left: "35%" }}>
+        {isComponentVisible && (
+          <div className="flex flex-col items-center">
+            <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
+            {searchModal === "recent" && (
+              <RecentSearchModal
+                recentlyViewed={recentlyViewed}
+                setIsComponentVisible={setIsComponentVisible}
+              />
+            )}
+            {searchModal === "search" && (
+              <SearchModal searchResults={[1, 2, 3, 4, 5, 6]} />
+            )}
+          </div>
+        )}
+      </div>
     </>
   );
 }
 
 export default Header;
 
-function RecentSearchModal({ recentSearches }) {
+function RecentSearchModal({ recentlyViewed, setIsComponentVisible }) {
   return (
-    <div className="absolute left-96 top-14 flex flex-col items-center">
-      <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
-      <div className="w-96 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3">
-        <div className="flex justify-between w-full">
-          <span className="font-semibold text-lg">Recent</span>
-          <span className="font-semibold text-sm text-blue-500 cursor-pointer">
-            Clear All
-          </span>
-        </div>
-        <div className="w-full overflow-y-scroll">
-          {/*  */}
-          {recentSearches.map((index) => {
+    <div className="w-96 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3">
+      <div className="flex justify-between w-full">
+        <span className="font-semibold text-lg">Recent</span>
+        <span className="font-semibold text-sm text-blue-500 cursor-pointer">
+          Clear All
+        </span>
+      </div>
+      <div className="w-full overflow-y-scroll">
+        {recentlyViewed &&
+          recentlyViewed.map((user) => {
             return (
-              <div className="flex my-2 items-center w-full justify-between">
-                <img
-                  alt="User"
-                  src={testProfile}
-                  className="h-10 w-10 border rounded-full"
-                />
-                <div className="flex flex-col flex-grow ml-3">
-                  <span className="font-semibold text-sm">iamjasona</span>
-                  <span className="text-gray-500 text-xs">Jason Aravanis</span>
+              <Link
+                to={`/view-user/${user.id}`}
+                onClick={() => setIsComponentVisible(false)}
+              >
+                <div className="flex my-2 items-center w-full justify-between">
+                  <img
+                    alt="User"
+                    src={user.profileImage}
+                    className="h-10 w-10 border rounded-full"
+                  />
+                  <div className="flex flex-col flex-grow ml-3">
+                    <span className="font-semibold text-sm">{user.name}</span>
+                    <span className="text-gray-500 text-xs">
+                      {user.fullName}
+                    </span>
+                  </div>
+                  <div className="w-7 m-2">
+                    <Exit />
+                  </div>
                 </div>
-                <div className="w-7 m-2">
-                  <Exit />
-                </div>
-              </div>
+              </Link>
             );
           })}
-
-          {/*  */}
-        </div>
+        {recentlyViewed === null && <div>No recent searches</div>}
       </div>
     </div>
   );
@@ -179,28 +195,25 @@ function RecentSearchModal({ recentSearches }) {
 
 function SearchModal({ searchResults }) {
   return (
-    <div className="absolute left-96 top-14 flex flex-col items-center">
-      <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
-      <div className="w-96 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 overflow-y-scroll">
-        {searchResults.map((index) => {
-          return (
-            <div className="flex my-1 items-center w-full justify-between">
-              <img
-                alt="User"
-                src={testProfile}
-                className="h-10 w-10 border rounded-full"
-              />
-              <div className="flex flex-col flex-grow ml-3">
-                <span className="font-semibold text-sm">iamjasona</span>
-                <span className="text-gray-500 text-xs">Jason Aravanis</span>
-              </div>
-              <div className="w-7 m-2">
-                <Exit />
-              </div>
+    <div className="w-96 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 overflow-y-scroll">
+      {searchResults.map((index) => {
+        return (
+          <div className="flex my-1 items-center w-full justify-between">
+            <img
+              alt="User"
+              src={testProfile}
+              className="h-10 w-10 border rounded-full"
+            />
+            <div className="flex flex-col flex-grow ml-3">
+              <span className="font-semibold text-sm">iamjasona</span>
+              <span className="text-gray-500 text-xs">Jason Aravanis</span>
             </div>
-          );
-        })}
-      </div>
+            <div className="w-7 m-2">
+              <Exit />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
