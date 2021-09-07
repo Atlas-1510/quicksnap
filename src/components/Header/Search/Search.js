@@ -6,6 +6,7 @@ import useComponentVisible from "../../../hooks/useComponentVisible/useComponent
 import { Link } from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
 import { firestore, FieldValue } from "../../../firebase/firebase";
+import AlgoliaLogo from "../../../images/SVG/AlgoliaLogo";
 
 const searchClient = algoliasearch(
   "JB4UGTXL86",
@@ -151,7 +152,7 @@ function RecentSearchModal({
   deleteSingleSearch,
 }) {
   return (
-    <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3">
+    <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 relative">
       <div className="flex justify-between w-full">
         <span className="font-semibold text-lg">Recent</span>
         <span
@@ -197,6 +198,9 @@ function RecentSearchModal({
             );
           })}
         {recentlyViewedUsers.length === 0 && <div>No recent searches</div>}
+      </div>
+      <div className="absolute bottom-0 right-0 m-2">
+        <AlgoliaLogo />
       </div>
     </div>
   );
