@@ -127,7 +127,7 @@ function Login({ setUID }) {
                 <input
                   value="Log In"
                   type="submit"
-                  className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400"
+                  className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400 cursor-pointer"
                 />
                 <div className="flex m-1 w-full items-center">
                   <div className="w-full h-px bg-gray-400"></div>
