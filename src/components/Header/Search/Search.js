@@ -36,7 +36,9 @@ function Search() {
     return () => {
       unsub();
     };
-  }, []);
+    // Note: uid will never change (represents the id of the currently logged in user)
+    // Have added here to remove warning in console about missing dependency.
+  }, [uid]);
 
   const updateSearch = async (e) => {
     setSearchInput(e.target.value);
@@ -85,7 +87,7 @@ function Search() {
     } else if (isComponentVisible && searchInput !== "") {
       setSearchModal("search");
     }
-  }, [searchInput]);
+  }, [searchInput, isComponentVisible]);
 
   useEffect(() => {
     if (isComponentVisible) {
@@ -97,7 +99,7 @@ function Search() {
     } else {
       setSearchModal(null);
     }
-  }, [isComponentVisible]);
+  }, [isComponentVisible, searchInput]);
 
   return (
     <div className="absolute left-1/2 transform -translate-x-1/2 z-50">
