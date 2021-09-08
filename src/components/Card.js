@@ -62,7 +62,7 @@ function Card({ card }) {
 
   const initCommentSubmit = (e) => {
     e.preventDefault();
-    setHandleLikeChange(true);
+    setHandleNewComment(true);
   };
 
   const handleShowLikedByModal = async () => {
@@ -97,7 +97,7 @@ function Card({ card }) {
             <div className="flex">
               <div
                 className="w-8 m-2 cursor-pointer"
-                onClick={setHandleLikeChange}
+                onClick={() => setHandleLikeChange(true)}
               >
                 <Heart liked={liked} />
               </div>
