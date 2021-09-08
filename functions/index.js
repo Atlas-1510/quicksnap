@@ -35,6 +35,22 @@ exports.unindexUser = functions
     return index.deleteObject(objectID);
   });
 
+exports.updateUserIndex = functions
+  .region("australia-southeast1")
+  .firestore.document("users/{userID}")
+  .onUpdate((change, context) => {
+    const newValue = change.after.data();
+    const objectID = context.params.userID;
+
+    return index.saveObject({
+      name: newValue.name,
+      fullName: newValue.fullName,
+      profileImage: newValue.profileImage,
+      id: objectID,
+      objectID,
+    });
+  });
+
 // *************************** Liking posts ********************************
 
 exports.addUserToLikedBy = functions
