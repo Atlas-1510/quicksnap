@@ -24,7 +24,7 @@ function useGetUserPosts(uid) {
         });
       });
     return () => unsub();
-  }, []);
+  }, [uid]);
 
   return userPosts;
 }
