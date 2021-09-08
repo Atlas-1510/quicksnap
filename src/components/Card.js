@@ -43,6 +43,11 @@ function Card({ card }) {
       })();
     }
     setHandleNewComment(false);
+    // Note: disabled warning below regarding missing dependencies.
+    // This effect should only fire if the user submits the comment (making handleNewComment true)
+    // Changes to commentInput should not trigger the effect.
+    // id, uid, and name will not change while Card is loaded, so placing them in the dependency array is irrelevent.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleNewComment]);
 
   useEffect(() => {
@@ -58,6 +63,9 @@ function Card({ card }) {
       })();
     }
     setHandleLikeChange(false);
+    // Note: disabled warning below regarding missing dependencies.
+    // This effect should only fire if the user clicks the like icon (which makes handleLikeChange true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleLikeChange]);
 
   const initCommentSubmit = (e) => {
