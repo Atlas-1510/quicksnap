@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 
 import Heart from "../images/SVG/Heart/Heart";
 import PaperAirplane from "../images/SVG/PaperAirplane/PaperAirplane";
@@ -23,54 +23,30 @@ function Card({ card }) {
   const { author, image, comments, likeCount, id } = post;
   const { uid, name } = useContext(UserContext);
   const [commentInput, setCommentInput] = useState("");
-  const [handleNewComment, setHandleNewComment] = useState(false);
-  const [handleLikeChange, setHandleLikeChange] = useState(false);
   const [likeCountDisplay, setLikeCountDisplay] = useState(likeCount);
   const liked = useGetPostHeartStatus(uid, id);
-
-  // **************************
   const [showLikedByModal, setShowLikedByModal] = useState(false);
   const [likedByInfo, setLikedByInfo] = useState(null);
-  // **************************
 
-  useEffect(() => {
-    if (handleNewComment) {
-      (async () => {
-        await submitComment(id, uid, name, commentInput);
-        const post = await updatePost(id);
-        setPost(post);
-        setCommentInput("");
-      })();
-    }
-    setHandleNewComment(false);
-    // Note: disabled warning below regarding missing dependencies.
-    // This effect should only fire if the user submits the comment (making handleNewComment true)
-    // Changes to commentInput should not trigger the effect.
-    // id, uid, and name will not change while Card is loaded, so placing them in the dependency array is irrelevent.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleNewComment]);
-
-  useEffect(() => {
-    if (handleLikeChange) {
-      (async () => {
-        if (liked) {
-          await unlikePost(uid, id);
-          setLikeCountDisplay(likeCountDisplay - 1);
-        } else {
-          await likePost(uid, id);
-          setLikeCountDisplay(likeCountDisplay + 1);
-        }
-      })();
-    }
-    setHandleLikeChange(false);
-    // Note: disabled warning below regarding missing dependencies.
-    // This effect should only fire if the user clicks the like icon (which makes handleLikeChange true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleLikeChange]);
-
-  const initCommentSubmit = (e) => {
+  const handleLikeChange = async (e) => {
     e.preventDefault();
-    setHandleNewComment(true);
+    if (liked) {
+      await unlikePost(uid, id);
+      setLikeCountDisplay(likeCountDisplay - 1);
+    } else {
+      await likePost(uid, id);
+      setLikeCountDisplay(likeCountDisplay + 1);
+    }
+  };
+
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    if (commentInput !== "") {
+      await submitComment(id, uid, name, commentInput);
+      const post = await updatePost(id);
+      setPost(post);
+      setCommentInput("");
+    }
   };
 
   const handleShowLikedByModal = async () => {
@@ -105,7 +81,7 @@ function Card({ card }) {
             <div className="flex">
               <div
                 className="w-8 m-2 cursor-pointer"
-                onClick={() => setHandleLikeChange(true)}
+                onClick={(e) => handleLikeChange(e)}
               >
                 <Heart liked={liked} />
               </div>
@@ -164,7 +140,7 @@ function Card({ card }) {
             />
             <button
               className="mx-3 text-blue-500 font-semibold cursor-pointer"
-              onClick={(e) => initCommentSubmit(e)}
+              onClick={(e) => handleSubmitComment(e)}
             >
               Post
             </button>
