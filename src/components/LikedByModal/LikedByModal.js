@@ -70,7 +70,7 @@ function LikedByUser({ user, following }) {
   };
 
   return (
-    <div className="flex m-2 items-center">
+    <div className="flex m-2 items-center" key={user.id}>
       <img
         alt="User"
         src={user.profileImage}
