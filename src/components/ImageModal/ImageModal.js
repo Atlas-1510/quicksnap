@@ -1,17 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { UserContext } from "../../pages/Main";
 import submitComment from "../../utils/submitComment/submitComment";
 import updatePost from "../../utils/updatePost/updatePost";
-
 import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
-
 import useGetPostHeartStatus from "../../hooks/useGetPostHeartStatus/useGetPostHeartStatus";
 import likePost from "../../utils/likePost/likePost";
 import unlikePost from "../../utils/unlikePost/unlikePost";
 import getLikedByInfo from "../../utils/getLikedByInfo/getLikedByInfo";
-
-// ********
-
 import ModalBackground from "../ModalBackground";
 import ThreeDots from "../../images/SVG/ThreeDots";
 import Heart from "../../images/SVG/Heart/Heart";
@@ -20,61 +15,36 @@ import Bookmark from "../../images/SVG/Bookmark/Bookmark";
 import ChevronLeft from "../../images/SVG/ChevronLeft";
 import LikedByModal from "../LikedByModal/LikedByModal";
 
-// ********
-
 function ImageModal({ post, setActivePost }) {
   const { width } = useWindowSize();
   const [postInfo, setPostInfo] = useState(post);
   const { id, likeCount } = postInfo;
   const { uid, name } = useContext(UserContext);
   const [commentInput, setCommentInput] = useState("");
-  const [handleNewComment, setHandleNewComment] = useState(false);
-  const [handleLikeChange, setHandleLikeChange] = useState(false);
   const [likeCountDisplay, setLikeCountDisplay] = useState(likeCount);
   const liked = useGetPostHeartStatus(uid, id);
   const [showLikedByModal, setShowLikedByModal] = useState(false);
   const [likedByInfo, setLikedByInfo] = useState(null);
 
-  useEffect(() => {
-    if (handleNewComment) {
-      (async () => {
-        await submitComment(id, uid, name, commentInput);
-        const post = await updatePost(id);
-        setPostInfo(post);
-        setCommentInput("");
-      })();
-    }
-    setHandleNewComment(false);
-    // Note: disabled warning below regarding missing dependencies.
-    // This effect should only fire if the user submits the comment (making handleNewComment true)
-    // Changes to commentInput should not trigger the effect.
-    // id, uid, and name will not change while ImageModal is loaded, so placing them in the dependency array is irrelevent.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleNewComment]);
-
-  useEffect(() => {
-    if (handleLikeChange) {
-      (async () => {
-        if (liked) {
-          await unlikePost(uid, id);
-          setLikeCountDisplay(likeCountDisplay - 1);
-        } else {
-          await likePost(uid, id);
-          const info = await getLikedByInfo(id);
-          setLikedByInfo(info);
-          setLikeCountDisplay(likeCountDisplay + 1);
-        }
-      })();
-    }
-    setHandleLikeChange(false);
-    // Note: disabled warning below regarding missing dependencies.
-    // This effect should only fire if the user clicks the like icon (which makes handleLikeChange true)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [handleLikeChange]);
-
-  const initCommentSubmit = (e) => {
+  const handleLikeChange = async (e) => {
     e.preventDefault();
-    setHandleNewComment(true);
+    if (liked) {
+      await unlikePost(uid, id);
+      setLikeCountDisplay(likeCountDisplay - 1);
+    } else {
+      await likePost(uid, id);
+      setLikeCountDisplay(likeCountDisplay + 1);
+    }
+  };
+
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    if (commentInput !== "") {
+      await submitComment(id, uid, name, commentInput);
+      const post = await updatePost(id);
+      setPostInfo(post);
+      setCommentInput("");
+    }
   };
 
   const exit = () => {
@@ -150,7 +120,7 @@ function ImageModal({ post, setActivePost }) {
                     <div className="flex">
                       <div
                         className="w-8 m-2 cursor-pointer"
-                        onClick={setHandleLikeChange}
+                        onClick={(e) => handleLikeChange(e)}
                       >
                         <Heart liked={liked} />
                       </div>
@@ -181,7 +151,7 @@ function ImageModal({ post, setActivePost }) {
                     )}
                   </div>
                   <div className="mx-3 mt-1 mb-3 flex-grow h-full overflow-y-scroll">
-                    {post.comments.map((comment) => (
+                    {postInfo.comments.map((comment) => (
                       <div key={comment.id}>
                         <span className="font-bold">{comment.author.name}</span>
                         <span> {comment.content}</span>
@@ -200,7 +170,7 @@ function ImageModal({ post, setActivePost }) {
                     />
                     <button
                       className="mx-3 text-blue-500 font-semibold cursor-pointer"
-                      onClick={(e) => initCommentSubmit(e)}
+                      onClick={(e) => handleSubmitComment(e)}
                     >
                       Post
                     </button>
