@@ -12,7 +12,7 @@ export default function LikedByModal({ width, likedByInfo, exit }) {
 
   return (
     <div
-      className="absolute top-0 left-0 w-full h-full grid place-items-center bg-black bg-opacity-50"
+      className="absolute top-0 left-0 w-full h-full grid place-items-center bg-black bg-opacity-50 z-50"
       onClick={(e) => e.stopPropagation()}
     >
       <div
