@@ -8,6 +8,7 @@ import { useParams } from "react-router";
 import { UserContext } from "../Main";
 import followUser from "../../utils/followUser/followUser";
 import unfollowUser from "../../utils/unfollowUser/unfollowUser";
+import { Redirect } from "react-router";
 
 function ViewAnotherUser() {
   const { id } = useParams();
@@ -36,6 +37,10 @@ function ViewAnotherUser() {
   const handleUnfollowUser = async () => {
     await unfollowUser(uid, id);
   };
+
+  if (uid === id) {
+    return <Redirect to="/user" />;
+  }
 
   return (
     <>
