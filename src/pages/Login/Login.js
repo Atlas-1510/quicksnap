@@ -26,7 +26,7 @@ function Login({ setUID }) {
       }
     });
     return () => unlisten();
-  }, []);
+  }, [setUID]);
 
   const handleGoogleSignIn = async () => {
     const provider = new firebase.auth.GoogleAuthProvider();
