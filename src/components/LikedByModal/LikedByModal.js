@@ -5,6 +5,7 @@ import ChevronLeft from "../../images/SVG/ChevronLeft";
 import followUser from "../../utils/followUser/followUser";
 import unfollowUser from "../../utils/unfollowUser/unfollowUser";
 import Button from "../Button";
+import { Link } from "react-router-dom";
 
 export default function LikedByModal({ width, likedByInfo, exit }) {
   const { ref, isComponentVisible } = useComponentVisible(true, exit);
@@ -41,6 +42,7 @@ export default function LikedByModal({ width, likedByInfo, exit }) {
                     user={user}
                     following={following}
                     key={user.id}
+                    exit={exit}
                   />
                 ))}
             </div>
@@ -51,7 +53,7 @@ export default function LikedByModal({ width, likedByInfo, exit }) {
   );
 }
 
-function LikedByUser({ user, following }) {
+function LikedByUser({ user, following, exit }) {
   const [isFollowing, setIsFollowing] = useState(null);
   const { uid } = useContext(UserContext);
   useEffect(() => {
@@ -77,16 +79,23 @@ function LikedByUser({ user, following }) {
   };
 
   return (
-    <div className="flex m-2 items-center">
-      <img
-        alt="User"
-        src={user.profileImage}
-        className="h-10 w-10 border rounded-full"
-      />
-      <div className="flex flex-col flex-grow ml-3">
-        <span className="font-semibold">{user.name}</span>
-        <span className="text-gray-500">{user.fullName}</span>
-      </div>
+    <div className="flex m-2 items-center justify-between">
+      <Link
+        to={`/view-user/${user.id}`}
+        className="flex"
+        onClick={(e) => exit(e)}
+      >
+        <img
+          alt="User"
+          src={user.profileImage}
+          className="h-10 w-10 border rounded-full"
+        />
+        <div className="flex flex-col flex-grow ml-3">
+          <span className="font-semibold">{user.name}</span>
+          <span className="text-gray-500">{user.fullName}</span>
+        </div>
+      </Link>
+
       {isFollowing && isFollowing !== "current_user" && (
         <button
           onClick={(e) => handleUnfollowUser(e)}
