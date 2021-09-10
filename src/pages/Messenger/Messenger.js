@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import useIsFirstRender from "../../hooks/useIsFirstRender/useIsFirstRender";
 import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
 
 import getContacts from "./getContacts/getContacts";
@@ -9,7 +8,6 @@ import Desktop from "./Desktop/Desktop";
 import Mobile from "./Mobile/Mobile";
 
 function Messenger({ setCurrentPage }) {
-  const isFirstRender = useIsFirstRender();
   const { width } = useWindowSize();
   const [contacts, setContacts] = useState([]);
   const [activeContact, setActiveContact] = useState(null);
@@ -29,7 +27,7 @@ function Messenger({ setCurrentPage }) {
   };
 
   useEffect(() => {
-    if (!isFirstRender) {
+    if (activeContact) {
       //TODO: Replace getMessages with firebase call. Remember to update tests to mock firebase instead of getMessages
       setMessages(getMessages(activeContact));
     }
