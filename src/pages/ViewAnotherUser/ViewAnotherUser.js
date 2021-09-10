@@ -27,7 +27,7 @@ function ViewAnotherUser() {
     } else {
       setFollows(false);
     }
-  }, [following]);
+  }, [following, id]);
 
   const handleFollowUser = async () => {
     await followUser(uid, id);
