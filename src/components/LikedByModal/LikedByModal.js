@@ -34,7 +34,11 @@ export default function LikedByModal({ width, likedByInfo, exit }) {
               </div>
               {likedByInfo &&
                 likedByInfo.map((user) => (
-                  <LikedByUser user={user} following={following} />
+                  <LikedByUser
+                    user={user}
+                    following={following}
+                    key={user.id}
+                  />
                 ))}
             </div>
           </div>
@@ -70,7 +74,7 @@ function LikedByUser({ user, following }) {
   };
 
   return (
-    <div className="flex m-2 items-center" key={user.id}>
+    <div className="flex m-2 items-center">
       <img
         alt="User"
         src={user.profileImage}
