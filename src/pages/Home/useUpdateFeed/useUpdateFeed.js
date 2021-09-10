@@ -53,7 +53,7 @@ const useUpdateFeed = (uid) => {
         setFeed(posts);
       }
     })();
-  }, []);
+  }, [uid]);
 
   return feed;
 };
