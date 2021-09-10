@@ -27,7 +27,10 @@ export default function LikedByModal({ width, likedByInfo, exit }) {
           <div className={width > 768 ? "" : "flex flex-col text-sm"}>
             <div className="flex flex-col text-sm">
               <div className="border-b border-gray-300 flex items-center justify-center py-2 relative">
-                <div className=" absolute left-0 w-7" onClick={(e) => exit(e)}>
+                <div
+                  className=" absolute left-0 w-7 cursor-pointer"
+                  onClick={(e) => exit(e)}
+                >
                   <ChevronLeft />
                 </div>
                 <span className="font-semibold m-1">Likes</span>
