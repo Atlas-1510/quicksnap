@@ -39,7 +39,7 @@ function Main({ uid }) {
         }
       })();
     }
-  }, [packedUser]);
+  }, [uid, packedUser]);
 
   return (
     <>
