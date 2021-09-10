@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../Main";
 import useComponentVisible from "../../../hooks/useComponentVisible/useComponentVisible";
-import useIsFirstRender from "../../../hooks/useIsFirstRender/useIsFirstRender";
 
 import { auth } from "../../../firebase/firebase";
 import firebase from "firebase/app";
@@ -38,18 +37,15 @@ function EditProfile({ exit }) {
 export default EditProfile;
 
 function ChangeNameOrImage({ exit, setSection }) {
-  const isFirstRender = useIsFirstRender();
   const [showChangeEmailOrPassword, setShowChangeEmailOrPassword] =
     useState(true);
 
   useEffect(() => {
-    if (isFirstRender) {
-      const user = auth.currentUser;
-      if (user.providerData[0].providerId !== "password") {
-        setShowChangeEmailOrPassword(false);
-      }
+    const user = auth.currentUser;
+    if (user.providerData[0].providerId !== "password") {
+      setShowChangeEmailOrPassword(false);
     }
-  }, [showChangeEmailOrPassword]);
+  }, []);
 
   const { profileImage, name, fullName, uid } = useContext(UserContext);
   const [newProfileImage, setNewProfileImage] = useState({
