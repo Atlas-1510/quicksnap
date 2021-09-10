@@ -55,7 +55,7 @@ function LikedByUser({ user, following }) {
     } else {
       setIsFollowing(false);
     }
-  }, []);
+  }, [following, uid, user.id]);
 
   const handleFollowUser = async (e) => {
     e.preventDefault();
