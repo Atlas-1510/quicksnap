@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { UserContext } from "../Main";
 import useGetUserPosts from "../../hooks/useGetUserPosts/useGetUserPosts";
 import getLikedPosts from "./getLikedPosts/getLikedPosts";
