@@ -16,7 +16,7 @@ function useGetPostHeartStatus(uid, pid) {
         }
       });
     return () => unsub();
-  }, []);
+  }, [pid, uid]);
 
   return liked;
 }
