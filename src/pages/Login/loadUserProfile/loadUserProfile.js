@@ -20,6 +20,7 @@ async function loadUserProfile(user) {
         postCount: 0,
         profileImage: generateProfileImage(user.displayName),
         searches: [],
+        chats: [],
       });
     }
   } catch (error) {
