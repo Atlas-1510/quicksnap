@@ -7,7 +7,7 @@ export default function ChatBox({ messages }) {
     <div className="flex flex-col h-full ">
       <div className="flex flex-col h-full  justify-end">
         {messages.map((message) => {
-          if (message.authorID === user.id) {
+          if (message.author === user.uid) {
             return (
               <div key={message.id} className="flex justify-end mx-1 text-sm">
                 <span
