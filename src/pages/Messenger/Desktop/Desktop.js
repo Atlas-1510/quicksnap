@@ -81,7 +81,9 @@ function Desktop({
             <span className="text-sm text-gray-500">
               Send private messages to a friend
             </span>
-            <Button>Send Message</Button>
+            <div onClick={() => setNewMessage(true)}>
+              <Button>Send Message</Button>
+            </div>
           </div>
         )}
         {messages && <ChatBox messages={messages} />}
