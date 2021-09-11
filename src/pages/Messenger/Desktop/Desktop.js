@@ -55,14 +55,16 @@ function Desktop({
               data-userid={contact.id}
             >
               <img
-                src={contact.image}
+                src={contact.profileImage}
                 alt="contact"
                 className="border rounded-full h-12 pointer-events-none"
                 data-testid={`user-image-${contact.id}`}
               />
               <div className="ml-3 flex flex-col pointer-events-none">
                 <span className="font-semibold text-sm">{contact.name}</span>
-                <span className="text-gray-500 text-xs">last message XYZ</span>
+                <span className="text-gray-500 text-xs">
+                  {contact.fullName}
+                </span>
               </div>
             </div>
           ))}
