@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import ModalBackground from "../../components/ModalBackground";
 import EditProfile from "./EditProfile/EditProfile";
 import handleLogOut from "../../utils/handleLogOut/handleLogOut";
+import Footer from "../../components/Footer";
 
 function User() {
   const {
@@ -142,8 +143,7 @@ function User() {
         {activePost && (
           <ImageModal post={activePost} setActivePost={setActivePost} />
         )}
-        {/* TODO: Implement Footer */}
-        <footer>FOOTER</footer>
+        <Footer />
       </div>
       {editProfileModal && (
         <ModalBackground exit={() => setEditProfileModal(false)}>

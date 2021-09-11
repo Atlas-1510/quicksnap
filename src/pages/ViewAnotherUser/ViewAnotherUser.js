@@ -9,6 +9,7 @@ import { UserContext } from "../Main";
 import followUser from "../../utils/followUser/followUser";
 import unfollowUser from "../../utils/unfollowUser/unfollowUser";
 import { Redirect } from "react-router";
+import Footer from "../../components/Footer";
 
 function ViewAnotherUser() {
   const { id } = useParams();
@@ -125,8 +126,8 @@ function ViewAnotherUser() {
           {activePost && (
             <ImageModal post={activePost} setActivePost={setActivePost} />
           )}
-          {/* TODO: Implement Footer */}
-          <footer>FOOTER</footer>
+
+          <Footer />
         </div>
       )}
     </>
