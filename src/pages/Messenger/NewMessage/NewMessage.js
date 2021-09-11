@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useContext } from "react";
 import ChevronLeft from "../../../images/SVG/ChevronLeft";
-
-import getContacts from "../getContacts/getContacts";
-
-import Matt from "../../../images/test-images/RightSideBox/mattohalleron12.png";
-
 import useComponentVisible from "../../../hooks/useComponentVisible/useComponentVisible";
+import algoliasearch from "algoliasearch/lite";
+import { UserContext } from "../../Main";
+
+const searchClient = algoliasearch(
+  "JB4UGTXL86",
+  "376e4fa2201e0406edaba9dd56057475"
+);
+const index = searchClient.initIndex("quicksnap_users");
 
 export default function NewMessage({
   exit,
@@ -17,24 +19,13 @@ export default function NewMessage({
   const { ref, isComponentVisible } = useComponentVisible(true, exit);
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState(null);
+  const { uid } = useContext(UserContext);
 
-  useEffect(() => {
-    if (searchInput !== "") {
-      setSearchResults(getSearchResults());
-    } else {
-      setSearchResults(null);
-    }
-  }, [searchInput]);
-
-  // TODO: Implement firebase call to get similar contact names from input search query
-  const getSearchResults = () => {
-    const knownContacts = getContacts();
-    const newContact = {
-      id: "random ID 4",
-      name: "A New User We Dont Already Know",
-      image: Matt,
-    };
-    return [...knownContacts, newContact];
+  const updateSearch = async (e) => {
+    setSearchInput(e.target.value);
+    const { hits } = await index.search(searchInput);
+    const filteredHits = hits.filter((hit) => hit.id !== uid);
+    setSearchResults(filteredHits);
   };
 
   const handleContactSelection = (e) => {
@@ -72,7 +63,7 @@ export default function NewMessage({
                   type="text"
                   placeholder="Search..."
                   value={searchInput}
-                  onChange={(e) => setSearchInput(e.target.value)}
+                  onChange={(e) => updateSearch(e)}
                 />
               </form>
             </div>
@@ -85,7 +76,7 @@ export default function NewMessage({
                   onClick={(e) => handleContactSelection(e)}
                 >
                   <img
-                    src={contact.image}
+                    src={contact.profileImage}
                     alt="contact"
                     className="border rounded-full h-12 pointer-events-none"
                     data-testid={`user-image-${contact.id}`}
