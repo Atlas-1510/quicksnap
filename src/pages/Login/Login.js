@@ -84,7 +84,6 @@ function Login({ setUID }) {
             profileImage: generateProfileImage(fullName),
             customProfileImage: false,
             searches: [],
-            chats: [],
           })
           .then(() => {
             return cred.user.uid;
