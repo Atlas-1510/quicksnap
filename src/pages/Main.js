@@ -51,7 +51,9 @@ function Main({ uid }) {
               <div className="md:w-2/3 md:max-w-4xl h-full w-full flex flex-col">
                 <div className="flex-grow">
                   <Switch>
-                    <Route exact path="/" component={Home}></Route>
+                    <Route exact path="/">
+                      <Home setCurrentPage={setCurrentPage} />
+                    </Route>
                     <Route exact path="/messenger">
                       <Messenger setCurrentPage={setCurrentPage} />
                     </Route>
@@ -59,7 +61,10 @@ function Main({ uid }) {
                     <Route path="/view-user/:id" component={ViewAnotherUser} />
                   </Switch>
                 </div>
-                <BottomMobileNav />
+                <BottomMobileNav
+                  currentPage={currentPage}
+                  setCurrentPage={setCurrentPage}
+                />
               </div>
             </div>
           </div>

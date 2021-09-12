@@ -1,6 +1,6 @@
 import React from "react";
 
-export default Search;
+export default MagnifyingGlass;
 
 function Filled() {
   return (
@@ -41,6 +41,6 @@ function Outline() {
   );
 }
 
-function Search({ active }) {
+function MagnifyingGlass({ active }) {
   return <>{active ? <Filled /> : <Outline />}</>;
 }

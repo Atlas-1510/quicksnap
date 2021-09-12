@@ -82,7 +82,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
   }
 
   return (
-    <div ref={ref} className="w-1/2 h-1/2">
+    <div ref={ref} className="w-11/12 h-3/4 md:w-1/2 md:h-1/2">
       {isComponentVisible && (
         <div
           className="bg-white border rounded-md border-gray-300 w-full h-full"
@@ -109,8 +109,8 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
                   <div className="mx-2 w-20">
                     <Media />
                   </div>
-                  <span className="mt-3 mb-2">
-                    Drag photos and videos here.
+                  <span className="mt-3 mb-2 invisible md:visible">
+                    Drag a photo here.
                   </span>
                   <div
                     id="file-upload-button"

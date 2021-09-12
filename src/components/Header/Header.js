@@ -5,7 +5,6 @@ import Add from "../../images/SVG/Add/Add";
 import Home from "../../images/SVG/Home/Home";
 import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
 import Profile from "../../images/SVG/Profile/Profile";
-import Camera from "../../images/SVG/Camera";
 import ImageUploader from "../ImageUploader/ImageUploader";
 import Search from "./Search/Search";
 
@@ -14,17 +13,6 @@ function Header({ currentPage, setCurrentPage }) {
 
   return (
     <>
-      {/* Mobile Header */}
-      <nav className="flex md:hidden justify-between items-center w-full bg-white border-b border-gray-300 py-1">
-        <div className="w-7 m-2">
-          <Camera />
-        </div>
-        <h1 className="font-curly text-4xl">QuickSnap</h1>
-        <div className="w-7 m-2">
-          <PaperAirplane />
-        </div>
-      </nav>
-      {/* Desktop Header */}
       <nav className="hidden md:flex justify-center w-full bg-white border-b border-gray-300 py-1">
         <div className="relative flex items-center justify-between w-2/3 md:max-w-4xl">
           <Link to="/" onClick={() => setCurrentPage("home")}>

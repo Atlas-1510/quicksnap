@@ -1,18 +1,20 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Card from "../../components/Card";
 import RightSideBox from "../../components/RightSideBox";
-
 import davidBarrell from "../../images/test-images/RightSideBox/david.barrell.png";
 import deshith from "../../images/test-images/RightSideBox/deshith.png";
 import lisa from "../../images/test-images/RightSideBox/lisamwill.png";
-
 import { UserContext } from "../Main";
-
 import useUpdateFeed from "./useUpdateFeed/useUpdateFeed";
+import Camera from "../../images/SVG/Camera";
+import { Link } from "react-router-dom";
+import MagnifyingGlass from "../../images/SVG/MagnifyingGlass";
+import MobileSearch from "../../components/Header/Search/MobileSearch";
 
-function Home() {
+function Home({ setCurrentPage }) {
   const user = useContext(UserContext);
   const feed = useUpdateFeed(user.uid);
+  const [search, setSearch] = useState(false);
 
   const followSuggestions = [
     {
@@ -33,6 +35,20 @@ function Home() {
   ];
   return (
     <div className="flex flex-col">
+      {/* Mobile Header */}
+      <nav className="fixed top-0 flex md:hidden justify-between items-center w-full bg-white border-b border-gray-300 py-1">
+        <div className="w-7 m-2">
+          <Camera />
+        </div>
+        <h1 className="font-curly text-4xl">QuickSnap</h1>
+        <Link onClick={() => setSearch(true)}>
+          <div className="w-7 m-2">
+            <MagnifyingGlass />
+          </div>
+        </Link>
+      </nav>
+      {/* Mobile search modal */}
+      {search && <MobileSearch />}
       <RightSideBox user={user} followSuggestions={followSuggestions} />
       <div className="w-full lg:w-3/5 mt-2 md:mt-auto">
         {feed && feed.map((card) => <Card key={card.id} card={card} />)}

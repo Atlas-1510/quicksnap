@@ -6,7 +6,6 @@ import ChevronLeft from "../../../images/SVG/ChevronLeft";
 import ChatBox from "../ChatBox/ChatBox";
 import NewChat from "../NewChat/NewChat";
 import { UserContext } from "../../Main";
-import BottomMobileNav from "../../../components/BottomMobileNav";
 
 function Mobile({
   chats,
@@ -23,7 +22,7 @@ function Mobile({
   const user = useContext(UserContext);
   return (
     <div
-      className=" bg-white absolute top-0 w-full h-screen flex flex-col"
+      className=" bg-white relative top-0 w-full h-full flex flex-col"
       data-testid="test-messenger-mobile"
     >
       {!activeChat && !newChat && (
@@ -111,7 +110,6 @@ function Mobile({
           exit={() => setNewChat(false)}
         />
       )}
-      <BottomMobileNav />
     </div>
   );
 }
