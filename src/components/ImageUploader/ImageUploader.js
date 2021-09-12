@@ -60,6 +60,32 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
     }
   });
 
+  function dragOverHandler(ev) {
+    ev.preventDefault();
+  }
+
+  const dropHandler = (e) => {
+    e.preventDefault();
+
+    if (e.dataTransfer.items) {
+      for (let i = 0; i < e.dataTransfer.items.length; i++) {
+        if (e.dataTransfer.items[i].kind === "file") {
+          const file = e.dataTransfer.items[i].getAsFile();
+          setImage(file);
+        }
+      }
+    }
+    removeDragData(e);
+  };
+
+  function removeDragData(ev) {
+    if (ev.dataTransfer.items) {
+      ev.dataTransfer.items.clear();
+    } else {
+      ev.dataTransfer.clearData();
+    }
+  }
+
   return (
     <div ref={ref} className="w-1/2 h-1/2">
       {isComponentVisible && (
@@ -79,16 +105,25 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
             </div>
             {!image && (
               <div className="flex flex-col h-full justify-center items-center">
-                <div className="mx-2 w-20">
-                  <Media />
-                </div>
-                <span className="mt-3 mb-2">Drag photos and videos here.</span>
                 <div
-                  id="file-upload-button"
-                  onClick={() => handleButtonClick()}
-                  data-testid="test-file-upload-button"
+                  className="flex flex-col justify-center items-center"
+                  id="drop-zone"
+                  onDrop={(e) => dropHandler(e)}
+                  onDragOver={(e) => dragOverHandler(e)}
                 >
-                  <Button>Select From Computer</Button>
+                  <div className="mx-2 w-20">
+                    <Media />
+                  </div>
+                  <span className="mt-3 mb-2">
+                    Drag photos and videos here.
+                  </span>
+                  <div
+                    id="file-upload-button"
+                    onClick={() => handleButtonClick()}
+                    data-testid="test-file-upload-button"
+                  >
+                    <Button>Select From Computer</Button>
+                  </div>
                 </div>
               </div>
             )}
