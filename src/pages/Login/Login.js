@@ -12,11 +12,13 @@ import firebase from "firebase/app";
 
 import generateProfileImage from "../../utils/generateProfileImage/generateProfileImage";
 import loadUserProfile from "./loadUserProfile/loadUserProfile";
+import handleErrorCode from "./handleErrorCode";
 
 // TODO: set up login with either email address or username
 
 function Login({ setUID }) {
   const [modal, setModal] = useState("login");
+  const [prompt, setPrompt] = useState(null);
 
   useEffect(() => {
     const unlisten = auth.onAuthStateChanged(async (user) => {
@@ -55,7 +57,9 @@ function Login({ setUID }) {
       default:
     }
     if (provider) {
-      await auth.signInWithPopup(provider);
+      auth.signInWithPopup(provider).catch((err) => {
+        setPrompt(err.message);
+      });
     }
   };
 
@@ -63,7 +67,11 @@ function Login({ setUID }) {
     e.preventDefault();
     const email = e.target[0].value;
     const pw = e.target[1].value;
-    auth.signInWithEmailAndPassword(email, pw);
+
+    auth.signInWithEmailAndPassword(email, pw).catch((err) => {
+      const message = handleErrorCode(err.code);
+      setPrompt(message);
+    });
   };
 
   const handleSignUp = async (e) => {
@@ -134,6 +142,11 @@ function Login({ setUID }) {
                   type="submit"
                   className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400 cursor-pointer"
                 />
+                {prompt && (
+                  <span className="text-xs text-center m-2 text-red-500">
+                    {prompt}
+                  </span>
+                )}
                 <div className="flex m-1 w-full items-center">
                   <div className="w-full h-px bg-gray-400"></div>
                   <span className="whitespace-nowrap mx-4 text-gray-400 font-semibold">
