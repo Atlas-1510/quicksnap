@@ -28,30 +28,35 @@ function Login({ setUID }) {
     return () => unlisten();
   }, [setUID]);
 
-  const handleGoogleSignIn = async () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    await auth.signInWithPopup(provider);
-  };
-
-  // TODO: Verify that facebook log in works in a production environment
-  // In dev environment it throws error regarding unsecure connection
-  const handleFacebookSignIn = () => {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    auth.signInWithPopup(provider);
-  };
-
-  // TODO: Add github sign in
-  const handleGitHubSignIn = () => {
-    alert(
-      "This sign in method has not been implemented. Try to log in with Google!"
-    );
-  };
-
-  // TODO: Add apple sign in
-  const handleAppleSignIn = () => {
-    alert(
-      "This sign in method has not been implemented. Try to log in with Google!"
-    );
+  const handleSignIn = async (providerID) => {
+    let provider;
+    switch (providerID) {
+      case "google":
+        provider = new firebase.auth.GoogleAuthProvider();
+        break;
+      case "facebook":
+        // provider = new firebase.auth.FacebookAuthProvider();
+        alert(
+          "This sign in method has not been implemented. Try to log in with Google!"
+        );
+        break;
+      case "apple":
+        // provider = new firebase.auth.OAuthProvider("apple.com");
+        alert(
+          "This sign in method has not been implemented. Try to log in with Google!"
+        );
+        break;
+      case "github":
+        // provider = new firebase.auth.GithubAuthProvider();
+        alert(
+          "This sign in method has not been implemented. Try to log in with Google!"
+        );
+        break;
+      default:
+    }
+    if (provider) {
+      await auth.signInWithPopup(provider);
+    }
   };
 
   const handleEmailSignIn = (e) => {
@@ -140,13 +145,13 @@ function Login({ setUID }) {
                 <div className="mx-1 w-full flex">
                   <div
                     className="auth-button bg-white border-gray-200"
-                    onClick={handleGoogleSignIn}
+                    onClick={() => handleSignIn("google")}
                   >
                     <img className="m-1 h-7" src={google} alt="Google logo" />
                   </div>
                   <div
                     className="auth-button bg-blue-600 border-blue-600 hover:bg-blue-500"
-                    onClick={handleFacebookSignIn}
+                    onClick={() => handleSignIn("facebook")}
                   >
                     <img
                       className="m-1 h-7"
@@ -156,13 +161,13 @@ function Login({ setUID }) {
                   </div>
                   <div
                     className="auth-button bg-black border-black hover:bg-gray-800"
-                    onClick={handleAppleSignIn}
+                    onClick={() => handleSignIn("apple")}
                   >
                     <img className="m-1 h-7" src={apple} alt="Apple logo" />
                   </div>
                   <div
                     className="auth-button bg-white border-gray-200"
-                    onClick={handleGitHubSignIn}
+                    onClick={() => handleSignIn("github")}
                   >
                     <img className="m-1 h-7" src={github} alt="GitHub logo" />
                   </div>
