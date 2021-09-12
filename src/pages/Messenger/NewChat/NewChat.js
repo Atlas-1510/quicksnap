@@ -38,7 +38,7 @@ export default function NewChat({ exit, chats, setChats, setActiveChat }) {
       }
     });
     if (existingChat) {
-      setActiveChat(existingChat.chatID);
+      setActiveChat(existingChat);
       exit();
       return;
     }
@@ -50,7 +50,7 @@ export default function NewChat({ exit, chats, setChats, setActiveChat }) {
     };
 
     setChats([launchpad, ...chats]);
-    setActiveChat(launchpad.chatID);
+    setActiveChat(launchpad);
     exit();
     return;
   };

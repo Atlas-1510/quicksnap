@@ -17,6 +17,7 @@ function Messenger({ setCurrentPage }) {
   const [messages, setMessages] = useState(null);
   const [newChat, setNewChat] = useState(false);
 
+  // Manage chats
   useEffect(() => {
     const unsub = firestore
       .collection("chats")
@@ -63,38 +64,35 @@ function Messenger({ setCurrentPage }) {
     return () => unsub();
   }, [uid]);
 
+  // Manage messages
   useEffect(() => {
-    if (activeChat && activeChat !== "launchpad") {
-      console.log(`useGetChats chatID: ${activeChat}`);
-      const unsub = firestore
-        .collection("chats")
-        .doc(activeChat)
-        .collection("messages")
-        .orderBy("timestamp", "asc")
-        .limit(10)
-        .onSnapshot((snap) => {
-          const msgDocs = [];
-          snap.forEach((msg) => {
-            msgDocs.push({ ...msg.data(), id: msg.id });
+    if (activeChat) {
+      if (activeChat.chatID !== "launchpad") {
+        console.log(`useGetChats chatID: ${activeChat.chatID}`);
+        const unsub = firestore
+          .collection("chats")
+          .doc(activeChat.chatID)
+          .collection("messages")
+          .orderBy("timestamp", "asc")
+          .limit(10)
+          .onSnapshot((snap) => {
+            const msgDocs = [];
+            snap.forEach((msg) => {
+              msgDocs.push({ ...msg.data(), id: msg.id });
+            });
+            setMessages(msgDocs);
           });
-          setMessages(msgDocs);
-        });
-      return () => unsub();
-    } else if (activeChat === "launchpad") {
-      setMessages([]);
+        return () => unsub();
+      } else if (activeChat.chatID === "launchpad") {
+        setMessages([]);
+      }
     }
   }, [activeChat]);
 
   const postMessage = async (content) => {
-    if (activeChat === "launchpad") {
-      let launchPadInfo;
-      chats.forEach((chat) => {
-        if (chat.chatID === "launchpad") {
-          launchPadInfo = chat;
-        }
-      });
+    if (activeChat.chatID === "launchpad") {
       const newChatDoc = await firestore.collection("chats").add({
-        members: [uid, launchPadInfo.contact.id],
+        members: [uid, activeChat.contact.id],
         timestamp: timestamp(),
       });
       await firestore
@@ -106,11 +104,15 @@ function Messenger({ setCurrentPage }) {
           content: content,
           author: uid,
         });
-      setActiveChat(newChatDoc.id);
+      setActiveChat({
+        chatID: newChatDoc.id,
+        contact: activeChat.contact,
+        timestamp: Date.now(),
+      });
     } else {
       await firestore
         .collection("chats")
-        .doc(activeChat)
+        .doc(activeChat.chatID)
         .collection("messages")
         .add({
           timestamp: timestamp(),
@@ -118,6 +120,18 @@ function Messenger({ setCurrentPage }) {
           author: uid,
         });
     }
+  };
+
+  const getChatFromID = (chatID) => {
+    const matchedChat = chats.find((chat) => {
+      const chatContact = chat.chatID;
+      if (chatContact === chatID) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    setActiveChat(matchedChat);
   };
 
   // Mobile messenger - max width of 768 based on tailwind screen sizes
@@ -133,6 +147,7 @@ function Messenger({ setCurrentPage }) {
         setNewChat={setNewChat}
         setCurrentPage={setCurrentPage}
         postMessage={postMessage}
+        getChatFromID={getChatFromID}
       />
     );
   } else if (width >= 768) {
@@ -147,6 +162,7 @@ function Messenger({ setCurrentPage }) {
         setNewChat={setNewChat}
         setCurrentPage={setCurrentPage}
         postMessage={postMessage}
+        getChatFromID={getChatFromID}
       />
     );
   } else {

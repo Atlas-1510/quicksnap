@@ -19,8 +19,9 @@ function Mobile({
   messages,
   newChat,
   setNewChat,
-  setCurrentPage,
   postMessage,
+  getChatFromID,
+  setCurrentPage,
 }) {
   const user = useContext(UserContext);
   return (
@@ -56,7 +57,7 @@ function Mobile({
                 <div
                   key={chat.contact.id}
                   className="flex items-center m-2"
-                  onClick={() => setActiveChat(chat.chatID)}
+                  onClick={() => getChatFromID(chat.chatID)}
                 >
                   <img
                     src={chat.contact.profileImage}
@@ -92,7 +93,7 @@ function Mobile({
               data-testid="activeUserHeading"
             >
               <span className="font-semibold text-sm">
-                {/* {activeChat.name} */}
+                {activeChat.contact.name}
               </span>
               <div className="w-6">
                 <ChevronDown />
@@ -107,6 +108,7 @@ function Mobile({
       {newChat && !activeChat && (
         <NewChat
           chats={chats}
+          setChats={setChats}
           setNewChat={setNewChat}
           setActiveChat={setActiveChat}
           exit={() => setNewChat(false)}

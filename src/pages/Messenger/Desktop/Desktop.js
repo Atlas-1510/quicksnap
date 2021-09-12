@@ -16,9 +16,10 @@ function Desktop({
   setChats,
   setActiveChat,
   messages,
-  newMessage,
+  newChat,
   setNewChat,
   postMessage,
+  getChatFromID,
 }) {
   const user = useContext(UserContext);
   return (
@@ -49,7 +50,7 @@ function Desktop({
               <div
                 key={chat.chatID}
                 className="flex items-center m-2 cursor-pointer"
-                onClick={() => setActiveChat(chat.chatID)}
+                onClick={() => getChatFromID(chat.chatID)}
               >
                 <img
                   src={chat.contact.profileImage}
@@ -89,7 +90,7 @@ function Desktop({
           </div>
         )}
         {messages && <ChatBox messages={messages} postMessage={postMessage} />}
-        {newMessage && (
+        {newChat && (
           <ModalBackground closeFunction={() => setNewChat(false)}>
             <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-white border rounded-md border-gray-300">
               <NewChat
