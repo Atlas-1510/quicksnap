@@ -41,7 +41,7 @@ function Home({ setCurrentPage }) {
           <Camera />
         </div>
         <h1 className="font-curly text-4xl">QuickSnap</h1>
-        <Link onClick={() => setSearch(true)}>
+        <Link to="/search" onClick={() => setSearch(true)}>
           <div className="w-7 m-2">
             <MagnifyingGlass />
           </div>

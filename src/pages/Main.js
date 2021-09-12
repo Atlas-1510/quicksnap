@@ -8,6 +8,7 @@ import { useDocument } from "react-firebase-hooks/firestore";
 import { firestore, storage } from "../firebase/firebase";
 import ViewAnotherUser from "./ViewAnotherUser/ViewAnotherUser";
 import BottomMobileNav from "../components/BottomMobileNav";
+import MobileSearch from "../components/Header/Search/MobileSearch";
 
 export const UserContext = createContext(null);
 
@@ -59,6 +60,9 @@ function Main({ uid }) {
                     </Route>
                     <Route exact path="/user" component={User} />
                     <Route path="/view-user/:id" component={ViewAnotherUser} />
+                    <Route path="/search">
+                      <MobileSearch setCurrentPage={setCurrentPage} />
+                    </Route>
                   </Switch>
                 </div>
                 <BottomMobileNav

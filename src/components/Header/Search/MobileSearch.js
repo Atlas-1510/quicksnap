@@ -2,11 +2,11 @@ import React, { useState, useEffect, useContext } from "react";
 import Exit from "../../../images/SVG/Exit";
 import { UserContext } from "../../../pages/Main";
 import getUserInfo from "../../../utils/getUserInfo/getUserInfo";
-import useComponentVisible from "../../../hooks/useComponentVisible/useComponentVisible";
 import { Link } from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
 import { firestore, FieldValue } from "../../../firebase/firebase";
 import AlgoliaLogo from "../../../images/SVG/AlgoliaLogo";
+import ChevronLeft from "../../../images/SVG/ChevronLeft";
 
 const searchClient = algoliasearch(
   "JB4UGTXL86",
@@ -14,15 +14,13 @@ const searchClient = algoliasearch(
 );
 const index = searchClient.initIndex("quicksnap_users");
 
-function Search() {
+function MobileSearch({ setCurrentPage }) {
   const [searchModal, setSearchModal] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const { uid } = useContext(UserContext);
   const [recentlyViewedUsers, setRecentlyViewedUsers] = useState([]);
   const [previousSearches, setPreviousSearches] = useState([]);
   const [searchResults, setSearchResults] = useState(null);
-  const { ref, isComponentVisible, setIsComponentVisible } =
-    useComponentVisible(false);
 
   useEffect(() => {
     const unsub = firestore
@@ -48,7 +46,6 @@ function Search() {
   };
 
   const storeSearch = async (id) => {
-    setIsComponentVisible(false);
     const userRef = firestore.collection("users").doc(uid);
     await userRef.update({
       searches: FieldValue.arrayUnion(id),
@@ -82,79 +79,74 @@ function Search() {
   }, [previousSearches]);
 
   useEffect(() => {
-    if (isComponentVisible && searchInput === "") {
+    if (searchInput === "") {
       setSearchModal("recent");
-    } else if (isComponentVisible && searchInput !== "") {
+    } else if (searchInput !== "") {
       setSearchModal("search");
     }
-  }, [searchInput, isComponentVisible]);
+  }, [searchInput]);
 
   useEffect(() => {
-    if (isComponentVisible) {
-      if (searchInput === "") {
-        setSearchModal("recent");
-      } else {
-        setSearchModal("search");
-      }
+    if (searchInput === "") {
+      setSearchModal("recent");
     } else {
-      setSearchModal(null);
+      setSearchModal("search");
     }
-  }, [isComponentVisible, searchInput]);
+  }, [searchInput]);
 
   return (
-    <div className="absolute  md:left-1/2 md:transform md:-translate-x-1/2 z-50">
+    <div className="absolute top-0 left-0 w-full h-full bg-gray-50 z-50 flex flex-col">
       <form onSubmit={(e) => e.preventDefault()}>
-        <input
-          className=" w-4/5 mx-3.5 border border-gray-300 rounded-sm p-1 bg-gray-50 text-center"
-          type="text"
-          placeholder="Search"
-          onClick={() => setIsComponentVisible(true)}
-          onChange={(e) => updateSearch(e)}
-        />
+        <div className="border-b border-gray-300 flex items-center justify-center py-2 relative">
+          <Link
+            to="/"
+            onClick={() => setCurrentPage("home")}
+            className="ml-2 w-7"
+          >
+            <ChevronLeft />
+          </Link>
+          <input
+            className=" w-full border border-gray-300 rounded-sm p-1 mx-2 bg-gray-50 text-center"
+            type="text"
+            placeholder="Search Users"
+            onChange={(e) => updateSearch(e)}
+          />
+        </div>
       </form>
-      <div
-        className="absolute top-14 left-1/2 transform -translate-x-1/2"
-        ref={ref}
-      >
-        {isComponentVisible && (
-          <div className="flex flex-col items-center">
-            {searchModal === "recent" && (
-              <>
-                <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
-                <RecentSearchModal
-                  recentlyViewedUsers={recentlyViewedUsers}
-                  setIsComponentVisible={setIsComponentVisible}
-                  deleteSearchHistory={deleteSearchHistory}
-                  deleteSingleSearch={deleteSingleSearch}
-                />
-              </>
-            )}
-            {searchModal === "search" && searchResults && (
-              <>
-                <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
-                <SearchModal
-                  searchResults={searchResults}
-                  storeSearch={storeSearch}
-                />
-              </>
-            )}
-          </div>
-        )}
-      </div>
+
+      {searchModal === "recent" && (
+        <>
+          <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
+          <RecentSearchModal
+            recentlyViewedUsers={recentlyViewedUsers}
+            deleteSearchHistory={deleteSearchHistory}
+            deleteSingleSearch={deleteSingleSearch}
+          />
+        </>
+      )}
+      {searchModal === "search" && searchResults && (
+        <>
+          <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
+          <SearchModal
+            searchResults={searchResults}
+            storeSearch={storeSearch}
+          />
+        </>
+      )}
     </div>
   );
 }
 
-export default Search;
+export default MobileSearch;
 
 function RecentSearchModal({
   recentlyViewedUsers,
-  setIsComponentVisible,
+
   deleteSearchHistory,
   deleteSingleSearch,
 }) {
   return (
-    <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 relative">
+    <div className="w-full h-full bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 relative">
       <div className="flex justify-between w-full">
         <span className="font-semibold text-lg">Recent</span>
         <span
@@ -172,10 +164,7 @@ function RecentSearchModal({
                 className="flex my-2 items-center w-full justify-between"
                 key={user.id}
               >
-                <Link
-                  to={`/view-user/${user.id}`}
-                  onClick={() => setIsComponentVisible(false)}
-                >
+                <Link to={`/view-user/${user.id}`}>
                   <div className="flex">
                     <img
                       alt="User"
@@ -210,7 +199,7 @@ function RecentSearchModal({
 
 function SearchModal({ searchResults, storeSearch }) {
   return (
-    <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 overflow-y-scroll">
+    <div className="w-full h-full bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 overflow-y-scroll">
       <div className="w-full overflow-y-scroll">
         {searchResults.map((user) => {
           return (
