@@ -13,6 +13,10 @@ function Messenger({ setCurrentPage }) {
   const { width } = useWindowSize();
   const { uid } = useContext(UserContext);
   const [chats, setChats] = useState(null);
+  const [activeChat, setActiveChat] = useState(null);
+  const [messages, setMessages] = useState(null);
+  const [newChat, setNewChat] = useState(false);
+
   useEffect(() => {
     const unsub = firestore
       .collection("chats")
@@ -58,8 +62,6 @@ function Messenger({ setCurrentPage }) {
       });
     return () => unsub();
   }, [uid]);
-  const [activeChat, setActiveChat] = useState(null);
-  const [messages, setMessages] = useState(null);
 
   useEffect(() => {
     if (activeChat && activeChat !== "launchpad") {
@@ -82,16 +84,6 @@ function Messenger({ setCurrentPage }) {
       setMessages([]);
     }
   }, [activeChat]);
-
-  const [newMessage, setNewMessage] = useState(false);
-
-  useEffect(() => {
-    console.log(chats);
-  }, [chats]);
-
-  useEffect(() => {
-    console.log(messages);
-  }, [messages]);
 
   const postMessage = async (content) => {
     if (activeChat === "launchpad") {
@@ -133,11 +125,12 @@ function Messenger({ setCurrentPage }) {
     return (
       <Mobile
         chats={chats}
+        setChats={setChats}
         activeChat={activeChat}
         setActiveChat={setActiveChat}
         messages={messages}
-        newMessage={newMessage}
-        setNewMessage={setNewMessage}
+        newChat={newChat}
+        setNewChat={setNewChat}
         setCurrentPage={setCurrentPage}
         postMessage={postMessage}
       />
@@ -150,8 +143,8 @@ function Messenger({ setCurrentPage }) {
         activeChat={activeChat}
         setActiveChat={setActiveChat}
         messages={messages}
-        newMessage={newMessage}
-        setNewMessage={setNewMessage}
+        newChat={newChat}
+        setNewChat={setNewChat}
         setCurrentPage={setCurrentPage}
         postMessage={postMessage}
       />

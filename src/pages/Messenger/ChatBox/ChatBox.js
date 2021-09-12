@@ -1,8 +1,15 @@
 import React, { useContext } from "react";
 import { UserContext } from "../../Main";
 
-export default function ChatBox({ messages }) {
+export default function ChatBox({ messages, postMessage }) {
   const user = useContext(UserContext);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    postMessage(e.target[0].value);
+    document.getElementById("comment-form").reset();
+  };
+
   return (
     <div className="flex flex-col h-full ">
       <div className="flex flex-col h-full  justify-end">
@@ -32,13 +39,21 @@ export default function ChatBox({ messages }) {
           }
         })}
       </div>
-      <div className="flex items-center justify-center">
+
+      <form
+        action="#"
+        onSubmit={(e) => handleSubmit(e)}
+        className="flex items-center justify-center"
+        id="comment-form"
+      >
         <input
           type="text"
           placeholder="Message..."
-          className="border border-gray-300 rounded-3xl m-4 p-2 w-full"
+          className="border border-gray-300 rounded-3xl m-4 py-2 px-3 w-full focus:outline-none focus:ring-1 focus:border-blue-300"
         />
-      </div>
+
+        <button className="hidden" type="submit"></button>
+      </form>
     </div>
   );
 }

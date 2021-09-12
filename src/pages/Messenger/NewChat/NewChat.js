@@ -43,7 +43,6 @@ export default function NewChat({ exit, chats, setChats, setActiveChat }) {
       return;
     }
 
-    // Chat doesn't exist, so make a launchpad
     const launchpad = {
       chatID: "launchpad",
       contact: await getUserInfo(contactID),
@@ -51,16 +50,16 @@ export default function NewChat({ exit, chats, setChats, setActiveChat }) {
     };
 
     setChats([launchpad, ...chats]);
-    setActiveChat("launchpad");
+    setActiveChat(launchpad.chatID);
     exit();
     return;
   };
 
   return (
-    <div ref={ref}>
+    <div ref={ref} className="flex flex-col flex-grow">
       {isComponentVisible && (
         <div
-          className="h-full flex flex-col"
+          className="flex flex-col flex-grow"
           onClick={(e) => e.stopPropagation()}
         >
           <div className="border-b border-gray-300 flex items-center justify-between py-2 relative">
@@ -71,7 +70,7 @@ export default function NewChat({ exit, chats, setChats, setActiveChat }) {
               New Message
             </span>
           </div>
-          <div className="flex flex-col overflow-y-scroll">
+          <div className="flex flex-col h-full flex-grow">
             <div className="flex px-2 py-3 border-b border-gray-300">
               <span className="font-semibold mr-2">To:</span>
               <form className="w-full">
@@ -85,27 +84,29 @@ export default function NewChat({ exit, chats, setChats, setActiveChat }) {
                 />
               </form>
             </div>
-            {searchResults &&
-              searchResults.map((contact) => (
-                <div
-                  key={contact.id}
-                  className="flex items-center m-2 cursor-pointer"
-                  data-userid={contact.id}
-                  onClick={(e) => handleContactSelection(e)}
-                >
-                  <img
-                    src={contact.profileImage}
-                    alt="contact"
-                    className="border rounded-full h-12 pointer-events-none"
-                    data-testid={`user-image-${contact.id}`}
-                  />
-                  <div className="ml-3 flex flex-col pointer-events-none">
-                    <span className="font-semibold text-sm">
-                      {contact.name}
-                    </span>
+            <div className="flex-grow">
+              {searchResults &&
+                searchResults.map((contact) => (
+                  <div
+                    key={contact.id}
+                    className="flex items-center m-2 cursor-pointer"
+                    data-userid={contact.id}
+                    onClick={(e) => handleContactSelection(e)}
+                  >
+                    <img
+                      src={contact.profileImage}
+                      alt="contact"
+                      className="border rounded-full h-12 pointer-events-none"
+                      data-testid={`user-image-${contact.id}`}
+                    />
+                    <div className="ml-3 flex flex-col pointer-events-none">
+                      <span className="font-semibold text-sm">
+                        {contact.name}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+            </div>
           </div>
         </div>
       )}

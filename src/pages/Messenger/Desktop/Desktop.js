@@ -17,7 +17,7 @@ function Desktop({
   setActiveChat,
   messages,
   newMessage,
-  setNewMessage,
+  setNewChat,
   postMessage,
 }) {
   const user = useContext(UserContext);
@@ -37,7 +37,7 @@ function Desktop({
           </div>
           <div
             className=" mx-2 w-7 absolute right-0 cursor-pointer"
-            onClick={() => setNewMessage(true)}
+            onClick={() => setNewChat(true)}
             data-testid="test-write-button"
           >
             <Write />
@@ -83,17 +83,17 @@ function Desktop({
             <span className="text-sm text-gray-500">
               Send private messages to a friend
             </span>
-            <div onClick={() => setNewMessage(true)}>
+            <div onClick={() => setNewChat(true)}>
               <Button>Send Message</Button>
             </div>
           </div>
         )}
         {messages && <ChatBox messages={messages} postMessage={postMessage} />}
         {newMessage && (
-          <ModalBackground closeFunction={() => setNewMessage(false)}>
+          <ModalBackground closeFunction={() => setNewChat(false)}>
             <div className="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2 w-1/2 h-1/2 bg-white border rounded-md border-gray-300">
               <NewChat
-                exit={() => setNewMessage(false)}
+                exit={() => setNewChat(false)}
                 setActiveChat={setActiveChat}
                 chats={chats}
                 setChats={setChats}
