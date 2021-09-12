@@ -3,10 +3,11 @@ import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
 
 import Desktop from "./Desktop/Desktop";
 import Mobile from "./Mobile/Mobile";
-// import useGetChats from "../../hooks/useGetChats/useGetChats";
-// import useGetMessages from "../../hooks/useGetMessages/useGetMessages";
 import { UserContext } from "../Main";
-import { firestore } from "../../firebase/firebase";
+import { firestore, timestamp } from "../../firebase/firebase";
+
+// Launchpad state for active chat represents when a user has selected a new recipient
+// to commence a chat with, but has not yet sent a message, so the chat document does not yet exist on firestore.
 
 function Messenger({ setCurrentPage }) {
   const { width } = useWindowSize();
@@ -67,7 +68,7 @@ function Messenger({ setCurrentPage }) {
         .collection("chats")
         .doc(activeChat)
         .collection("messages")
-        .orderBy("timestamp", "desc")
+        .orderBy("timestamp", "asc")
         .limit(10)
         .onSnapshot((snap) => {
           const msgDocs = [];
@@ -92,6 +93,41 @@ function Messenger({ setCurrentPage }) {
     console.log(messages);
   }, [messages]);
 
+  const postMessage = async (content) => {
+    if (activeChat === "launchpad") {
+      let launchPadInfo;
+      chats.forEach((chat) => {
+        if (chat.chatID === "launchpad") {
+          launchPadInfo = chat;
+        }
+      });
+      const newChatDoc = await firestore.collection("chats").add({
+        members: [uid, launchPadInfo.contact.id],
+        timestamp: timestamp(),
+      });
+      await firestore
+        .collection("chats")
+        .doc(newChatDoc.id)
+        .collection("messages")
+        .add({
+          timestamp: timestamp(),
+          content: content,
+          author: uid,
+        });
+      setActiveChat(newChatDoc.id);
+    } else {
+      await firestore
+        .collection("chats")
+        .doc(activeChat)
+        .collection("messages")
+        .add({
+          timestamp: timestamp(),
+          content: content,
+          author: uid,
+        });
+    }
+  };
+
   // Mobile messenger - max width of 768 based on tailwind screen sizes
   if (width < 768) {
     return (
@@ -103,6 +139,7 @@ function Messenger({ setCurrentPage }) {
         newMessage={newMessage}
         setNewMessage={setNewMessage}
         setCurrentPage={setCurrentPage}
+        postMessage={postMessage}
       />
     );
   } else if (width >= 768) {
@@ -116,6 +153,7 @@ function Messenger({ setCurrentPage }) {
         newMessage={newMessage}
         setNewMessage={setNewMessage}
         setCurrentPage={setCurrentPage}
+        postMessage={postMessage}
       />
     );
   } else {
