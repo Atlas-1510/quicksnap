@@ -95,7 +95,7 @@ function MobileSearch({ setCurrentPage }) {
   }, [searchInput]);
 
   return (
-    <div className="absolute top-0 left-0 w-full h-full bg-gray-50 z-50 flex flex-col">
+    <div className="bg-gray-50 z-50 flex flex-col w-full flex-grow">
       <form onSubmit={(e) => e.preventDefault()}>
         <div className="border-b border-gray-300 flex items-center justify-center py-2 relative">
           <Link
@@ -115,23 +115,14 @@ function MobileSearch({ setCurrentPage }) {
       </form>
 
       {searchModal === "recent" && (
-        <>
-          <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
-          <RecentSearchModal
-            recentlyViewedUsers={recentlyViewedUsers}
-            deleteSearchHistory={deleteSearchHistory}
-            deleteSingleSearch={deleteSingleSearch}
-          />
-        </>
+        <RecentSearchModal
+          recentlyViewedUsers={recentlyViewedUsers}
+          deleteSearchHistory={deleteSearchHistory}
+          deleteSingleSearch={deleteSingleSearch}
+        />
       )}
       {searchModal === "search" && searchResults && (
-        <>
-          <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
-          <SearchModal
-            searchResults={searchResults}
-            storeSearch={storeSearch}
-          />
-        </>
+        <SearchModal searchResults={searchResults} storeSearch={storeSearch} />
       )}
     </div>
   );
@@ -146,7 +137,7 @@ function RecentSearchModal({
   deleteSingleSearch,
 }) {
   return (
-    <div className="w-full h-full bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 relative">
+    <div className="w-full h-full flex-grow bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 relative">
       <div className="flex justify-between w-full">
         <span className="font-semibold text-lg">Recent</span>
         <span
@@ -156,7 +147,7 @@ function RecentSearchModal({
           Clear All
         </span>
       </div>
-      <div className="w-full overflow-y-scroll">
+      <div className="w-full overflow-y-scroll h-full flex-grow">
         {recentlyViewedUsers &&
           recentlyViewedUsers.map((user) => {
             return (
@@ -189,9 +180,6 @@ function RecentSearchModal({
             );
           })}
         {recentlyViewedUsers.length === 0 && <div>No recent searches</div>}
-      </div>
-      <div className="absolute bottom-0 right-0 m-2">
-        <AlgoliaLogo />
       </div>
     </div>
   );

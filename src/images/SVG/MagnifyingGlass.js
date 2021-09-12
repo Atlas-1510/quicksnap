@@ -28,19 +28,25 @@ function Outline() {
       data-testid="icon-search"
       className="w-full text-gray-700"
       fill="none"
-      viewBox="0 0 24 24"
+      // viewBox="0 0 24 24"
+      viewBox="0 0 23 23"
       stroke="currentColor"
     >
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
-        strokeWidth="1"
+        strokeWidth="1.3"
         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
       />
     </svg>
   );
 }
 
-function MagnifyingGlass({ active }) {
-  return <>{active ? <Filled /> : <Outline />}</>;
+function MagnifyingGlass({ currentPage }) {
+  return (
+    <>
+      {currentPage === "search" && <Filled />}
+      {currentPage !== "search" && <Outline />}
+    </>
+  );
 }

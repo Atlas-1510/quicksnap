@@ -36,16 +36,11 @@ function Home({ setCurrentPage }) {
   return (
     <div className="flex flex-col">
       {/* Mobile Header */}
-      <nav className="fixed top-0 flex md:hidden justify-between items-center w-full bg-white border-b border-gray-300 py-1">
-        <div className="w-7 m-2">
+      <nav className="relative flex md:hidden justify-center items-center w-full bg-white border-b border-gray-300 py-1">
+        <div className="w-7 m-2 absolute left-0">
           <Camera />
         </div>
-        <h1 className="font-curly text-4xl">QuickSnap</h1>
-        <Link to="/search" onClick={() => setSearch(true)}>
-          <div className="w-7 m-2">
-            <MagnifyingGlass />
-          </div>
-        </Link>
+        <h1 className="font-curly text-4xl m-1">QuickSnap</h1>
       </nav>
       {/* Mobile search modal */}
       {search && <MobileSearch />}

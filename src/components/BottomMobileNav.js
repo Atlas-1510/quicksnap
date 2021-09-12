@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import PaperAirplane from "../images/SVG/PaperAirplane/PaperAirplane";
 import ImageUploader from "./ImageUploader/ImageUploader";
 import ModalBackground from "./ModalBackground";
+import MagnifyingGlass from "../images/SVG/MagnifyingGlass";
 
 function BottomMobileNav({ currentPage, setCurrentPage }) {
   const [uploadModal, setUploadModal] = useState(false);
@@ -22,7 +23,11 @@ function BottomMobileNav({ currentPage, setCurrentPage }) {
             <PaperAirplane currentPage={currentPage} />
           </div>
         </Link>
-
+        <Link to="/search" onClick={() => setCurrentPage("search")}>
+          <div className="w-7 m-2">
+            <MagnifyingGlass currentPage={currentPage} />
+          </div>
+        </Link>
         <div className="w-8 m-2" onClick={() => setUploadModal(true)}>
           <Add currentPage={currentPage} />
         </div>
