@@ -18,7 +18,8 @@ import handleErrorCode from "./handleErrorCode";
 
 function Login({ setUID }) {
   const [modal, setModal] = useState("login");
-  const [prompt, setPrompt] = useState(null);
+  const [loginPrompt, setLoginPrompt] = useState(null);
+  const [signUpPrompt, setSignUpPrompt] = useState(null);
 
   useEffect(() => {
     const unlisten = auth.onAuthStateChanged(async (user) => {
@@ -58,7 +59,7 @@ function Login({ setUID }) {
     }
     if (provider) {
       auth.signInWithPopup(provider).catch((err) => {
-        setPrompt(err.message);
+        setLoginPrompt(err.message);
       });
     }
   };
@@ -70,7 +71,7 @@ function Login({ setUID }) {
 
     auth.signInWithEmailAndPassword(email, pw).catch((err) => {
       const message = handleErrorCode(err.code);
-      setPrompt(message);
+      setLoginPrompt(message);
     });
   };
 
@@ -101,6 +102,10 @@ function Login({ setUID }) {
           .then(() => {
             return cred.user.uid;
           });
+      })
+      .catch((err) => {
+        const message = handleErrorCode(err.code);
+        setSignUpPrompt(message);
       });
     setUID(uid);
   };
@@ -142,9 +147,9 @@ function Login({ setUID }) {
                   type="submit"
                   className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400 cursor-pointer"
                 />
-                {prompt && (
+                {loginPrompt && (
                   <span className="text-xs text-center m-2 text-red-500">
-                    {prompt}
+                    {loginPrompt}
                   </span>
                 )}
                 <div className="flex m-1 w-full items-center">
@@ -234,7 +239,11 @@ function Login({ setUID }) {
                   type="submit"
                   className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400 cursor-pointer"
                 />
-
+                {signUpPrompt && (
+                  <span className="text-xs text-center m-2 text-red-500">
+                    {signUpPrompt}
+                  </span>
+                )}
                 <div className="w-full my-3 h-px bg-gray-400"></div>
                 <div className="my-1">
                   <span>Already have an account?</span>

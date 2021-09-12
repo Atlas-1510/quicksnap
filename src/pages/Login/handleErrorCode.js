@@ -1,10 +1,12 @@
+// source: https://stackoverflow.com/questions/56113778/how-to-handle-firebase-auth-exceptions-on-flutter
+
 export default function handleErrorCode(code) {
   let message;
   switch (code) {
     case "ERROR_EMAIL_ALREADY_IN_USE":
     case "auth/account-exists-with-different-credential":
     case "auth/email-already-in-use":
-      message = "Email already used. Go to login page.";
+      message = "Email already used. Try logging in.";
       break;
     case "ERROR_WRONG_PASSWORD":
     case "auth/wrong-password":
