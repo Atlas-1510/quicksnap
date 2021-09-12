@@ -214,7 +214,7 @@ function Login({ setUID }) {
                 <input
                   value="Sign Up"
                   type="submit"
-                  className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400"
+                  className="bg-blue-500 my-3 p-1 w-full border-0 rounded-sm text-white hover:shadow-inner hover:bg-blue-400 cursor-pointer"
                 />
 
                 <div className="w-full my-3 h-px bg-gray-400"></div>
