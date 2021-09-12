@@ -27,9 +27,6 @@ export default function NewChat({ exit, chats, setChats, setActiveChat }) {
   const handleContactSelection = async (e) => {
     const contactID = e.target.dataset.userid;
     const existingChat = chats.find((chat) => {
-      // If the members array of the chat has two elements
-      // and one of them is the contactID, and the other is the UID
-      // return the chat id
       const chatContact = chat.contact.id;
       if (chatContact === contactID) {
         return true;

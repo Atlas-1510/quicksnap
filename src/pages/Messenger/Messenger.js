@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import useWindowSize from "../../hooks/useWindowSize/useWindowSize";
-
 import Desktop from "./Desktop/Desktop";
 import Mobile from "./Mobile/Mobile";
 import { UserContext } from "../Main";
@@ -68,7 +67,6 @@ function Messenger({ setCurrentPage }) {
   useEffect(() => {
     if (activeChat) {
       if (activeChat.chatID !== "launchpad") {
-        console.log(`useGetChats chatID: ${activeChat.chatID}`);
         const unsub = firestore
           .collection("chats")
           .doc(activeChat.chatID)

@@ -1,13 +1,10 @@
 import React, { useContext } from "react";
-
 import Write from "../../../images/SVG/Write";
 import ChevronDown from "../../../images/SVG/ChevronDown";
 import PaperAirplane from "../../../images/SVG/PaperAirplane/PaperAirplane";
 import ModalBackground from "../../../components/ModalBackground";
 import Button from "../../../components/Button";
-
 import { UserContext } from "../../Main";
-
 import ChatBox from "../ChatBox/ChatBox";
 import NewChat from "../NewChat/NewChat";
 
@@ -72,7 +69,6 @@ function Desktop({
       </div>
       <div className="flex col-span-2 h-full border-l border-gray-300 flex-col justify-center">
         {" "}
-        {/* Guide to send first message if no messages loaded */}
         {!messages && (
           <div className="flex flex-col justify-center items-center">
             <div className="border-2 border-gray-800 rounded-full my-1">

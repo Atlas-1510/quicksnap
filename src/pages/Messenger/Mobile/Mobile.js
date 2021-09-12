@@ -1,13 +1,10 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-
 import Write from "../../../images/SVG/Write";
 import ChevronDown from "../../../images/SVG/ChevronDown";
 import ChevronLeft from "../../../images/SVG/ChevronLeft";
-
 import ChatBox from "../ChatBox/ChatBox";
 import NewChat from "../NewChat/NewChat";
-
 import { UserContext } from "../../Main";
 import BottomMobileNav from "../../../components/BottomMobileNav";
 
