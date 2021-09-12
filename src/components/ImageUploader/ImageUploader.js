@@ -31,8 +31,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
 
   useEffect(() => {
     setCurrentPage("add");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [setCurrentPage]);
 
   const handleButtonClick = () => {
     document.querySelector("#file-input").click();
