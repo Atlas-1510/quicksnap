@@ -1,18 +1,13 @@
 import React, { useState, useEffect, useContext } from "react";
-
 import Exit from "../../images/SVG/Exit";
 import Button from "../Button";
 import ButtonSecondary from "../ButtonSecondary";
 import Media from "../../images/SVG/Media";
-
 import useComponentVisible from "../../hooks/useComponentVisible/useComponentVisible";
 import useIsFirstRender from "../../hooks/useIsFirstRender/useIsFirstRender";
-
 import postImage from "./postImage/postImage";
 import { UserContext } from "../../pages/Main";
 import compressImage from "./compressImage/compressImage";
-
-// TODO: Implement drag and drop for uploading files
 
 function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const user = useContext(UserContext);
