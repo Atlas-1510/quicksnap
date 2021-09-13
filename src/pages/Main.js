@@ -50,7 +50,7 @@ function Main({ uid }) {
             <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
             <div className="bg-gray-100 flex justify-center h-full flex-grow overflow-scroll">
               <div className="md:w-2/3 md:max-w-4xl h-full w-full flex flex-col">
-                <div className="flex-grow">
+                <div className="flex-grow overflow-scroll">
                   <Switch>
                     <Route exact path="/">
                       <Home setCurrentPage={setCurrentPage} />

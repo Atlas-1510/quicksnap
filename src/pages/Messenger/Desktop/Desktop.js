@@ -67,21 +67,26 @@ function Desktop({
             ))}
         </div>
       </div>
-      <div className="flex col-span-2 h-full border-l border-gray-300 flex-col justify-center">
+      <div
+        className="flex col-span-2 h-full border-l border-gray-300
+       flex-col justify-end overflow-hidden"
+      >
         {" "}
         {!messages && (
-          <div className="flex flex-col justify-center items-center">
-            <div className="border-2 border-gray-800 rounded-full my-1">
-              <div className=" w-16 m-3 relative bottom-1 left-1 transform rotate-45">
-                <PaperAirplane />
+          <div className="h-full flex flex-col justify-center">
+            <div className="flex flex-col justify-center items-center">
+              <div className="border-2 border-gray-800 rounded-full my-1">
+                <div className=" w-16 m-3 relative bottom-1 left-1 transform rotate-45">
+                  <PaperAirplane />
+                </div>
               </div>
-            </div>
-            <span className="text-xl my-1">Your Messages</span>
-            <span className="text-sm text-gray-500">
-              Send private messages to a friend
-            </span>
-            <div onClick={() => setNewChat(true)}>
-              <Button>Send Message</Button>
+              <span className="text-xl my-1">Your Messages</span>
+              <span className="text-sm text-gray-500">
+                Send private messages to a friend
+              </span>
+              <div onClick={() => setNewChat(true)}>
+                <Button>Send Message</Button>
+              </div>
             </div>
           </div>
         )}

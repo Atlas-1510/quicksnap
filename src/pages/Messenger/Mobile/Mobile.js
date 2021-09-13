@@ -22,7 +22,7 @@ function Mobile({
   const user = useContext(UserContext);
   return (
     <div
-      className=" bg-white relative top-0 w-full h-full flex flex-col"
+      className=" bg-white w-full h-full flex flex-col overflow-hidden"
       data-testid="test-messenger-mobile"
     >
       {!activeChat && !newChat && (
@@ -75,7 +75,7 @@ function Mobile({
         </div>
       )}
       {activeChat && !newChat && (
-        <div className="h-full flex flex-col">
+        <div className="h-full flex flex-col justify-between overflow-hidden">
           <div className="border-b border-gray-300 flex items-center justify-center py-2 relative">
             <div
               className=" mx-2 w-7 absolute left-0"

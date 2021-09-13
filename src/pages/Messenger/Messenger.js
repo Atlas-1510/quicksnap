@@ -71,8 +71,8 @@ function Messenger({ setCurrentPage }) {
           .collection("chats")
           .doc(activeChat.chatID)
           .collection("messages")
-          .orderBy("timestamp", "asc")
-          .limit(10)
+          .orderBy("timestamp", "desc")
+          // .limit(10)
           .onSnapshot((snap) => {
             const msgDocs = [];
             snap.forEach((msg) => {

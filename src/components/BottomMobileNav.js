@@ -12,7 +12,7 @@ function BottomMobileNav({ currentPage, setCurrentPage }) {
   const [uploadModal, setUploadModal] = useState(false);
   return (
     <>
-      <nav className="fixed bottom-0 flex md:hidden w-full bg-white border-t border-gray-300 items-center justify-between">
+      <nav className=" flex md:hidden w-full bg-white border-t border-gray-300 items-center justify-between">
         <Link to="/" onClick={() => setCurrentPage("home")}>
           <div className="w-8 m-2">
             <Home currentPage={currentPage} />

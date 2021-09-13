@@ -11,8 +11,8 @@ export default function ChatBox({ messages, postMessage }) {
   };
 
   return (
-    <div className="flex flex-col h-full ">
-      <div className="flex flex-col h-full  justify-end">
+    <div className="flex flex-col overflow-hidden">
+      <div className="flex  h-full overflow-scroll flex-col-reverse">
         {messages.map((message) => {
           if (message.author === user.uid) {
             return (
