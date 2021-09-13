@@ -46,6 +46,7 @@ function Card({ card }) {
       const post = await updatePost(id);
       setPost(post);
       setCommentInput("");
+      document.getElementById("comment-form").reset();
     }
   };
 
@@ -128,7 +129,12 @@ function Card({ card }) {
                 </div>
               ))}
           </div>
-          <div className="flex p-1 border-t border-gray-200">
+          <form
+            className="flex p-1 border-t border-gray-200"
+            onSubmit={(e) => handleSubmitComment(e)}
+            action="#"
+            id="comment-form"
+          >
             <input
               type="text"
               placeholder="Add a comment..."
@@ -140,11 +146,11 @@ function Card({ card }) {
             />
             <button
               className="mx-3 text-blue-500 font-semibold cursor-pointer"
-              onClick={(e) => handleSubmitComment(e)}
+              type="submit"
             >
               Post
             </button>
-          </div>
+          </form>
         </div>
       </div>
       {showLikedByModal && (
