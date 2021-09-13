@@ -45,6 +45,7 @@ function ImageModal({ post, setActivePost }) {
       setPostInfo(post);
       setCommentInput("");
     }
+    document.getElementById("comment-form").reset();
   };
 
   const exit = () => {
@@ -158,7 +159,11 @@ function ImageModal({ post, setActivePost }) {
                       </div>
                     ))}
                   </div>
-                  <div className="flex p-1 border-t border-gray-200">
+                  <form
+                    className="flex p-1 border-t border-gray-200"
+                    onSubmit={(e) => handleSubmitComment(e)}
+                    id="comment-form"
+                  >
                     <input
                       type="text"
                       placeholder="Add a comment..."
@@ -170,11 +175,11 @@ function ImageModal({ post, setActivePost }) {
                     />
                     <button
                       className="mx-3 text-blue-500 font-semibold cursor-pointer"
-                      onClick={(e) => handleSubmitComment(e)}
+                      type="submit"
                     >
                       Post
                     </button>
-                  </div>
+                  </form>
                 </div>
               </div>
             </div>
