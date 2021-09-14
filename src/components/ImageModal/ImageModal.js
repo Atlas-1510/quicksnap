@@ -17,6 +17,8 @@ import LikedByModal from "../LikedByModal/LikedByModal";
 import useGetPostSaveStatus from "../../hooks/useGetPostSaveStatus/useGetPostSaveStatus";
 import unsavePost from "../../utils/unsavePost/unsavePost";
 import savePost from "../../utils/savePost/savePost";
+import useComponentVisible from "../../hooks/useComponentVisible/useComponentVisible";
+import deletePost from "../../utils/deletePost/deletePost";
 
 function ImageModal({ post, setActivePost }) {
   const { width } = useWindowSize();
@@ -29,6 +31,8 @@ function ImageModal({ post, setActivePost }) {
   const saved = useGetPostSaveStatus(uid, id);
   const [showLikedByModal, setShowLikedByModal] = useState(false);
   const [likedByInfo, setLikedByInfo] = useState(null);
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useComponentVisible(false);
 
   const handleLikeChange = async (e) => {
     e.preventDefault();
@@ -69,6 +73,11 @@ function ImageModal({ post, setActivePost }) {
     const info = await getLikedByInfo(id);
     setLikedByInfo(info);
     setShowLikedByModal(true);
+  };
+
+  const handleDeletePost = async (e) => {
+    e.preventDefault();
+    await deletePost(post.id);
   };
 
   return (
@@ -125,8 +134,22 @@ function ImageModal({ post, setActivePost }) {
                     />
                     <span className="mx-3">{post.author.name}</span>
                   </div>
-                  <div className="w-7 m-2">
-                    <ThreeDots />
+                  <div
+                    className="w-7 m-2 relative cursor-pointer"
+                    ref={ref}
+                    onClick={() => setIsComponentVisible(true)}
+                  >
+                    {post.author.id === uid && <ThreeDots />}
+                    {isComponentVisible && (
+                      <div className="absolute -left-20 bg-white border border-gray-300 rounded-md w-28 flex flex-col items-center">
+                        <button
+                          className="text-red-500 py-3 hover:bg-gray-300 w-full"
+                          onClick={(e) => handleDeletePost(e)}
+                        >
+                          Delete Post
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
                 <div className="flex flex-col bg-white text-gray-700 h-full flex-grow">
