@@ -9,6 +9,7 @@ import EditProfile from "./EditProfile/EditProfile";
 import handleLogOut from "../../utils/handleLogOut/handleLogOut";
 import Footer from "../../components/Footer";
 import useGetLikedPosts from "../../hooks/useGetLikedPosts/useGetLikedPosts";
+import useGetSavedPosts from "../../hooks/useGetSavedPosts/useGetSavedPosts";
 
 function User() {
   const {
@@ -23,6 +24,7 @@ function User() {
 
   const userPosts = useGetUserPosts(uid);
   const likedPosts = useGetLikedPosts(uid);
+  const savedPosts = useGetSavedPosts(uid);
   const [grid, setGrid] = useState("posts");
   const [activePost, setActivePost] = useState(null);
   const [editProfileModal, setEditProfileModal] = useState(false);
@@ -34,6 +36,9 @@ function User() {
         break;
       case "liked":
         setGrid("liked");
+        break;
+      case "saved":
+        setGrid("saved");
         break;
       default:
         throw new Error(
@@ -121,6 +126,17 @@ function User() {
             >
               <span>LIKED</span>
             </div>
+            <div
+              className={`p-3 cursor-pointer ${
+                grid === "saved"
+                  ? "text-black border-t border-black relative -top-px"
+                  : "text-gray-400"
+              }`}
+              onClick={() => switchGrid("saved")}
+              data-testid="test-show-liked-button"
+            >
+              <span>SAVED</span>
+            </div>
           </div>
         </div>
         {/* Image Grid Container */}
@@ -132,6 +148,9 @@ function User() {
           )}
           {grid === "liked" && likedPosts && (
             <ImageGrid posts={likedPosts} openPost={openPost} />
+          )}
+          {grid === "saved" && savedPosts && (
+            <ImageGrid posts={savedPosts} openPost={openPost} />
           )}
           {/* TODO: Add saved section to go with posts and likes. Tie to bookmark button in card component */}
         </div>

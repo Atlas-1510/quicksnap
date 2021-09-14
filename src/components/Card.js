@@ -14,6 +14,9 @@ import unlikePost from "../utils/unlikePost/unlikePost";
 import getLikedByInfo from "../utils/getLikedByInfo/getLikedByInfo";
 import LikedByModal from "./LikedByModal/LikedByModal";
 import useWindowSize from "../hooks/useWindowSize/useWindowSize";
+import unsavePost from "../utils/unsavePost/unsavePost";
+import savePost from "../utils/savePost/savePost";
+import useGetPostSaveStatus from "../hooks/useGetPostSaveStatus/useGetPostSaveStatus";
 
 // TODO: Add timestamp display to post
 
@@ -25,6 +28,7 @@ function Card({ card }) {
   const [commentInput, setCommentInput] = useState("");
   const [likeCountDisplay, setLikeCountDisplay] = useState(likeCount);
   const liked = useGetPostHeartStatus(uid, id);
+  const saved = useGetPostSaveStatus(uid, id);
   const [showLikedByModal, setShowLikedByModal] = useState(false);
   const [likedByInfo, setLikedByInfo] = useState(null);
 
@@ -36,6 +40,15 @@ function Card({ card }) {
     } else {
       await likePost(uid, id);
       setLikeCountDisplay(likeCountDisplay + 1);
+    }
+  };
+
+  const handleSaveChange = async (e) => {
+    e.preventDefault();
+    if (saved) {
+      await unsavePost(uid, id);
+    } else {
+      await savePost(uid, id);
     }
   };
 
@@ -90,8 +103,11 @@ function Card({ card }) {
                 <PaperAirplane />
               </div>
             </div>
-            <div className="w-8 m-2">
-              <Bookmark />
+            <div
+              className="w-8 m-2 cursor-pointer"
+              onClick={(e) => handleSaveChange(e)}
+            >
+              <Bookmark saved={saved} />
             </div>
           </div>
           <div onClick={handleShowLikedByModal}>

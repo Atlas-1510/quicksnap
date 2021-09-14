@@ -14,6 +14,9 @@ import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
 import Bookmark from "../../images/SVG/Bookmark/Bookmark";
 import ChevronLeft from "../../images/SVG/ChevronLeft";
 import LikedByModal from "../LikedByModal/LikedByModal";
+import useGetPostSaveStatus from "../../hooks/useGetPostSaveStatus/useGetPostSaveStatus";
+import unsavePost from "../../utils/unsavePost/unsavePost";
+import savePost from "../../utils/savePost/savePost";
 
 function ImageModal({ post, setActivePost }) {
   const { width } = useWindowSize();
@@ -23,6 +26,7 @@ function ImageModal({ post, setActivePost }) {
   const [commentInput, setCommentInput] = useState("");
   const [likeCountDisplay, setLikeCountDisplay] = useState(likeCount);
   const liked = useGetPostHeartStatus(uid, id);
+  const saved = useGetPostSaveStatus(uid, id);
   const [showLikedByModal, setShowLikedByModal] = useState(false);
   const [likedByInfo, setLikedByInfo] = useState(null);
 
@@ -34,6 +38,15 @@ function ImageModal({ post, setActivePost }) {
     } else {
       await likePost(uid, id);
       setLikeCountDisplay(likeCountDisplay + 1);
+    }
+  };
+
+  const handleSaveChange = async (e) => {
+    e.preventDefault();
+    if (saved) {
+      await unsavePost(uid, id);
+    } else {
+      await savePost(uid, id);
     }
   };
 
@@ -129,8 +142,11 @@ function ImageModal({ post, setActivePost }) {
                         <PaperAirplane />
                       </div>
                     </div>
-                    <div className="w-8 m-2">
-                      <Bookmark />
+                    <div
+                      className="w-8 m-2 cursor-pointer"
+                      onClick={(e) => handleSaveChange(e)}
+                    >
+                      <Bookmark saved={saved} />
                     </div>
                   </div>
                   <div onClick={handleShowLikedByModal}>

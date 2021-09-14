@@ -1,6 +1,6 @@
 import { firestore } from "../../firebase/firebase";
 
-async function likePost(uid, pid) {
+async function unlikePost(uid, pid) {
   await firestore.collection("hearts").doc(`${uid}_${pid}`).delete();
   await firestore
     .collection("users")
@@ -9,4 +9,4 @@ async function likePost(uid, pid) {
     .doc(`${uid}_${pid}`)
     .delete();
 }
-export default likePost;
+export default unlikePost;

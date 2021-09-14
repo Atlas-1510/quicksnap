@@ -36,8 +36,8 @@ function Outline() {
   );
 }
 
-function Bookmark({ active }) {
-  return <>{active ? <Filled /> : <Outline />}</>;
+function Bookmark({ saved }) {
+  return <>{saved ? <Filled /> : <Outline />}</>;
 }
 
 export default Bookmark;
