@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import Card from "../../components/Card";
 import RightSideBox from "../../components/RightSideBox";
 import davidBarrell from "../../images/test-images/RightSideBox/david.barrell.png";
@@ -7,14 +7,10 @@ import lisa from "../../images/test-images/RightSideBox/lisamwill.png";
 import { UserContext } from "../Main";
 import useUpdateFeed from "./useUpdateFeed/useUpdateFeed";
 import Camera from "../../images/SVG/Camera";
-import { Link } from "react-router-dom";
-import MagnifyingGlass from "../../images/SVG/MagnifyingGlass";
-import MobileSearch from "../../components/Header/Search/MobileSearch";
 
 function Home({ setCurrentPage }) {
   const user = useContext(UserContext);
   const feed = useUpdateFeed(user.uid);
-  const [search, setSearch] = useState(false);
 
   const followSuggestions = [
     {
@@ -42,8 +38,6 @@ function Home({ setCurrentPage }) {
         </div>
         <h1 className="font-curly text-4xl m-1">QuickSnap</h1>
       </nav>
-      {/* Mobile search modal */}
-      {search && <MobileSearch />}
       <RightSideBox
         user={user}
         followSuggestions={followSuggestions}

@@ -97,7 +97,7 @@ function Card({ card }) {
             ref={ref}
             onClick={() => setIsComponentVisible(true)}
           >
-            <ThreeDots />
+            {post.author.id === uid && <ThreeDots />}
             {isComponentVisible && (
               <div className="absolute -left-20 bg-white border border-gray-300 rounded-md w-28 flex flex-col items-center">
                 <button

@@ -5,7 +5,6 @@ import getUserInfo from "../../../utils/getUserInfo/getUserInfo";
 import { Link } from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
 import { firestore, FieldValue } from "../../../firebase/firebase";
-import AlgoliaLogo from "../../../images/SVG/AlgoliaLogo";
 import ChevronLeft from "../../../images/SVG/ChevronLeft";
 
 const searchClient = algoliasearch(

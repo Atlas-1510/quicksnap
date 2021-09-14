@@ -126,12 +126,76 @@ exports.deletePost = functions
   .region("australia-southeast1")
   .firestore.document("posts/{postID}")
   .onDelete(async (snap, context) => {
-    const post = snap.data();
+    const post = { ...snap.data(), id: snap.id };
+    // delete post from feeds
     try {
-      // delete image from storage
+      const authorID = post.author.id;
+      const authorDocRef = await admin
+        .firestore()
+        .collection("users")
+        .doc(authorID)
+        .get();
+      const authorDoc = authorDocRef.data();
+      const { followers } = authorDoc;
+      const promises = [];
+      followers.forEach((follower) => {
+        const feedItemRef = admin
+          .firestore()
+          .collection("feeds")
+          .doc(follower)
+          .collection("feedItems")
+          .doc(post.id)
+          .delete();
+        promises.push(feedItemRef);
+      });
+      await Promise.all(promises);
+    } catch (err) {}
+    // delete image from storage
+    try {
       const bucket = admin.storage().bucket();
       const path = `${post.author.id}/posts/${post.fileName}`;
       bucket.file(path).delete();
+    } catch (err) {
+      console.log(err);
+    }
+    // delete related heart documents
+    try {
+      const { likedBy } = post;
+      const promises = [];
+      likedBy.forEach((userID) => {
+        // document in hearts root collection
+        const heartRef = admin
+          .firestore()
+          .collection("hearts")
+          .doc(`${userID}_${post.id}`)
+          .delete();
+        promises.push(heartRef);
+        // document in liked subcollection of user document
+        const likedRef = admin
+          .firestore()
+          .collection("users")
+          .doc(userID)
+          .collection("liked")
+          .doc(`${userID}_${post.id}`)
+          .delete();
+        promises.push(likedRef);
+      });
+      await Promise.all(promises);
+    } catch (err) {
+      console.log(err);
+    }
+    // delete related save documents
+    try {
+      admin
+        .firestore()
+        .collection("saves")
+        .where("pid", "==", post.id)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
+        });
     } catch (err) {
       console.log(err);
     }
