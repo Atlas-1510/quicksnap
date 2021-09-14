@@ -119,3 +119,20 @@ exports.updateFeeds = functions
       console.log(error);
     }
   });
+
+// *************************** Deleting posts ********************************
+
+exports.deletePost = functions
+  .region("australia-southeast1")
+  .firestore.document("posts/{postID}")
+  .onDelete(async (snap, context) => {
+    const post = snap.data();
+    try {
+      // delete image from storage
+      const bucket = admin.storage().bucket();
+      const path = `${post.author.id}/posts/${post.fileName}`;
+      bucket.file(path).delete();
+    } catch (err) {
+      console.log(err);
+    }
+  });

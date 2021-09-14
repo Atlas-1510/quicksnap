@@ -17,6 +17,8 @@ import useWindowSize from "../hooks/useWindowSize/useWindowSize";
 import unsavePost from "../utils/unsavePost/unsavePost";
 import savePost from "../utils/savePost/savePost";
 import useGetPostSaveStatus from "../hooks/useGetPostSaveStatus/useGetPostSaveStatus";
+import useComponentVisible from "../hooks/useComponentVisible/useComponentVisible";
+import deletePost from "../utils/deletePost/deletePost";
 
 // TODO: Add timestamp display to post
 
@@ -31,6 +33,8 @@ function Card({ card }) {
   const saved = useGetPostSaveStatus(uid, id);
   const [showLikedByModal, setShowLikedByModal] = useState(false);
   const [likedByInfo, setLikedByInfo] = useState(null);
+  const { ref, isComponentVisible, setIsComponentVisible } =
+    useComponentVisible(false);
 
   const handleLikeChange = async (e) => {
     e.preventDefault();
@@ -69,6 +73,11 @@ function Card({ card }) {
     setShowLikedByModal(true);
   };
 
+  const handleDeletePost = async (e) => {
+    e.preventDefault();
+    await deletePost(post.id);
+  };
+
   return (
     <>
       <div className="flex flex-col md:border border-gray-300 rounded-sm mb-3 md:mt-7 text-sm ">
@@ -83,8 +92,22 @@ function Card({ card }) {
               <span className="mx-3">{author.name}</span>
             </Link>
           </div>
-          <div className="w-7 m-2">
+          <div
+            className="w-7 m-2 relative cursor-pointer"
+            ref={ref}
+            onClick={() => setIsComponentVisible(true)}
+          >
             <ThreeDots />
+            {isComponentVisible && (
+              <div className="absolute -left-20 bg-white border border-gray-300 rounded-md w-28 flex flex-col items-center">
+                <button
+                  className="text-red-500 py-3 hover:bg-gray-300 w-full"
+                  onClick={(e) => handleDeletePost(e)}
+                >
+                  Delete Post
+                </button>
+              </div>
+            )}
           </div>
         </div>
         <div>
