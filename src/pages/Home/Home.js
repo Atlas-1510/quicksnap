@@ -44,7 +44,11 @@ function Home({ setCurrentPage }) {
       </nav>
       {/* Mobile search modal */}
       {search && <MobileSearch />}
-      <RightSideBox user={user} followSuggestions={followSuggestions} />
+      <RightSideBox
+        user={user}
+        followSuggestions={followSuggestions}
+        setCurrentPage={setCurrentPage}
+      />
       <div className="w-full lg:w-3/5 mt-2 md:mt-auto">
         {feed && feed.map((card) => <Card key={card.id} card={card} />)}
       </div>

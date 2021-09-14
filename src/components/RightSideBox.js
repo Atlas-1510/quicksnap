@@ -2,7 +2,7 @@ import React from "react";
 import handleLogOut from "../utils/handleLogOut/handleLogOut";
 import { Link } from "react-router-dom";
 
-function RightSideBox({ user, followSuggestions }) {
+function RightSideBox({ user, followSuggestions, setCurrentPage }) {
   const { profileImage, name, fullName } = user;
 
   return (
@@ -10,7 +10,7 @@ function RightSideBox({ user, followSuggestions }) {
       <div className="w-2/3 md:max-w-4xl flex justify-end z-50">
         <div className="text-sm w-1/3 mr-2 pointer-events-auto">
           <div className="flex items-center justify-between py-2">
-            <Link to={`/user`}>
+            <Link to={`/user`} onClick={() => setCurrentPage("profile")}>
               <div className="flex items-center">
                 <img
                   src={profileImage}
