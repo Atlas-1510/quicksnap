@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../Main";
 import useGetUserPosts from "../../hooks/useGetUserPosts/useGetUserPosts";
-import getLikedPosts from "./getLikedPosts/getLikedPosts";
 import getPostInfo from "../../utils/getPostInfo/getPostInfo";
 import ImageModal from "../../components/ImageModal/ImageModal";
 import { Link } from "react-router-dom";
@@ -9,6 +8,7 @@ import ModalBackground from "../../components/ModalBackground";
 import EditProfile from "./EditProfile/EditProfile";
 import handleLogOut from "../../utils/handleLogOut/handleLogOut";
 import Footer from "../../components/Footer";
+import useGetLikedPosts from "../../hooks/useGetLikedPosts/useGetLikedPosts";
 
 function User() {
   const {
@@ -22,7 +22,7 @@ function User() {
   } = useContext(UserContext);
 
   const userPosts = useGetUserPosts(uid);
-  const [likedPosts, setLikedPosts] = useState(null);
+  const likedPosts = useGetLikedPosts(uid);
   const [grid, setGrid] = useState("posts");
   const [activePost, setActivePost] = useState(null);
   const [editProfileModal, setEditProfileModal] = useState(false);
@@ -33,11 +33,7 @@ function User() {
         setGrid("posts");
         break;
       case "liked":
-        (async () => {
-          let posts = await getLikedPosts(uid);
-          setLikedPosts(posts);
-          setGrid("liked");
-        })();
+        setGrid("liked");
         break;
       default:
         throw new Error(
