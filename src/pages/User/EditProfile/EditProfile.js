@@ -50,11 +50,14 @@ function ChangeNameOrImage({ exit, setSection }) {
     }
   }, []);
 
-  const { profileImage, name, fullName, uid } = useContext(UserContext);
+  const { profileImage, name, fullName, uid, customProfileImage } =
+    useContext(UserContext);
   const [newProfileImage, setNewProfileImage] = useState({
     source: profileImage,
     type: "original",
   });
+  const [customProfileFlag, setCustomProfileFlag] =
+    useState(customProfileImage);
   const [profilePreview, setProfilePreview] = useState(profileImage);
   const [formFullName, setFormFullName] = useState(fullName);
   const [formUserName, setFormUserName] = useState(name);
@@ -77,6 +80,7 @@ function ChangeNameOrImage({ exit, setSection }) {
         source: initialsImage,
         type: "default",
       });
+      setCustomProfileFlag(false);
       setProfilePreview(initialsImage);
     } else {
       setResultPrompt({
@@ -94,6 +98,7 @@ function ChangeNameOrImage({ exit, setSection }) {
         type: "custom",
       });
       setProfilePreview(URL.createObjectURL(chosenImage));
+      setCustomProfileFlag(true);
     }
   };
 
@@ -132,6 +137,7 @@ function ChangeNameOrImage({ exit, setSection }) {
             throw new Error("Something went wrong with saving profile image.");
         }
         newUserDoc.profileImage = profileURL;
+        newUserDoc.customProfileImage = customProfileFlag;
         // TODO: add image compression to new profile image if file is too big
       }
       if (changeMade) {
