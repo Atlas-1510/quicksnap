@@ -104,6 +104,7 @@ function Login({ setUID }) {
           });
       })
       .catch((err) => {
+        console.log(err);
         const message = handleErrorCode(err.code);
         setSignUpPrompt(message);
       });

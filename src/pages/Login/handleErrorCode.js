@@ -31,6 +31,9 @@ export default function handleErrorCode(code) {
     case "auth/invalid-email":
       message = "Email address is invalid.";
       break;
+    case "auth/weak-password":
+      message = "Password should be at least 6 characters.";
+      break;
     default:
       message = "Login failed. Please try again.";
       break;
