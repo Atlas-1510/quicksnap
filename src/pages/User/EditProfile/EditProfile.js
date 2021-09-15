@@ -28,6 +28,9 @@ function EditProfile({ exit }) {
           )}
           {section === "email" && <ChangeEmail setSection={setSection} />}
           {section === "password" && <ChangePassword setSection={setSection} />}
+          {section === "deleteAccount" && (
+            <DeleteAccount setSection={setSection} />
+          )}
         </div>
       )}
     </div>
@@ -224,6 +227,12 @@ function ChangeNameOrImage({ exit, setSection }) {
               onClick={() => loadSection("password")}
             >
               Change Password
+            </button>
+            <button
+              className="border border-gray-300 rounded-md py-1 px-2 ml-1  text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
+              onClick={() => loadSection("deleteAccount")}
+            >
+              Delete Account
             </button>
           </div>
         )}
@@ -460,6 +469,104 @@ function ChangePassword({ setSection }) {
           <Button>Save</Button>
         </div>
         <div className="m-2" onClick={(e) => cancelPasswordChange(e)}>
+          <ButtonSecondary>Return</ButtonSecondary>
+        </div>
+      </div>
+    </form>
+  );
+}
+
+function DeleteAccount({ setSection }) {
+  const [formPassword, setFormPassword] = useState("");
+  const [resultPrompt, setResultPrompt] = useState({
+    text: "",
+    color: "green",
+  });
+
+  const confirmChange = () => {
+    setResultPrompt({
+      text: "Your changes have been saved.",
+      color: "green",
+    });
+  };
+
+  const warnChangeFailure = (input) => {
+    setResultPrompt({
+      text: input ? input : "Something went wrong.",
+      color: "red",
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formPassword) {
+      handleDeleteAccount();
+    } else {
+      warnChangeFailure(
+        "Please enter your current password to confirm this change."
+      );
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    setResultPrompt(null);
+    const cred = firebase.auth.EmailAuthProvider.credential(
+      auth.currentUser.email,
+      formPassword
+    );
+    try {
+      await auth.currentUser.reauthenticateWithCredential(cred);
+      await auth.currentUser.delete();
+      await auth.signOut();
+      confirmChange();
+      document.location.href = "/";
+    } catch (err) {
+      warnChangeFailure(err.message);
+    }
+  };
+
+  const cancelDeleteAccount = () => {
+    setResultPrompt(null);
+    setFormPassword("");
+    setSection("nameAndImage");
+  };
+
+  return (
+    <form className="flex flex-col justify-center w-full">
+      <div className="flex w-full items-center my-2">
+        <div className="w-full h-px bg-gray-400"></div>
+        <span className="whitespace-nowrap mx-4 text-gray-400 font-semibold">
+          {" "}
+          Delete Account{" "}
+        </span>
+        <div className="w-full h-px bg-gray-400"></div>
+      </div>
+
+      <label htmlFor="currentPassword">Enter Your Password</label>
+      <input
+        type="password"
+        name="currentPassword"
+        required
+        className="border rounded-md border-gray-300 w-full p-1 my-1"
+        value={formPassword}
+        onChange={(e) => setFormPassword(e.target.value)}
+      />
+      <div className="flex w-full items-center mt-4 mb-2">
+        <div className="w-full h-px bg-gray-400"></div>
+      </div>
+      {resultPrompt && (
+        <span
+          className="text-xs text-center mt-2"
+          style={{ color: resultPrompt.color }}
+        >
+          {resultPrompt.text}
+        </span>
+      )}
+      <div className="flex items-center justify-center">
+        <div className="m-2" onClick={(e) => handleSubmit(e)}>
+          <Button>Save</Button>
+        </div>
+        <div className="m-2" onClick={(e) => cancelDeleteAccount(e)}>
           <ButtonSecondary>Return</ButtonSecondary>
         </div>
       </div>
