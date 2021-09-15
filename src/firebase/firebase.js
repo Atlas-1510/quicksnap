@@ -3,6 +3,7 @@ import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 import "firebase/storage";
+import "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA_zqyAb5wbrUILilRHJcByyLFqrqsOyvg",
@@ -14,7 +15,7 @@ const firebaseConfig = {
   measurementId: "G-3LCVBTMFYY",
 };
 
-firebase.initializeApp(firebaseConfig);
+const fireApp = firebase.initializeApp(firebaseConfig);
 // firebase.analytics(); TODO: Re-enable analytics
 
 const auth = firebase.auth();
@@ -23,4 +24,6 @@ const storage = firebase.storage();
 const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 const FieldValue = firebase.firestore.FieldValue;
 
-export { auth, firestore, storage, timestamp, FieldValue };
+const functions = fireApp.functions("australia-southeast1");
+
+export { auth, firestore, storage, timestamp, FieldValue, functions };

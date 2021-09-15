@@ -124,9 +124,12 @@ exports.updateFeeds = functions
 
 exports.deletePost = functions
   .region("australia-southeast1")
-  .firestore.document("posts/{postID}")
-  .onDelete(async (snap, context) => {
-    const post = { ...snap.data(), id: snap.id };
+  .https.onCall(async (data, context) => {
+    const postID = data.post;
+    console.log(postID);
+    const postRef = admin.firestore().collection("posts").doc(postID);
+    const postDoc = await postRef.get();
+    const post = { ...postDoc.data(), id: postDoc.id };
     // delete post from feeds
     try {
       const authorID = post.author.id;
@@ -157,6 +160,8 @@ exports.deletePost = functions
       bucket.file(path).delete();
     } catch (err) {
       console.log(err);
+      // return new functions.https.HttpsError( "error deleting image from storage");
+      return 1;
     }
     // delete related heart documents
     try {
@@ -183,6 +188,8 @@ exports.deletePost = functions
       await Promise.all(promises);
     } catch (err) {
       console.log(err);
+      // return new functions.https.HttpsError("error deleting heart documents");
+      return 2;
     }
     // delete related save documents
     try {
@@ -198,5 +205,16 @@ exports.deletePost = functions
         });
     } catch (err) {
       console.log(err);
+      // return new functions.https.HttpsError("error deleting save documents");
+      return 3;
     }
+    // delete post
+    try {
+      postRef.delete();
+    } catch (err) {
+      console.log(err);
+      // return new functions.https.HttpsError("error deleting post");
+      return 4;
+    }
+    return 0;
   });
