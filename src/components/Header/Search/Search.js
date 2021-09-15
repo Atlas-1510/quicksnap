@@ -29,8 +29,10 @@ function Search() {
       .collection("users")
       .doc(uid)
       .onSnapshot((snap) => {
-        const unpacked = snap.data();
-        setPreviousSearches(unpacked.searches);
+        if (snap.exists) {
+          const unpacked = snap.data();
+          setPreviousSearches(unpacked.searches);
+        }
       });
 
     return () => {
