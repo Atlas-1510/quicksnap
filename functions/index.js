@@ -76,9 +76,13 @@ exports.removeUserFromLikedBy = functions
     try {
       const { pid, uid } = snap.data();
       const postRef = admin.firestore().collection("posts").doc(pid);
-      return postRef.update({
-        likedBy: admin.firestore.FieldValue.arrayRemove(uid),
-        likeCount: admin.firestore.FieldValue.increment(-1),
+      postRef.get().then((snap) => {
+        if (snap.exists) {
+          return postRef.update({
+            likedBy: admin.firestore.FieldValue.arrayRemove(uid),
+            likeCount: admin.firestore.FieldValue.increment(-1),
+          });
+        }
       });
     } catch (error) {
       console.log(error);
@@ -125,94 +129,204 @@ exports.updateFeeds = functions
 exports.deletePost = functions
   .region("australia-southeast1")
   .https.onCall(async (data, context) => {
-    const postID = data.post;
-    console.log(postID);
-    const postRef = admin.firestore().collection("posts").doc(postID);
-    const postDoc = await postRef.get();
-    const post = { ...postDoc.data(), id: postDoc.id };
-    return await (async () => {
-      // delete post from feeds
-      try {
-        const authorID = post.author.id;
-        const authorDocRef = await admin
+    return await deletePostModule(data.post);
+  });
+
+// This module has been abstracted out of the deletePost cloud fn so it can be
+// referenced within the deleteAccount cloud fn
+async function deletePostModule(postID) {
+  const postRef = admin.firestore().collection("posts").doc(postID);
+  const postDoc = await postRef.get();
+  const post = { ...postDoc.data(), id: postDoc.id };
+  return await (async () => {
+    const authorID = post.author.id;
+    const authorDocRef = await admin
+      .firestore()
+      .collection("users")
+      .doc(authorID)
+      .get();
+    const authorDoc = authorDocRef.data();
+    const { followers } = authorDoc;
+    // delete post from feeds
+    try {
+      const promises = [];
+      followers.forEach((follower) => {
+        const feedItemRef = admin
+          .firestore()
+          .collection("feeds")
+          .doc(follower)
+          .collection("feedItems")
+          .doc(post.id)
+          .delete();
+        promises.push(feedItemRef);
+      });
+      await Promise.all(promises);
+    } catch (err) {
+      console.log(err);
+      console.log("error deleting posts from feeds documents");
+      return "error deleting posts from feeds documents";
+    }
+    // delete image from storage
+    try {
+      const bucket = admin.storage().bucket();
+      const path = `${post.author.id}/posts/${post.fileName}`;
+      bucket.file(path).delete();
+    } catch (err) {
+      console.log(err);
+      return "error deleting image from storage";
+    }
+    // delete related heart documents
+    try {
+      const { likedBy } = post;
+      const promises = [];
+      likedBy.forEach((userID) => {
+        // document in hearts root collection
+        const heartRef = admin
+          .firestore()
+          .collection("hearts")
+          .doc(`${userID}_${post.id}`)
+          .delete();
+        promises.push(heartRef);
+        // document in liked subcollection of user document
+        const likedRef = admin
           .firestore()
           .collection("users")
-          .doc(authorID)
-          .get();
-        const authorDoc = authorDocRef.data();
-        const { followers } = authorDoc;
-        const promises = [];
-        followers.forEach((follower) => {
-          const feedItemRef = admin
-            .firestore()
-            .collection("feeds")
-            .doc(follower)
-            .collection("feedItems")
-            .doc(post.id)
-            .delete();
-          promises.push(feedItemRef);
+          .doc(userID)
+          .collection("liked")
+          .doc(`${userID}_${post.id}`)
+          .delete();
+        promises.push(likedRef);
+      });
+      await Promise.all(promises);
+    } catch (err) {
+      console.log(err);
+      return "error deleting heart documents";
+    }
+    // delete related save documents
+    try {
+      admin
+        .firestore()
+        .collection("saves")
+        .where("pid", "==", post.id)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            doc.ref.delete();
+          });
         });
-        await Promise.all(promises);
-      } catch (err) {}
-      // delete image from storage
+    } catch (err) {
+      console.log(err);
+      console.log("error deleting save documents");
+      return "error deleting save documents";
+    }
+    // delete related save documents on user subcollections
+    try {
+      const promises = [];
+      followers.forEach((follower) => {
+        const feedItemRef = admin
+          .firestore()
+          .collection("users")
+          .doc(follower)
+          .collection("saves")
+          .doc(`${follower}_${post.id}`)
+          .delete();
+        promises.push(feedItemRef);
+      });
+      await Promise.all(promises);
+    } catch (err) {
+      console.log(err);
+      console.log("error deleting save documents in subcollection");
+      return "error deleting save documents in subcollection";
+    }
+    // delete post
+    try {
+      postRef.delete();
+    } catch (err) {
+      console.log(err);
+      return "error deleting post";
+    }
+    return 0;
+  })();
+}
+
+// *************************** Deleting accounts ********************************
+
+exports.deleteAccount = functions
+  .region("australia-southeast1")
+  .auth.user()
+  .onDelete(async (user) => {
+    const uid = user.uid;
+    const userDocRef = admin.firestore().collection("users").doc(uid);
+    const packedUserDoc = await userDocRef.get();
+    const userDoc = packedUserDoc.data();
+    // For each user post, delete that post
+    try {
+      const postPromises = [];
+      admin
+        .firestore()
+        .collection("posts")
+        .where(`author.id`, "==", uid)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach((doc) => {
+            const promise = deletePostModule(doc.id);
+            postPromises.push(promise);
+          });
+        });
+      await Promise.all(postPromises);
+    } catch (err) {
+      console.log("Error deleting posts");
+      console.log(err);
+    }
+    // If a custom profile image, delete that from storage
+    if (userDoc.customProfileImage) {
       try {
         const bucket = admin.storage().bucket();
-        const path = `${post.author.id}/posts/${post.fileName}`;
+        const path = `${uid}/profileImages`;
         bucket.file(path).delete();
       } catch (err) {
+        console.log("Error deleting profile image");
         console.log(err);
-        return "error deleting image from storage";
       }
-      // delete related heart documents
-      try {
-        const { likedBy } = post;
-        const promises = [];
-        likedBy.forEach((userID) => {
-          // document in hearts root collection
-          const heartRef = admin
-            .firestore()
-            .collection("hearts")
-            .doc(`${userID}_${post.id}`)
-            .delete();
-          promises.push(heartRef);
-          // document in liked subcollection of user document
-          const likedRef = admin
-            .firestore()
-            .collection("users")
-            .doc(userID)
-            .collection("liked")
-            .doc(`${userID}_${post.id}`)
-            .delete();
-          promises.push(likedRef);
-        });
-        await Promise.all(promises);
-      } catch (err) {
-        console.log(err);
-        return "error deleting heart documents";
-      }
-      // delete related save documents
-      try {
-        admin
-          .firestore()
-          .collection("saves")
-          .where("pid", "==", post.id)
-          .get()
-          .then((snapshot) => {
-            snapshot.forEach((doc) => {
-              doc.ref.delete();
+    }
+    // Delete userID from each users following array
+    try {
+      const userPromises = [];
+      admin
+        .firestore()
+        .collection("users")
+        .where("following", "array-contains", uid)
+        .get()
+        .then((snapshots) => {
+          snapshots.forEach((snapshot) => {
+            const promise = snapshot.ref.update({
+              following: admin.firestore.FieldValue.arrayRemove(uid),
             });
+            userPromises.push(promise);
           });
-      } catch (err) {
-        console.log(err);
-        return "error deleting save documents";
-      }
-      // delete post
-      try {
-        postRef.delete();
-      } catch (err) {
-        console.log(err);
-        return "error deleting post";
-      }
-      return 0;
-    })();
+        });
+      await Promise.all(userPromises);
+    } catch (err) {
+      console.log("Error updating follower arrays");
+      console.log(err);
+    }
+    // Delete Feed document
+    admin
+      .firestore()
+      .collection("feeds")
+      .doc(uid)
+      .get()
+      .then((snap) => {
+        if (snap.exists) {
+          snap.ref.delete();
+        }
+      });
+
+    // Delete the user doc
+    try {
+      await userDocRef.delete();
+    } catch (err) {
+      console.log("Error deleting user document");
+      console.log(err);
+    }
   });

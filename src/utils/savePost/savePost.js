@@ -1,7 +1,7 @@
 import { firestore, timestamp } from "../../firebase/firebase";
 
 async function savePost(uid, pid) {
-  // The "saves" collections is maintained to track if a user has liked a post.
+  // The "saves" collections is maintained to track if a user has saved a post.
   await firestore.collection("saves").doc(`${uid}_${pid}`).set({
     timestamp: timestamp(),
     uid,

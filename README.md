@@ -12,3 +12,4 @@ Notes about:
 - testing coverage
 - firestore data modelling (for a follower/following relationship)
 - Algolia for search to find users. And maybe hashtags?
+- Handling logic to delete a user or a post (and related hearts/saves/comments/storage)
