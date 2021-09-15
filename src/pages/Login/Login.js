@@ -88,7 +88,7 @@ function Login({ setUID }) {
           .collection("users")
           .doc(cred.user.uid)
           .set({
-            name,
+            name: String(name),
             fullName,
             followerCount: 0,
             followingCount: 0,
@@ -118,6 +118,13 @@ function Login({ setUID }) {
     } else {
       input.setCustomValidity("");
     }
+  };
+
+  const handleDemoAccount = () => {
+    auth.signInWithEmailAndPassword("demo@demo.com", "demo123").catch((err) => {
+      const message = handleErrorCode(err.code);
+      setLoginPrompt(message);
+    });
   };
 
   return (
@@ -201,6 +208,13 @@ function Login({ setUID }) {
                     Sign up
                   </span>
                 </div>
+
+                <span
+                  className=" text-gray-400 cursor-pointer text-xs mt-1"
+                  onClick={() => handleDemoAccount()}
+                >
+                  Try a demo account
+                </span>
               </form>
             )}
             {modal === "signup" && (
