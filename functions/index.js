@@ -1,7 +1,7 @@
 const algoliasearch = require("algoliasearch");
-
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
+const firebase_tools = require("firebase-tools");
 admin.initializeApp();
 const env = functions.config();
 
@@ -153,6 +153,8 @@ async function deletePostModule(postID) {
       .doc(authorID)
       .get();
     const authorDoc = authorDocRef.data();
+    console.log("AUTHOR DOC");
+    console.log(authorDoc);
     const { followers } = authorDoc;
     // delete post from feeds
     try {
@@ -266,74 +268,107 @@ exports.deleteAccount = functions
     const userDocRef = admin.firestore().collection("users").doc(uid);
     const packedUserDoc = await userDocRef.get();
     const userDoc = packedUserDoc.data();
+    const tasks = [];
     // For each user post, delete that post
-    try {
-      const postPromises = [];
-      admin
-        .firestore()
-        .collection("posts")
-        .where(`author.id`, "==", uid)
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach((doc) => {
-            const promise = deletePostModule(doc.id);
-            postPromises.push(promise);
-          });
-        });
-      await Promise.all(postPromises);
-    } catch (err) {
-      console.log("Error deleting posts");
-      console.log(err);
-    }
-    // If a custom profile image, delete that from storage
-    if (userDoc.customProfileImage) {
-      try {
-        const bucket = admin.storage().bucket();
-        const path = `${uid}/profileImages`;
-        bucket.file(path).delete();
-      } catch (err) {
-        console.log("Error deleting profile image");
-        console.log(err);
-      }
-    }
-    // Delete userID from each users following array
-    try {
-      const userPromises = [];
-      admin
-        .firestore()
-        .collection("users")
-        .where("following", "array-contains", uid)
-        .get()
-        .then((snapshots) => {
-          snapshots.forEach((snapshot) => {
-            const promise = snapshot.ref.update({
-              following: admin.firestore.FieldValue.arrayRemove(uid),
-            });
-            userPromises.push(promise);
-          });
-        });
-      await Promise.all(userPromises);
-    } catch (err) {
-      console.log("Error updating follower arrays");
-      console.log(err);
-    }
-    // Delete Feed document
+    const postPromises = [];
     admin
       .firestore()
-      .collection("feeds")
-      .doc(uid)
+      .collection("posts")
+      .where(`author.id`, "==", uid)
       .get()
-      .then((snap) => {
-        if (snap.exists) {
-          snap.ref.delete();
-        }
+      .then((snapshot) => {
+        snapshot.docs.forEach((doc) => {
+          console.log(doc.id);
+          const promise = deletePostModule(doc.id);
+          postPromises.push(promise);
+        });
       });
+    tasks.push(Promise.all(postPromises));
+
+    // If a custom profile image, delete that from storage
+    if (userDoc.customProfileImage) {
+      const bucket = admin.storage().bucket();
+      const path = `${uid}/profileImages`;
+      tasks.push(bucket.file(path).delete());
+    }
+    // Delete userID from each users following array
+    const userPromises = [];
+    admin
+      .firestore()
+      .collection("users")
+      .where("following", "array-contains", uid)
+      .get()
+      .then((snapshots) => {
+        snapshots.forEach((snapshot) => {
+          const promise = snapshot.ref.update({
+            following: admin.firestore.FieldValue.arrayRemove(uid),
+          });
+          userPromises.push(promise);
+        });
+      });
+    tasks.push(Promise.all(userPromises));
+
+    // Delete Feed document
+    tasks.push(
+      Promise.resolve(
+        admin
+          .firestore()
+          .collection("feeds")
+          .doc(uid)
+          .collection("feedItems")
+          .get()
+          .then((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              doc.ref.delete();
+            });
+          })
+      )
+    );
+    // Delete the user's heart documents
+    tasks.push(
+      Promise.resolve(
+        admin
+          .firestore()
+          .collection("hearts")
+          .where("uid", "==", uid)
+          .get()
+          .then((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              doc.ref.delete();
+            });
+          })
+      )
+    );
+
+    //Delete the user's save documents
+    tasks.push(
+      Promise.resolve(
+        admin
+          .firestore()
+          .collection("saves")
+          .where("uid", "==", uid)
+          .get()
+          .then((snapshot) => {
+            snapshot.docs.forEach((doc) => {
+              doc.ref.delete();
+            });
+          })
+      )
+    );
 
     // Delete the user doc
-    try {
+    await Promise.all(tasks).then(async () => {
       await userDocRef.delete();
-    } catch (err) {
-      console.log("Error deleting user document");
-      console.log(err);
-    }
+    });
+  });
+
+exports.userGarbageCollection = functions
+  .region("australia-southeast1")
+  .firestore.document("users/{userID}")
+  .onDelete((snap) => {
+    firebase_tools.firestore.delete(snap.ref.path, {
+      project: process.env.GCP_PROJECT,
+      recursive: true,
+      yes: true,
+    });
   });
