@@ -19,10 +19,15 @@ function Main({ uid }) {
   const [packedUser] = useDocument(firestore.doc(`users/${uid}`));
 
   useEffect(() => {
-    if (packedUser) {
+    if (packedUser !== undefined) {
+      console.log(packedUser);
+      console.log(packedUser.data());
       (async () => {
         const unpackedUser = packedUser.data();
-        if (unpackedUser.customProfileImage) {
+        // To handle firebase storage emulator. .refFromURL() doesn't work with locally stored files in the emulator.
+        const str = unpackedUser.profileImage;
+        const regex = new RegExp(/localhost:9199/);
+        if (unpackedUser.customProfileImage && !regex.test(str)) {
           const gsProfileImageURL = unpackedUser.profileImage;
           let ref = await storage
             .refFromURL(gsProfileImageURL)

@@ -4,7 +4,15 @@ export default async function getPostInfo(id) {
   const ref = firestore.collection("posts").doc(id);
   const doc = await ref.get();
   const imgRef = doc.data().image;
-  const image = await storage.refFromURL(imgRef).getDownloadURL();
+  // To handle firebase storage emulator. .refFromURL() doesn't work with locally stored files in the emulator.
+  let image;
+  const regex = new RegExp(/localhost:9199/);
+  if (!regex.test(imgRef)) {
+    image = await storage.refFromURL(imgRef).getDownloadURL();
+  } else {
+    image = doc.data().image;
+  }
+
   return { ...doc.data(), image, id: doc.id };
 }
 
