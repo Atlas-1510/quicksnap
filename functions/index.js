@@ -17,13 +17,16 @@ exports.indexUser = functions
     const data = snap.data();
     const objectID = snap.id;
 
-    return index.saveObject({
-      name: data.name,
-      fullName: data.fullName,
-      profileImage: data.profileImage,
-      id: objectID,
-      objectID,
-    });
+    console.log("Algolia Create Running ***REMEMBER TO REENABLE***");
+    return null;
+
+    // return index.saveObject({
+    //   name: data.name,
+    //   fullName: data.fullName,
+    //   profileImage: data.profileImage,
+    //   id: objectID,
+    //   objectID,
+    // });
   });
 
 exports.unindexUser = functions
@@ -32,7 +35,9 @@ exports.unindexUser = functions
   .onDelete((snap) => {
     const objectID = snap.id;
 
-    return index.deleteObject(objectID);
+    console.log("Algolia Delete Running ***REMEMBER TO REENABLE***");
+    return null;
+    // return index.deleteObject(objectID);
   });
 
 exports.updateUserIndex = functions
@@ -42,13 +47,15 @@ exports.updateUserIndex = functions
     const newValue = change.after.data();
     const objectID = context.params.userID;
 
-    return index.saveObject({
-      name: newValue.name,
-      fullName: newValue.fullName,
-      profileImage: newValue.profileImage,
-      id: objectID,
-      objectID,
-    });
+    console.log("Algolia Update Running ***REMEMBER TO REENABLE***");
+    return null;
+    // return index.saveObject({
+    //   name: newValue.name,
+    //   fullName: newValue.fullName,
+    //   profileImage: newValue.profileImage,
+    //   id: objectID,
+    //   objectID,
+    // });
   });
 
 // *************************** Liking posts ********************************
