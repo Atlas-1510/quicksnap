@@ -11,6 +11,9 @@ const index = client.initIndex("quicksnap_users");
 //TODO: Reactivate algolia when moving to production
 const activeAlgolia = false;
 
+const increment = admin.firestore.FieldValue.increment(1);
+const decrement = admin.firestore.FieldValue.increment(-1);
+
 // *************************** Algolia ********************************
 
 exports.indexUser = functions
@@ -381,5 +384,30 @@ exports.userGarbageCollection = functions
       project: process.env.GCP_PROJECT,
       recursive: true,
       yes: true,
+    });
+  });
+
+// *************************** Increment/Decrement Account Trackers ********************************
+
+exports.incrementPostCount = functions
+  .region("australia-southeast1")
+  .firestore.document("posts/{postID}")
+  .onCreate(async (snap, context) => {
+    const data = snap.data();
+    console.log(data);
+    const authorID = data.author.id;
+    await admin.firestore().collection("users").doc(authorID).update({
+      postCount: increment,
+    });
+  });
+
+exports.decrementPostCount = functions
+  .region("australia-southeast1")
+  .firestore.document("posts/{postID}")
+  .onDelete(async (snap, context) => {
+    const data = snap.data();
+    const authorID = data.author.id;
+    await admin.firestore().collection("users").doc(authorID).update({
+      postCount: decrement,
     });
   });
