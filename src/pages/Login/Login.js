@@ -121,6 +121,7 @@ function Login({ setUID }) {
   };
 
   const handleDemoAccount = () => {
+    // TODO: Create demo account in firebase
     auth.signInWithEmailAndPassword("demo@demo.com", "demo123").catch((err) => {
       const message = handleErrorCode(err.code);
       setLoginPrompt(message);
