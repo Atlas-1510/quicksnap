@@ -1,4 +1,4 @@
-import { firestore, storage } from "../../firebase/firebase";
+import { firestore } from "../../firebase/firebase";
 
 import { useState, useEffect } from "react";
 
@@ -11,24 +11,11 @@ function useGetUserPosts(uid) {
       .where("author.id", "==", uid)
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
-        const promises = snapshot.docs.map((doc) => {
-          // To handle firebase storage emulator. .refFromURL() doesn't work with locally stored files in the emulator.
-          const str = doc.data().image;
-          const regex = new RegExp(/localhost:9199/);
-          if (!regex.test(str)) {
-            return storage.refFromURL(doc.data().image).getDownloadURL();
-          } else {
-            return doc.data().image;
-          }
-        });
-        Promise.all(promises).then((downloadURLs) => {
-          const posts = snapshot.docs.map((doc, index) => ({
-            id: doc.id,
-            ...doc.data(),
-            image: downloadURLs[index],
-          }));
-          setUserPosts(posts);
-        });
+        const posts = snapshot.docs.map((doc, index) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUserPosts(posts);
       });
     return () => unsub();
   }, [uid]);

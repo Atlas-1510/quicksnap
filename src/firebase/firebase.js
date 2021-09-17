@@ -27,11 +27,11 @@ const FieldValue = firebase.firestore.FieldValue;
 
 const functions = fireApp.functions("australia-southeast1");
 
-if (window.location.hostname === "localhost") {
-  firestore.useEmulator("localhost", 8080);
-  firebase.functions().useEmulator("localhost", 5001);
-  auth.useEmulator("http://localhost:9099");
-  firebase.storage().useEmulator("localhost", 9199);
-}
+// if (window.location.hostname === "localhost") {
+//   firestore.useEmulator("localhost", 8080);
+//   firebase.functions().useEmulator("localhost", 5001);
+//   auth.useEmulator("http://localhost:9099");
+//   firebase.storage().useEmulator("localhost", 9199);
+// }
 
 export { auth, firestore, storage, timestamp, FieldValue, functions };

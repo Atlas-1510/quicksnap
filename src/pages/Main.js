@@ -5,7 +5,7 @@ import Home from "./Home/Home";
 import Messenger from "./Messenger/Messenger";
 import User from "./User/User";
 import { useDocument } from "react-firebase-hooks/firestore";
-import { firestore, storage } from "../firebase/firebase";
+import { firestore } from "../firebase/firebase";
 import ViewAnotherUser from "./ViewAnotherUser/ViewAnotherUser";
 import BottomMobileNav from "../components/BottomMobileNav";
 import MobileSearch from "../components/Header/Search/MobileSearch";
@@ -24,25 +24,10 @@ function Main({ uid }) {
       console.log(packedUser.data());
       (async () => {
         const unpackedUser = packedUser.data();
-        // To handle firebase storage emulator. .refFromURL() doesn't work with locally stored files in the emulator.
-        const str = unpackedUser.profileImage;
-        const regex = new RegExp(/localhost:9199/);
-        if (unpackedUser.customProfileImage && !regex.test(str)) {
-          const gsProfileImageURL = unpackedUser.profileImage;
-          let ref = await storage
-            .refFromURL(gsProfileImageURL)
-            .getDownloadURL();
-          setUser({
-            ...unpackedUser,
-            uid,
-            profileImage: ref,
-          });
-        } else {
-          setUser({
-            ...unpackedUser,
-            uid,
-          });
-        }
+        setUser({
+          ...unpackedUser,
+          uid,
+        });
       })();
     }
   }, [uid, packedUser]);

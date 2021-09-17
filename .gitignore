@@ -26,3 +26,4 @@ src/utils/fb_tut_backup.js
 functions/node_modules
 .vscode/
 TestLayout.js
+/seed
