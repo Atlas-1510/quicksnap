@@ -8,6 +8,9 @@ const env = functions.config();
 const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
 const index = client.initIndex("quicksnap_users");
 
+//TODO: Reactivate algolia when moving to production
+const activeAlgolia = false;
+
 // *************************** Algolia ********************************
 
 exports.indexUser = functions
@@ -17,16 +20,18 @@ exports.indexUser = functions
     const data = snap.data();
     const objectID = snap.id;
 
-    console.log("Algolia Create Running ***REMEMBER TO REENABLE***");
-    return null;
-
-    // return index.saveObject({
-    //   name: data.name,
-    //   fullName: data.fullName,
-    //   profileImage: data.profileImage,
-    //   id: objectID,
-    //   objectID,
-    // });
+    if (activeAlgolia) {
+      return index.saveObject({
+        name: data.name,
+        fullName: data.fullName,
+        profileImage: data.profileImage,
+        id: objectID,
+        objectID,
+      });
+    } else {
+      console.log("Algolia Create Running ***REMEMBER TO REENABLE***");
+      return null;
+    }
   });
 
 exports.unindexUser = functions
@@ -35,9 +40,12 @@ exports.unindexUser = functions
   .onDelete((snap) => {
     const objectID = snap.id;
 
-    console.log("Algolia Delete Running ***REMEMBER TO REENABLE***");
-    return null;
-    // return index.deleteObject(objectID);
+    if (activeAlgolia) {
+      return index.deleteObject(objectID);
+    } else {
+      console.log("Algolia Delete Running ***REMEMBER TO REENABLE***");
+      return null;
+    }
   });
 
 exports.updateUserIndex = functions
@@ -47,15 +55,18 @@ exports.updateUserIndex = functions
     const newValue = change.after.data();
     const objectID = context.params.userID;
 
-    console.log("Algolia Update Running ***REMEMBER TO REENABLE***");
-    return null;
-    // return index.saveObject({
-    //   name: newValue.name,
-    //   fullName: newValue.fullName,
-    //   profileImage: newValue.profileImage,
-    //   id: objectID,
-    //   objectID,
-    // });
+    if (activeAlgolia) {
+      return index.saveObject({
+        name: newValue.name,
+        fullName: newValue.fullName,
+        profileImage: newValue.profileImage,
+        id: objectID,
+        objectID,
+      });
+    } else {
+      console.log("Algolia Update Running ***REMEMBER TO REENABLE***");
+      return null;
+    }
   });
 
 // *************************** Liking posts ********************************
