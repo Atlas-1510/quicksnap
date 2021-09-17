@@ -5,7 +5,7 @@ import "firebase/firestore";
 import "firebase/storage";
 import "firebase/functions";
 
-const firebaseConfig = {
+let firebaseConfig = {
   apiKey: "AIzaSyA_zqyAb5wbrUILilRHJcByyLFqrqsOyvg",
   authDomain: "quicksnap-58e9a.firebaseapp.com",
   projectId: "quicksnap-58e9a",
@@ -16,6 +16,7 @@ const firebaseConfig = {
 };
 
 const fireApp = firebase.initializeApp(firebaseConfig);
+
 // firebase.analytics(); TODO: Re-enable analytics
 
 const auth = firebase.auth();
@@ -25,5 +26,12 @@ const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 const FieldValue = firebase.firestore.FieldValue;
 
 const functions = fireApp.functions("australia-southeast1");
+
+if (window.location.hostname === "localhost") {
+  firestore.useEmulator("localhost", 8080);
+  firebase.functions().useEmulator("localhost", 5001);
+  auth.useEmulator("http://localhost:9099");
+  firebase.storage().useEmulator("localhost", 9199);
+}
 
 export { auth, firestore, storage, timestamp, FieldValue, functions };
