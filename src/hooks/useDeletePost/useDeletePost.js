@@ -9,10 +9,9 @@ export default function useDeletePost(pid) {
     if (commenceDeletion) {
       (async () => {
         try {
-          const backEndDelete = functions.httpsCallable("deletePost");
-          await Promise.resolve(backEndDelete({ post: pid })).then(
-            setDeleteStatus(true)
-          );
+          const deletePost = functions.httpsCallable("deletePost");
+          console.log(`calling deletePost with pid: ${pid}`);
+          await deletePost({ post: pid }).then(setDeleteStatus(true));
         } catch (err) {
           console.log(err);
         }
