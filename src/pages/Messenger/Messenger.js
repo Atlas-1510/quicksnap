@@ -4,11 +4,14 @@ import Desktop from "./Desktop/Desktop";
 import Mobile from "./Mobile/Mobile";
 import { UserContext } from "../Main";
 import { firestore, timestamp } from "../../firebase/firebase";
+import { useParams } from "react-router";
+import getUserInfo from "../../utils/getUserInfo/getUserInfo";
 
 // Launchpad state for active chat represents when a user has selected a new recipient
 // to commence a chat with, but has not yet sent a message, so the chat document does not yet exist on firestore.
 
 function Messenger({ setCurrentPage }) {
+  const { id } = useParams();
   const { width } = useWindowSize();
   const { uid } = useContext(UserContext);
   const [chats, setChats] = useState(null);
@@ -44,7 +47,7 @@ function Messenger({ setCurrentPage }) {
           promises.push(promise);
         });
         const users = [];
-        Promise.all(promises).then((results) => {
+        Promise.all(promises).then(async (results) => {
           results.forEach((result) => {
             const user = result.data();
             users.push({ ...user, id: result.id });
@@ -57,11 +60,30 @@ function Messenger({ setCurrentPage }) {
             });
           });
 
-          setChats(chatDocs);
+          if (id !== "main") {
+            console.log(chatDocs);
+            let match = chatDocs.find((doc) => doc.contact.id === id);
+            if (match) {
+              setChats(chatDocs);
+              setActiveChat(match);
+            } else {
+              const launchpad = {
+                chatID: "launchpad",
+                contact: await getUserInfo(id),
+                members: [uid, id],
+              };
+              chatDocs.push(launchpad);
+              setChats(chatDocs);
+              setActiveChat(launchpad);
+            }
+          } else {
+            setChats(chatDocs);
+          }
         });
       });
+
     return () => unsub();
-  }, [uid]);
+  }, [uid, id]);
 
   // Manage messages
   useEffect(() => {

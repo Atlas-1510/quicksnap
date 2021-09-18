@@ -19,9 +19,10 @@ import unsavePost from "../../utils/unsavePost/unsavePost";
 import savePost from "../../utils/savePost/savePost";
 import useComponentVisible from "../../hooks/useComponentVisible/useComponentVisible";
 import useDeletePost from "../../hooks/useDeletePost/useDeletePost";
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 
-function ImageModal({ post, setActivePost }) {
+function ImageModal({ post, setActivePost, setCurrentPage }) {
   const { width } = useWindowSize();
   const [postInfo, setPostInfo] = useState(post);
   const { id, likeCount } = postInfo;
@@ -168,9 +169,15 @@ function ImageModal({ post, setActivePost }) {
                       >
                         <Heart liked={liked} />
                       </div>
-                      <div className="w-8 m-2">
-                        <PaperAirplane />
-                      </div>
+                      {uid !== postInfo.author.id && (
+                        <Link
+                          className="w-8 m-2"
+                          to={`/messenger/${postInfo.author.id}`}
+                          onClick={() => setCurrentPage("messenger")}
+                        >
+                          <PaperAirplane />
+                        </Link>
+                      )}
                     </div>
                     <div
                       className="w-8 m-2 cursor-pointer"

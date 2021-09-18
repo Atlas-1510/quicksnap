@@ -45,11 +45,15 @@ function Main({ uid }) {
                     <Route exact path="/">
                       <Home setCurrentPage={setCurrentPage} />
                     </Route>
-                    <Route exact path="/messenger">
+                    <Route exact path="/messenger/:id">
                       <Messenger setCurrentPage={setCurrentPage} />
                     </Route>
-                    <Route exact path="/user" component={User} />
-                    <Route path="/view-user/:id" component={ViewAnotherUser} />
+                    <Route exact path="/user">
+                      <User setCurrentPage={setCurrentPage} />
+                    </Route>
+                    <Route path="/view-user/:id">
+                      <ViewAnotherUser setCurrentPage={setCurrentPage} />
+                    </Route>
                     <Route path="/search">
                       <MobileSearch setCurrentPage={setCurrentPage} />
                     </Route>

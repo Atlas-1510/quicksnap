@@ -22,7 +22,7 @@ import useDeletePost from "../hooks/useDeletePost/useDeletePost";
 
 // TODO: Add timestamp display to post
 
-function Card({ card }) {
+function Card({ card, setCurrentPage }) {
   const { width } = useWindowSize();
   const [post, setPost] = useState(card);
   const { author, image, comments, likeCount, id } = post;
@@ -129,9 +129,15 @@ function Card({ card }) {
                 >
                   <Heart liked={liked} />
                 </div>
-                <div className="w-8 m-2">
-                  <PaperAirplane />
-                </div>
+                {uid !== author.id && (
+                  <Link
+                    to={`/messenger/${author.id}`}
+                    className="w-8 m-2"
+                    onClick={() => setCurrentPage("messenger")}
+                  >
+                    <PaperAirplane />
+                  </Link>
+                )}
               </div>
               <div
                 className="w-8 m-2 cursor-pointer"

@@ -44,7 +44,10 @@ function Home({ setCurrentPage }) {
         setCurrentPage={setCurrentPage}
       />
       <div className="w-full lg:w-3/5 mt-2 md:mt-auto">
-        {feed && feed.map((card) => <Card key={card.id} card={card} />)}
+        {feed &&
+          feed.map((card) => (
+            <Card key={card.id} card={card} setCurrentPage={setCurrentPage} />
+          ))}
       </div>
     </div>
   );

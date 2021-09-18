@@ -13,7 +13,7 @@ import Footer from "../../components/Footer";
 import { motion } from "framer-motion";
 import ImageGrid from "../../components/ImageGrid";
 
-function ViewAnotherUser() {
+function ViewAnotherUser({ setCurrentPage }) {
   const { id } = useParams();
   const { following, uid } = useContext(UserContext);
   const userInfo = useGetUserInfo(id);
@@ -128,7 +128,11 @@ function ViewAnotherUser() {
           </div>
           {/* Image Modal (shows when a post is opened) */}
           {activePost && (
-            <ImageModal post={activePost} setActivePost={setActivePost} />
+            <ImageModal
+              post={activePost}
+              setActivePost={setActivePost}
+              setCurrentPage={setCurrentPage}
+            />
           )}
 
           <Footer />

@@ -27,7 +27,7 @@ function Header({ currentPage, setCurrentPage }) {
               </div>
             </Link>
             <Link
-              to="/messenger"
+              to="/messenger/main"
               onClick={() => setCurrentPage("messenger")}
               data-testid="messenger-icon"
             >

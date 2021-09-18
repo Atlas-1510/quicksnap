@@ -13,7 +13,7 @@ import useGetSavedPosts from "../../hooks/useGetSavedPosts/useGetSavedPosts";
 import { motion, AnimatePresence } from "framer-motion";
 import ImageGrid from "../../components/ImageGrid";
 
-function User() {
+function User({ setCurrentPage }) {
   const {
     uid,
     name,
@@ -168,7 +168,11 @@ function User() {
         {/* Image Modal (shows when a post is opened) */}
         <AnimatePresence exitBeforeEnter={true}>
           {activePost && (
-            <ImageModal post={activePost} setActivePost={setActivePost} />
+            <ImageModal
+              post={activePost}
+              setActivePost={setActivePost}
+              setCurrentPage={setCurrentPage}
+            />
           )}
         </AnimatePresence>
         <Footer />
