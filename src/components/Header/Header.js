@@ -19,7 +19,7 @@ function Header({ currentPage, setCurrentPage }) {
           <Link to="/" onClick={() => setCurrentPage("home")}>
             <h1 className=" font-curly text-4xl">QuickSnap</h1>
           </Link>
-          <Search />
+          <Search setCurrentPage={setCurrentPage} />
           <div className="flex">
             <Link to="/" onClick={() => setCurrentPage("home")}>
               <div className="w-7 m-2">

@@ -15,7 +15,7 @@ const searchClient = algoliasearch(
 );
 const index = searchClient.initIndex("quicksnap_users");
 
-function Search() {
+function Search({ setCurrentPage }) {
   const [searchModal, setSearchModal] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const { uid } = useContext(UserContext);
@@ -135,6 +135,7 @@ function Search() {
                     setIsComponentVisible={setIsComponentVisible}
                     deleteSearchHistory={deleteSearchHistory}
                     deleteSingleSearch={deleteSingleSearch}
+                    setCurrentPage={setCurrentPage}
                   />
                 </>
               )}
@@ -144,6 +145,8 @@ function Search() {
                   <SearchModal
                     searchResults={searchResults}
                     storeSearch={storeSearch}
+                    setCurrentPage={setCurrentPage}
+                    setIsComponentVisible={setIsComponentVisible}
                   />
                 </>
               )}
@@ -162,7 +165,12 @@ function RecentSearchModal({
   setIsComponentVisible,
   deleteSearchHistory,
   deleteSingleSearch,
+  setCurrentPage,
 }) {
+  const handleContactClick = () => {
+    setCurrentPage(null);
+    setIsComponentVisible(false);
+  };
   return (
     <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md py-3 relative">
       <div className="flex justify-between w-full px-3">
@@ -186,7 +194,7 @@ function RecentSearchModal({
               >
                 <Link
                   to={`/view-user/${user.id}`}
-                  onClick={() => setIsComponentVisible(false)}
+                  onClick={() => handleContactClick()}
                 >
                   <div className="flex">
                     <img
@@ -220,7 +228,17 @@ function RecentSearchModal({
   );
 }
 
-function SearchModal({ searchResults, storeSearch }) {
+function SearchModal({
+  searchResults,
+  storeSearch,
+  setCurrentPage,
+  setIsComponentVisible,
+}) {
+  const handleContactClick = (id) => {
+    storeSearch(id);
+    setCurrentPage(null);
+    setIsComponentVisible(false);
+  };
   return (
     <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md py-3 overflow-y-scroll">
       <div className="w-full overflow-y-scroll">
@@ -234,7 +252,7 @@ function SearchModal({ searchResults, storeSearch }) {
             >
               <Link
                 to={`/view-user/${user.id}`}
-                onClick={() => storeSearch(user.id)}
+                onClick={() => handleContactClick(user.id)}
               >
                 <div className="flex items-center w-full justify-between">
                   <img
