@@ -10,6 +10,7 @@ import handleLogOut from "../../utils/handleLogOut/handleLogOut";
 import Footer from "../../components/Footer";
 import useGetLikedPosts from "../../hooks/useGetLikedPosts/useGetLikedPosts";
 import useGetSavedPosts from "../../hooks/useGetSavedPosts/useGetSavedPosts";
+import { motion } from "framer-motion";
 
 function User() {
   const {
@@ -68,18 +69,22 @@ function User() {
               <span className="font-roboto text-xl md:text-3xl font-light mr-2 md:mr-6">
                 {name}
               </span>
-              <button
+              <motion.button
                 className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
                 onClick={() => setEditProfileModal(true)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
                 Edit Profile
-              </button>
-              <button
+              </motion.button>
+              <motion.button
                 className="border border-gray-300 rounded-md py-1 px-2 mr-2 md:m-1 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
                 onClick={() => handleLogOut()}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
                 Log Out
-              </button>
+              </motion.button>
               <Link to="/" id="returnHome" />
             </div>
             {/* Container for full name of user */}

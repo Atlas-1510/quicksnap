@@ -7,6 +7,7 @@ import Button from "../../../components/Button";
 import { UserContext } from "../../Main";
 import ChatBox from "../ChatBox/ChatBox";
 import NewChat from "../NewChat/NewChat";
+import { motion } from "framer-motion";
 
 function Desktop({
   chats,
@@ -44,10 +45,12 @@ function Desktop({
         <div className="flex flex-col">
           {chats &&
             chats.map((chat) => (
-              <div
+              <motion.div
                 key={chat.chatID}
                 className="flex items-center m-2 cursor-pointer"
                 onClick={() => getChatFromID(chat.chatID)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.9 }}
               >
                 <img
                   src={chat.contact.profileImage}
@@ -63,7 +66,7 @@ function Desktop({
                     {chat.contact.fullName}
                   </span>
                 </div>
-              </div>
+              </motion.div>
             ))}
         </div>
       </div>

@@ -10,6 +10,7 @@ import followUser from "../../utils/followUser/followUser";
 import unfollowUser from "../../utils/unfollowUser/unfollowUser";
 import { Redirect } from "react-router";
 import Footer from "../../components/Footer";
+import { motion } from "framer-motion";
 
 function ViewAnotherUser() {
   const { id } = useParams();
@@ -64,12 +65,14 @@ function ViewAnotherUser() {
                   {userInfo.name}
                 </span>
                 {follows && (
-                  <button
+                  <motion.button
                     className="border border-gray-300 rounded-md py-1 px-2 m-1 mr-3 text-sm font-semibold hover:bg-gray-300 hover:shadow-inner"
                     onClick={() => handleUnfollowUser()}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
                     Stop Following
-                  </button>
+                  </motion.button>
                 )}
                 {!follows && (
                   <button

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
 import { firestore, FieldValue } from "../../../firebase/firebase";
 import AlgoliaLogo from "../../../images/SVG/AlgoliaLogo";
+import { motion } from "framer-motion";
 
 const searchClient = algoliasearch(
   "JB4UGTXL86",
@@ -156,8 +157,8 @@ function RecentSearchModal({
   deleteSingleSearch,
 }) {
   return (
-    <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 relative">
-      <div className="flex justify-between w-full">
+    <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md py-3 relative">
+      <div className="flex justify-between w-full px-3">
         <span className="font-semibold text-lg">Recent</span>
         <span
           className="font-semibold text-sm text-blue-500 cursor-pointer"
@@ -166,13 +167,15 @@ function RecentSearchModal({
           Clear All
         </span>
       </div>
-      <div className="w-full overflow-y-scroll">
+      <div className="w-full overflow-y-scroll overflow-x-visible z-50 px-3">
         {recentlyViewedUsers &&
           recentlyViewedUsers.map((user) => {
             return (
-              <div
+              <motion.div
                 className="flex my-2 items-center w-full justify-between"
                 key={user.id}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.9 }}
               >
                 <Link
                   to={`/view-user/${user.id}`}
@@ -198,7 +201,7 @@ function RecentSearchModal({
                 >
                   <Exit />
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         {recentlyViewedUsers.length === 0 && <div>No recent searches</div>}
@@ -212,11 +215,16 @@ function RecentSearchModal({
 
 function SearchModal({ searchResults, storeSearch }) {
   return (
-    <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md p-3 overflow-y-scroll">
+    <div className="w-80 h-96 bg-white z-50 flex flex-col items-center shadow-xl border-0 rounded-md py-3 overflow-y-scroll">
       <div className="w-full overflow-y-scroll">
         {searchResults.map((user) => {
           return (
-            <div className="my-2" key={user.id}>
+            <motion.div
+              className="my-2 px-3"
+              key={user.id}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.9 }}
+            >
               <Link
                 to={`/view-user/${user.id}`}
                 onClick={() => storeSearch(user.id)}
@@ -235,7 +243,7 @@ function SearchModal({ searchResults, storeSearch }) {
                   </div>
                 </div>
               </Link>
-            </div>
+            </motion.div>
           );
         })}
       </div>
