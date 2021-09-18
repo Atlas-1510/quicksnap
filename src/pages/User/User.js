@@ -10,7 +10,7 @@ import handleLogOut from "../../utils/handleLogOut/handleLogOut";
 import Footer from "../../components/Footer";
 import useGetLikedPosts from "../../hooks/useGetLikedPosts/useGetLikedPosts";
 import useGetSavedPosts from "../../hooks/useGetSavedPosts/useGetSavedPosts";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 function User() {
   const {
@@ -160,16 +160,20 @@ function User() {
           {/* TODO: Add saved section to go with posts and likes. Tie to bookmark button in card component */}
         </div>
         {/* Image Modal (shows when a post is opened) */}
-        {activePost && (
-          <ImageModal post={activePost} setActivePost={setActivePost} />
-        )}
+        <AnimatePresence exitBeforeEnter={true}>
+          {activePost && (
+            <ImageModal post={activePost} setActivePost={setActivePost} />
+          )}
+        </AnimatePresence>
         <Footer />
       </div>
-      {editProfileModal && (
-        <ModalBackground exit={() => setEditProfileModal(false)}>
-          <EditProfile exit={() => setEditProfileModal(false)} />
-        </ModalBackground>
-      )}
+      <AnimatePresence exitBeforeEnter={true}>
+        {editProfileModal && (
+          <ModalBackground exit={() => setEditProfileModal(false)}>
+            <EditProfile exit={() => setEditProfileModal(false)} />
+          </ModalBackground>
+        )}
+      </AnimatePresence>
     </>
   );
 }

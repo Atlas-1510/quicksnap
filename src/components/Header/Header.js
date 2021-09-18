@@ -7,6 +7,7 @@ import PaperAirplane from "../../images/SVG/PaperAirplane/PaperAirplane";
 import Profile from "../../images/SVG/Profile/Profile";
 import ImageUploader from "../ImageUploader/ImageUploader";
 import Search from "./Search/Search";
+import { AnimatePresence } from "framer-motion";
 
 function Header({ currentPage, setCurrentPage }) {
   const [uploadModal, setUploadModal] = useState(false);
@@ -53,15 +54,17 @@ function Header({ currentPage, setCurrentPage }) {
           </div>
         </div>
       </nav>
-      {uploadModal && (
-        <ModalBackground exit={() => setUploadModal(false)}>
-          <ImageUploader
-            exit={() => setUploadModal(false)}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-        </ModalBackground>
-      )}
+      <AnimatePresence>
+        {uploadModal && (
+          <ModalBackground exit={() => setUploadModal(false)}>
+            <ImageUploader
+              exit={() => setUploadModal(false)}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          </ModalBackground>
+        )}
+      </AnimatePresence>
     </>
   );
 }

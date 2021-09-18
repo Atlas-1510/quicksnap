@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import algoliasearch from "algoliasearch/lite";
 import { firestore, FieldValue } from "../../../firebase/firebase";
 import AlgoliaLogo from "../../../images/SVG/AlgoliaLogo";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const searchClient = algoliasearch(
   "JB4UGTXL86",
@@ -119,30 +119,37 @@ function Search() {
         className="absolute top-14 left-1/2 transform -translate-x-1/2"
         ref={ref}
       >
-        {isComponentVisible && (
-          <div className="flex flex-col items-center">
-            {searchModal === "recent" && (
-              <>
-                <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
-                <RecentSearchModal
-                  recentlyViewedUsers={recentlyViewedUsers}
-                  setIsComponentVisible={setIsComponentVisible}
-                  deleteSearchHistory={deleteSearchHistory}
-                  deleteSingleSearch={deleteSingleSearch}
-                />
-              </>
-            )}
-            {searchModal === "search" && searchResults && (
-              <>
-                <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
-                <SearchModal
-                  searchResults={searchResults}
-                  storeSearch={storeSearch}
-                />
-              </>
-            )}
-          </div>
-        )}
+        <AnimatePresence>
+          {isComponentVisible && (
+            <motion.div
+              className="flex flex-col items-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {searchModal === "recent" && (
+                <>
+                  <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
+                  <RecentSearchModal
+                    recentlyViewedUsers={recentlyViewedUsers}
+                    setIsComponentVisible={setIsComponentVisible}
+                    deleteSearchHistory={deleteSearchHistory}
+                    deleteSingleSearch={deleteSingleSearch}
+                  />
+                </>
+              )}
+              {searchModal === "search" && searchResults && (
+                <>
+                  <div className="w-4 h-4 transform rotate-45 bg-white absolute -top-2 shadow-lg z-40"></div>
+                  <SearchModal
+                    searchResults={searchResults}
+                    storeSearch={storeSearch}
+                  />
+                </>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

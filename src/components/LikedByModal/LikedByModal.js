@@ -6,15 +6,19 @@ import followUser from "../../utils/followUser/followUser";
 import unfollowUser from "../../utils/unfollowUser/unfollowUser";
 import Button from "../Button";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 export default function LikedByModal({ width, likedByInfo, exit }) {
   const { ref, isComponentVisible } = useComponentVisible(true, exit);
   const { following } = useContext(UserContext);
 
   return (
-    <div
+    <motion.div
       className="absolute top-0 left-0 w-full h-full grid place-items-center bg-black bg-opacity-50 z-50"
       onClick={(e) => e.stopPropagation()}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
     >
       <div
         ref={ref}
@@ -49,7 +53,7 @@ export default function LikedByModal({ width, likedByInfo, exit }) {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 }
 
