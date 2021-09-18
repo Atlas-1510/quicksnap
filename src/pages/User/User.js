@@ -11,6 +11,7 @@ import Footer from "../../components/Footer";
 import useGetLikedPosts from "../../hooks/useGetLikedPosts/useGetLikedPosts";
 import useGetSavedPosts from "../../hooks/useGetSavedPosts/useGetSavedPosts";
 import { motion, AnimatePresence } from "framer-motion";
+import ImageGrid from "../../components/ImageGrid";
 
 function User() {
   const {
@@ -147,16 +148,21 @@ function User() {
         {/* Image Grid Container */}
         <div className="flex-grow">
           {/* Image Grid */}
-
-          {grid === "posts" && userPosts && (
-            <ImageGrid posts={userPosts} openPost={openPost} />
-          )}
-          {grid === "liked" && likedPosts && (
-            <ImageGrid posts={likedPosts} openPost={openPost} />
-          )}
-          {grid === "saved" && savedPosts && (
-            <ImageGrid posts={savedPosts} openPost={openPost} />
-          )}
+          <AnimatePresence initial={false} exitBeforeEnter={true}>
+            {grid === "posts" && userPosts && (
+              <ImageGrid posts={userPosts} openPost={openPost} />
+            )}
+          </AnimatePresence>
+          <AnimatePresence initial={false} exitBeforeEnter={true}>
+            {grid === "liked" && likedPosts && (
+              <ImageGrid posts={likedPosts} openPost={openPost} />
+            )}
+          </AnimatePresence>
+          <AnimatePresence initial={false} exitBeforeEnter={true}>
+            {grid === "saved" && savedPosts && (
+              <ImageGrid posts={savedPosts} openPost={openPost} />
+            )}
+          </AnimatePresence>
           {/* TODO: Add saved section to go with posts and likes. Tie to bookmark button in card component */}
         </div>
         {/* Image Modal (shows when a post is opened) */}
@@ -179,29 +185,3 @@ function User() {
 }
 
 export default User;
-
-function ImageGrid({ posts, openPost }) {
-  return (
-    <div className="grid grid-cols-3 gap-1 md:gap-6 auto-rows-auto">
-      {posts.map((post) => {
-        return (
-          <div
-            className="inline-block relative overflow-hidden"
-            key={post.id}
-            data-testid={post.id}
-            onClick={() => openPost(post.id)}
-          >
-            <div style={{ marginTop: "100%" }}></div>
-            <div className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer">
-              <img
-                src={post.image}
-                className="w-full h-full object-cover"
-                alt="one of the current user posts"
-              />
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}

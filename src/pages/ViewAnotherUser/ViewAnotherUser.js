@@ -11,6 +11,7 @@ import unfollowUser from "../../utils/unfollowUser/unfollowUser";
 import { Redirect } from "react-router";
 import Footer from "../../components/Footer";
 import { motion } from "framer-motion";
+import ImageGrid from "../../components/ImageGrid";
 
 function ViewAnotherUser() {
   const { id } = useParams();
@@ -138,29 +139,3 @@ function ViewAnotherUser() {
 }
 
 export default ViewAnotherUser;
-
-function ImageGrid({ posts, openPost }) {
-  return (
-    <div className="grid grid-cols-3 gap-1 md:gap-6 auto-rows-auto">
-      {posts.map((post) => {
-        return (
-          <div
-            className="inline-block relative overflow-hidden"
-            key={post.id}
-            data-testid={post.id}
-            onClick={() => openPost(post.id)}
-          >
-            <div style={{ marginTop: "100%" }}></div>
-            <div className="absolute top-0 left-0 right-0 bottom-0 w-full cursor-pointer">
-              <img
-                src={post.image}
-                className="w-full h-full object-cover"
-                alt="one of the current user posts"
-              />
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
