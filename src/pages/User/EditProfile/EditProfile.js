@@ -170,6 +170,11 @@ function ChangeNameOrImage({ exit, setSection }) {
     setSection(section);
   };
 
+  const handleExit = (e) => {
+    e.preventDefault();
+    exit();
+  };
+
   return (
     <div className="flex flex-col items-center w-full px-2">
       <div className="relative h-20 w-20 md:h-36 md:w-36 border rounded-full overflow-hidden my-2">
@@ -263,7 +268,7 @@ function ChangeNameOrImage({ exit, setSection }) {
             <Button>Save</Button>
             <input type="submit" className="hidden" id="submit-form" />
           </div>
-          <div className="m-2" onClick={exit}>
+          <div className="m-2" onClick={(e) => handleExit(e)}>
             <ButtonSecondary>Return</ButtonSecondary>
           </div>
         </div>
