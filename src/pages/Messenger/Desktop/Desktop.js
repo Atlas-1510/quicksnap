@@ -12,6 +12,7 @@ import { motion } from "framer-motion";
 function Desktop({
   chats,
   setChats,
+  activeChat,
   setActiveChat,
   messages,
   newChat,
@@ -20,6 +21,10 @@ function Desktop({
   getChatFromID,
 }) {
   const user = useContext(UserContext);
+
+  const loadChat = (id) => {
+    getChatFromID(id);
+  };
   return (
     <div
       className=" my-7 bg-white border rounded-md border-gray-300 
@@ -35,7 +40,7 @@ function Desktop({
             </div>
           </div>
           <div
-            className=" mx-2 w-7 absolute right-0 cursor-pointer"
+            className="mx-2 w-7 absolute right-0 cursor-pointer"
             onClick={() => setNewChat(true)}
             data-testid="test-write-button"
           >
@@ -45,28 +50,36 @@ function Desktop({
         <div className="flex flex-col">
           {chats &&
             chats.map((chat) => (
-              <motion.div
-                key={chat.chatID}
-                className="flex items-center m-2 cursor-pointer"
-                onClick={() => getChatFromID(chat.chatID)}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.9 }}
+              <div
+                className={`${
+                  activeChat && chat.chatID === activeChat.chatID
+                    ? "bg-gray-200"
+                    : ""
+                }`}
               >
-                <img
-                  src={chat.contact.profileImage}
-                  alt="contact"
-                  className="border rounded-full h-12 pointer-events-none"
-                  data-testid={`user-image-${chat.contact.id}`}
-                />
-                <div className="ml-3 flex flex-col pointer-events-none">
-                  <span className="font-semibold text-sm">
-                    {chat.contact.name}
-                  </span>
-                  <span className="text-gray-500 text-xs">
-                    {chat.contact.fullName}
-                  </span>
-                </div>
-              </motion.div>
+                <motion.div
+                  key={chat.chatID}
+                  className={`flex items-center m-2 cursor-pointer`}
+                  onClick={() => loadChat(chat.chatID)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <img
+                    src={chat.contact.profileImage}
+                    alt="contact"
+                    className="border rounded-full h-12 pointer-events-none"
+                    data-testid={`user-image-${chat.contact.id}`}
+                  />
+                  <div className="ml-3 flex flex-col pointer-events-none">
+                    <span className="font-semibold text-sm">
+                      {chat.contact.name}
+                    </span>
+                    <span className="text-gray-500 text-xs">
+                      {chat.contact.fullName}
+                    </span>
+                  </div>
+                </motion.div>
+              </div>
             ))}
         </div>
       </div>
