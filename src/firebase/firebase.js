@@ -27,7 +27,9 @@ const FieldValue = firebase.firestore.FieldValue;
 
 const functions = fireApp.functions("australia-southeast1");
 
-if (window.location.hostname === "localhost") {
+const useEmulator = false;
+
+if (window.location.hostname === "localhost" && useEmulator) {
   firestore.useEmulator("localhost", 8080);
   functions.useEmulator("localhost", 5001);
   auth.useEmulator("http://localhost:9099");
