@@ -413,23 +413,3 @@ exports.decrementPostCount = functions
       postCount: decrement,
     });
   });
-
-// *************************** Increment/Decrement App Trackers ********************************
-
-exports.incrementUserCount = functions
-  .region("australia-southeast1")
-  .firestore.document("users/{userID}")
-  .onCreate(async (snap, context) => {
-    await admin.firestore().collection("counts").doc("users").update({
-      count: increment,
-    });
-  });
-
-exports.decrementUserCount = functions
-  .region("australia-southeast1")
-  .firestore.document("users/{userID}")
-  .onDelete(async (snap, context) => {
-    await admin.firestore().collection("counts").doc("users").update({
-      count: decrement,
-    });
-  });

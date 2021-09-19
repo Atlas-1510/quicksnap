@@ -27,16 +27,6 @@ export default function useGetFollowSuggestions(user) {
       });
 
       if (suggestions.length < 6) {
-        const userCount = await firestore
-          .collection("counts")
-          .doc("users")
-          .get()
-          .then((res) => {
-            return res.data();
-          })
-          .then((data) => {
-            return data.count;
-          });
         let collection = firestore
           .collection("users")
           .orderBy("followerCount")
