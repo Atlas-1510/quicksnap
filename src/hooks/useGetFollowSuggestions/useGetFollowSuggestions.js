@@ -15,14 +15,12 @@ export default function useGetFollowSuggestions(user) {
           followNotFollowing.push(followerID);
         }
       });
-      console.log(followNotFollowing);
       const promises = [];
       followNotFollowing.forEach(async (id) => {
         const user = getUserInfo(id);
         promises.push(user);
       });
       await Promise.all(promises).then((results) => {
-        console.log(results);
         suggestions.push(...results);
       });
 
