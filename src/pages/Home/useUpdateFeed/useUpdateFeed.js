@@ -28,13 +28,27 @@ const useUpdateFeed = (uid) => {
     return posts;
   }
 
+  async function getRecentPosts() {
+    const recentPosts = await firestore
+      .collection("posts")
+      .orderBy("timestamp")
+      .limit(5)
+      .get()
+      .then((snap) => {
+        return snap.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        });
+      });
+    return recentPosts;
+  }
+
   useEffect(() => {
     const unsub = firestore
       .collection("feeds")
       .doc(uid)
       .collection("feedItems")
       .orderBy("timestamp", "desc")
-      .limit(5)
+      // .limit(5)
       .onSnapshot(async (snapshot) => {
         const feedItems = [];
         snapshot.forEach((item) => {
@@ -43,8 +57,13 @@ const useUpdateFeed = (uid) => {
             id: item.id,
           });
         });
-        const posts = await getPosts(feedItems);
-        setFeed(posts);
+        if (feedItems.length === 0) {
+          const recentPosts = await getRecentPosts();
+          setFeed(recentPosts);
+        } else {
+          const posts = await getPosts(feedItems);
+          setFeed(posts);
+        }
       });
     return () => unsub;
   }, [uid]);
