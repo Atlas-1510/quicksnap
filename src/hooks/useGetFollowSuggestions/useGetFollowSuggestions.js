@@ -26,7 +26,7 @@ export default function useGetFollowSuggestions(user) {
         suggestions.push(...results);
       });
 
-      if (suggestions.length < 5) {
+      if (suggestions.length < 6) {
         const userCount = await firestore
           .collection("counts")
           .doc("users")
@@ -37,54 +37,36 @@ export default function useGetFollowSuggestions(user) {
           .then((data) => {
             return data.count;
           });
-        const collection = firestore
+        let collection = firestore
           .collection("users")
-          .orderBy("followerCount");
-        let index = 0;
+          .orderBy("followerCount")
+          .limit(1);
+
+        let current = collection;
 
         do {
-          let current = collection.limit(5).startAt(index);
           const snapshot = await current.get();
-          const docs = snapshot.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-          }));
-          console.log(docs);
-          docs.forEach((doc) => {
+          if (snapshot.docs.length > 0) {
+            const singleElementArray = snapshot.docs.map((doc) => {
+              return {
+                ...doc.data(),
+                id: doc.id,
+              };
+            });
+            const doc = singleElementArray[0];
+
             if (!user.following.includes(doc.id)) {
               if (!suggestions.some((suggestion) => suggestion.id === doc.id)) {
                 suggestions.push({ ...doc });
               }
             }
-          });
-          console.log(suggestions);
-          index += docs.length;
-          if (index >= userCount) {
+            let last = snapshot.docs[snapshot.docs.length - 1];
+            current = collection.startAfter(last);
+          } else {
             break;
           }
-        } while (suggestions.length < 5);
+        } while (suggestions.length < 6);
       }
-
-      //     do {
-      //       let docs = await current
-      //         .get()
-      //         .then((snapshot) => snapshot.map((doc) => doc.data()));
-      //       console.log(docs);
-      //       docs.forEach((doc) => {
-      //         if (!user.following.includes(doc.id)) {
-      //           if (!suggestions.some((suggestion) => suggestion.id === doc.id)) {
-      //             suggestions.push({ ...doc.data() });
-      //           }
-      //         }
-      //       });
-      //       index += docs.length;
-      //       if (index <= userCount) {
-      //         current = collection.startAfter(index);
-      //       } else {
-      //         break;
-      //       }
-      //     } while (suggestions.length < 5);
-      //   }
 
       setFollowSuggestions(suggestions);
     })();
