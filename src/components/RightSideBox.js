@@ -37,19 +37,21 @@ function RightSideBox({ user, followSuggestions, setCurrentPage }) {
             </span>
             {followSuggestions &&
               followSuggestions.map((suggestion) => (
-                <div key={suggestion.id} className="flex items-center my-2">
-                  <img
-                    src={suggestion.image}
-                    alt="Profile of suggested follow"
-                    className=" h-10 w-10 border rounded-full"
-                  />
-                  <span className="font-bold flex-grow ml-3">
-                    {suggestion.userName}
-                  </span>
-                  <span className="text-blue-500 font-semibold text-sm">
-                    Follow
-                  </span>
-                </div>
+                <Link to={`/view-user/${suggestion.id}`} key={suggestion.id}>
+                  <div className="flex items-center my-2">
+                    <img
+                      src={suggestion.profileImage}
+                      alt="Profile of suggested follow"
+                      className=" h-10 w-10 border rounded-full"
+                    />
+                    <span className="font-bold flex-grow ml-3">
+                      {suggestion.name}
+                    </span>
+                    <span className="text-blue-500 font-semibold text-sm">
+                      View
+                    </span>
+                  </div>
+                </Link>
               ))}
           </div>
         </div>

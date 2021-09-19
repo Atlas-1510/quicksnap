@@ -9,7 +9,7 @@ const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
 const index = client.initIndex("quicksnap_users");
 
 //TODO: Reactivate algolia when moving to production
-const activeAlgolia = false;
+const activeAlgolia = true;
 
 const increment = admin.firestore.FieldValue.increment(1);
 const decrement = admin.firestore.FieldValue.increment(-1);
@@ -409,5 +409,25 @@ exports.decrementPostCount = functions
     const authorID = data.author.id;
     await admin.firestore().collection("users").doc(authorID).update({
       postCount: decrement,
+    });
+  });
+
+// *************************** Increment/Decrement App Trackers ********************************
+
+exports.incrementUserCount = functions
+  .region("australia-southeast1")
+  .firestore.document("users/{userID}")
+  .onCreate(async (snap, context) => {
+    await admin.firestore().collection("counts").doc("users").update({
+      count: increment,
+    });
+  });
+
+exports.decrementUserCount = functions
+  .region("australia-southeast1")
+  .firestore.document("users/{userID}")
+  .onDelete(async (snap, context) => {
+    await admin.firestore().collection("counts").doc("users").update({
+      count: decrement,
     });
   });

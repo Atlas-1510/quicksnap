@@ -20,8 +20,6 @@ function Main({ uid }) {
 
   useEffect(() => {
     if (packedUser !== undefined) {
-      console.log(packedUser);
-      console.log(packedUser.data());
       (async () => {
         const unpackedUser = packedUser.data();
         setUser({
