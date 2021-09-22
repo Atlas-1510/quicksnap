@@ -28,3 +28,5 @@ functions/node_modules
 TestLayout.js
 function/.runtimeconfig.json
 functions/.runtimeconfig.json
+/famousAccountsAllPosts
+/famousAccountsNoPosts
