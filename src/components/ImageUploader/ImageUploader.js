@@ -14,6 +14,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const isFirstRender = useIsFirstRender();
   const [returnRef] = useState(currentPage);
   const [image, setImage] = useState(null);
+  const [view, setView] = useState("no-image");
 
   const [submissionComplete, setSubmissionComplete] = useState(false);
 
@@ -35,18 +36,26 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const handleImageSelection = () => {
     const chosenImage = document.querySelector("#file-input").files[0];
     setImage(chosenImage);
+    setView("image-chosen");
   };
 
   const handleSubmission = async () => {
+    setView("pending-upload");
     if (!/image/i.test(image.type)) {
       alert("File " + image.name + " is not an image.");
       setImage(null);
+      setView("no-image");
       return false;
     }
     let fileToUpload = image.size > 102400 ? await compressImage(image) : image;
-    await postImage(user, fileToUpload);
-    setImage(null);
-    setSubmissionComplete(true);
+    const result = await postImage(user, fileToUpload);
+    if (result === "success") {
+      setView("Image posted!");
+      setImage(null);
+      setSubmissionComplete(true);
+    } else {
+      console.log("Recieved an error when trying to post image");
+    }
   };
 
   useEffect(() => {
@@ -98,7 +107,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
                 <Exit />
               </div>
             </div>
-            {!image && (
+            {view === "no-image" && (
               <div className="flex flex-col h-full justify-center items-center">
                 <div
                   className="flex flex-col justify-center items-center"
@@ -122,7 +131,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
                 </div>
               </div>
             )}
-            {image && (
+            {view === "image-chosen" && (
               <div className="flex flex-col h-full justify-center items-center">
                 <div
                   className="w-1/3 flex items-center justify-center"
@@ -144,6 +153,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
                 </div>
               </div>
             )}
+            {view === "pending-upload" && <div>Upload Pending</div>}
             <input
               type="file"
               className="hidden"
