@@ -1,17 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import Card from "../../components/Card";
 import RightSideBox from "../../components/RightSideBox";
 import { UserContext, FeedContext } from "../Main";
 import Camera from "../../images/SVG/Camera";
 import useGetFollowSuggestions from "../../hooks/useGetFollowSuggestions/useGetFollowSuggestions";
+import Button from "../../components/Button";
 
 // TODO: Add pull down to refresh
 
 function Home({ setCurrentPage }) {
   const user = useContext(UserContext);
   // const {feed, updateFeed} = useUpdateFeed(user.uid);
-  const { feed, updateFeed } = useContext(FeedContext);
+  const { feed, updateFeed, fetchMorePosts } = useContext(FeedContext);
   const followSuggestions = useGetFollowSuggestions(user);
+  const [fetchPosts, setFetchPosts] = useState("");
+
+  const getMorePosts = async () => {
+    setFetchPosts("loading");
+    const response = await fetchMorePosts();
+    if (response === "success") {
+      setFetchPosts("");
+    } else if (response === "failure") {
+      setFetchPosts("failure");
+    } else if (response === "no-more-posts") {
+      setFetchPosts("no-more-posts");
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -32,6 +46,12 @@ function Home({ setCurrentPage }) {
           feed.map((card) => (
             <Card key={card.id} card={card} setCurrentPage={setCurrentPage} />
           ))}
+        {fetchPosts === "" && (
+          <button onClick={() => getMorePosts()}>More</button>
+        )}
+        {fetchPosts === "loading" && <span>LOADING</span>}
+        {fetchPosts === "failure" && <span>FAILURE</span>}
+        {fetchPosts === "no-more-posts" && <span>NO MORE POSTS</span>}
       </div>
     </div>
   );

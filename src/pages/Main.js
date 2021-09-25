@@ -18,7 +18,7 @@ function Main({ uid }) {
   const [user, setUser] = useState(null);
   const [currentPage, setCurrentPage] = useState("home");
   const [packedUser] = useDocument(firestore.doc(`users/${uid}`));
-  const { feed, updateFeed } = useGetFeed(uid);
+  const { feed, updateFeed, fetchMorePosts } = useGetFeed(uid);
 
   useEffect(() => {
     if (packedUser !== undefined) {
@@ -48,7 +48,9 @@ function Main({ uid }) {
                 <div className="flex-grow overflow-scroll">
                   <Switch>
                     <Route exact path="/">
-                      <FeedContext.Provider value={{ feed, updateFeed }}>
+                      <FeedContext.Provider
+                        value={{ feed, updateFeed, fetchMorePosts }}
+                      >
                         <Home setCurrentPage={setCurrentPage} />
                       </FeedContext.Provider>
                     </Route>
