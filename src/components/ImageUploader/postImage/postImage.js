@@ -25,7 +25,13 @@ export default async function postImage(user, image) {
       likedBy: [],
       fileName: nameNew,
     });
-    return "success";
+    // Firebase takes a few moments to add the new post to the feed of the user,
+    // so adding a bit of a delay here to hide that lag
+    return await new Promise((resolve) =>
+      setTimeout(() => {
+        resolve("success");
+      }, 2000)
+    );
   } catch (err) {
     console.log(err);
     return "failure";

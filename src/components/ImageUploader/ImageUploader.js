@@ -8,6 +8,8 @@ import useIsFirstRender from "../../hooks/useIsFirstRender/useIsFirstRender";
 import postImage from "./postImage/postImage";
 import { UserContext } from "../../pages/Main";
 import compressImage from "./compressImage/compressImage";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from "react-loader-spinner";
 
 function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const user = useContext(UserContext);
@@ -50,11 +52,16 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
     let fileToUpload = image.size > 102400 ? await compressImage(image) : image;
     const result = await postImage(user, fileToUpload);
     if (result === "success") {
-      setView("Image posted!");
-      setImage(null);
-      setSubmissionComplete(true);
+      setView("image-uploaded");
+      setTimeout(() => {
+        setSubmissionComplete(true);
+      }, 2000);
     } else {
+      setView("upload-failure");
       console.log("Recieved an error when trying to post image");
+      setTimeout(() => {
+        setSubmissionComplete(true);
+      }, 3000);
     }
   };
 
@@ -153,7 +160,31 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
                 </div>
               </div>
             )}
-            {view === "pending-upload" && <div>Upload Pending</div>}
+            {view === "pending-upload" && (
+              <div className="flex flex-col h-full justify-center items-center">
+                <Loader
+                  type="Grid"
+                  color="#D1D5DB"
+                  height={50}
+                  width={50}
+                  timeout={3000}
+                />
+              </div>
+            )}
+            {view === "image-uploaded" && (
+              <div className="flex flex-col h-full justify-center items-center">
+                <span className="text-gray-500">
+                  Your post has been uploaded!
+                </span>
+              </div>
+            )}
+            {view === "upload-failure" && (
+              <div className="flex flex-col h-full justify-center items-center">
+                <span className="text-gray-500">
+                  Sorry, something went wrong while uploading your post.
+                </span>
+              </div>
+            )}
             <input
               type="file"
               className="hidden"
