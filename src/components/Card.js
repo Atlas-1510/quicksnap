@@ -80,10 +80,6 @@ function Card({ card, setCurrentPage }) {
     // await deletePost(post.id);
   };
 
-  useEffect(() => {
-    console.log(`deleteStatus: ${deleteStatus}`);
-  }, [deleteStatus]);
-
   if (!deleteStatus) {
     return (
       <>
