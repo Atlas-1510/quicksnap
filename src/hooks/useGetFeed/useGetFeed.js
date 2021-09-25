@@ -88,19 +88,11 @@ const useGetFeed = (uid) => {
 
   useEffect(() => {
     if (feedUpdate) {
-      // This effect gets the users feed items. If the user has less than five feed items,
+      // This effect gets the feed items for the user. If the user has less than five feed items,
       // it will also get recent posts by any user to add content to the feed.
       const unsub = feedRef.get().then(async (feedSnapshot) => {
-        if (feedSnapshot.size === 5) {
-          processSnapshot(feedSnapshot);
-        } else if (feedSnapshot.size < 5 && feedSnapshot.size !== 0) {
-          setLatestPost();
-          setCollection("recent");
-          processSnapshot(feedSnapshot);
-          recentPostsRef.get().then(async (snapshot) => {
-            processSnapshot(snapshot);
-          });
-        } else if (feedSnapshot.empty) {
+        processSnapshot(feedSnapshot);
+        if (feedSnapshot.size < 5) {
           setLatestPost();
           setCollection("recent");
           recentPostsRef.get().then(async (snapshot) => {
