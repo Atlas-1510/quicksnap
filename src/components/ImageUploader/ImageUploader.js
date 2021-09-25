@@ -57,7 +57,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
       setView("image-uploaded");
       setTimeout(() => {
         setSubmissionComplete(true);
-      }, 2000);
+      }, 1500);
       // instead of refreshing whole app, call a parent method to refresh feed state
       // window.location.reload();
       updateFeed();
