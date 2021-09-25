@@ -10,7 +10,6 @@ import Button from "../../components/Button";
 
 function Home({ setCurrentPage }) {
   const user = useContext(UserContext);
-  // const {feed, updateFeed} = useUpdateFeed(user.uid);
   const { feed, updateFeed, fetchMorePosts } = useContext(FeedContext);
   const followSuggestions = useGetFollowSuggestions(user);
   const [fetchPosts, setFetchPosts] = useState("");
