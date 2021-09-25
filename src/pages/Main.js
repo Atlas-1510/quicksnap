@@ -9,14 +9,16 @@ import { firestore } from "../firebase/firebase";
 import ViewAnotherUser from "./ViewAnotherUser/ViewAnotherUser";
 import BottomMobileNav from "../components/BottomMobileNav";
 import MobileSearch from "../components/Header/Search/MobileSearch";
+import useGetFeed from "../hooks/useGetFeed/useGetFeed";
 
 export const UserContext = createContext(null);
+export const FeedContext = createContext(null);
 
 function Main({ uid }) {
   const [user, setUser] = useState(null);
   const [currentPage, setCurrentPage] = useState("home");
-
   const [packedUser] = useDocument(firestore.doc(`users/${uid}`));
+  const { feed, updateFeed } = useGetFeed(uid);
 
   useEffect(() => {
     if (packedUser !== undefined) {
@@ -35,13 +37,20 @@ function Main({ uid }) {
       {user && (
         <UserContext.Provider value={user}>
           <div className="flex flex-col h-screen overflow-auto relative">
-            <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
+            <FeedContext.Provider value={{ feed, updateFeed }}>
+              <Header
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+              />
+            </FeedContext.Provider>
             <div className="bg-gray-100 flex justify-center h-full flex-grow overflow-scroll">
               <div className="md:w-2/3 md:max-w-4xl h-full w-full flex flex-col">
                 <div className="flex-grow overflow-scroll">
                   <Switch>
                     <Route exact path="/">
-                      <Home setCurrentPage={setCurrentPage} />
+                      <FeedContext.Provider value={{ feed, updateFeed }}>
+                        <Home setCurrentPage={setCurrentPage} />
+                      </FeedContext.Provider>
                     </Route>
                     <Route exact path="/messenger/:id">
                       <Messenger setCurrentPage={setCurrentPage} />

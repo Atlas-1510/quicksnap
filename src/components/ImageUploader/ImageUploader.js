@@ -10,6 +10,7 @@ import { UserContext } from "../../pages/Main";
 import compressImage from "./compressImage/compressImage";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import { FeedContext } from "../../pages/Main";
 
 function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const user = useContext(UserContext);
@@ -17,6 +18,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const [returnRef] = useState(currentPage);
   const [image, setImage] = useState(null);
   const [view, setView] = useState("no-image");
+  const { feed, updateFeed } = useContext(FeedContext);
 
   const [submissionComplete, setSubmissionComplete] = useState(false);
 
@@ -56,6 +58,9 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
       setTimeout(() => {
         setSubmissionComplete(true);
       }, 2000);
+      // instead of refreshing whole app, call a parent method to refresh feed state
+      // window.location.reload();
+      updateFeed();
     } else {
       setView("upload-failure");
       console.log("Recieved an error when trying to post image");

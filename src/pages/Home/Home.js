@@ -1,14 +1,16 @@
 import React, { useContext } from "react";
 import Card from "../../components/Card";
 import RightSideBox from "../../components/RightSideBox";
-import { UserContext } from "../Main";
-import useUpdateFeed from "./useUpdateFeed/useUpdateFeed";
+import { UserContext, FeedContext } from "../Main";
 import Camera from "../../images/SVG/Camera";
 import useGetFollowSuggestions from "../../hooks/useGetFollowSuggestions/useGetFollowSuggestions";
 
+// TODO: Add pull down to refresh
+
 function Home({ setCurrentPage }) {
   const user = useContext(UserContext);
-  const feed = useUpdateFeed(user.uid);
+  // const {feed, updateFeed} = useUpdateFeed(user.uid);
+  const { feed, updateFeed } = useContext(FeedContext);
   const followSuggestions = useGetFollowSuggestions(user);
 
   return (
