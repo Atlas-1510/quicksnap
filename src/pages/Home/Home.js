@@ -6,6 +6,8 @@ import Camera from "../../images/SVG/Camera";
 import useGetFollowSuggestions from "../../hooks/useGetFollowSuggestions/useGetFollowSuggestions";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
+import Button from "../../components/Button";
+import ButtonSecondary from "../../components/ButtonSecondary";
 
 // TODO: Add pull down to refresh
 
@@ -46,9 +48,9 @@ function Home({ setCurrentPage }) {
             <Card key={card.id} card={card} setCurrentPage={setCurrentPage} />
           ))}
         {fetchPosts === "" && (
-          <button className="py-8" onClick={() => getMorePosts()}>
-            Load More
-          </button>
+          <div className="py-8" onClick={() => getMorePosts()}>
+            <ButtonSecondary>Load More</ButtonSecondary>
+          </div>
         )}
         {fetchPosts === "loading" && (
           <div className="flex justify-center items-center py-5 ">
