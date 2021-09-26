@@ -125,7 +125,3 @@ describe("ImageUploader", () => {
     expect(exit.mock.calls.length).toBe(1);
   });
 });
-
-// TODO: Remove comment below
-// Link below used for prior tests based on local storage, not firestore
-// https://bholmes.dev/blog/mocking-browser-apis-fetch-localstorage-dates-the-easy-way-with-jest/

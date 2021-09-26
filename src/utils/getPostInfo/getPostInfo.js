@@ -6,6 +6,3 @@ export default async function getPostInfo(id) {
 
   return { ...doc.data(), id: doc.id };
 }
-
-// TODO: paginate this to return 12 results at a time (to fill grid, and then scroll down for more)
-//www.youtube.com/watch?v=yFlhTvxcrQ8

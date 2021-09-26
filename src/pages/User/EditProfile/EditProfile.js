@@ -138,7 +138,6 @@ function ChangeNameOrImage({ exit, setSection }) {
         }
         newUserDoc.profileImage = profileURL;
         newUserDoc.customProfileImage = customProfileFlag;
-        // TODO: add image compression to new profile image if file is too big
       }
       if (changeMade) {
         postToFirestore(newUserDoc, `/users/${uid}`, true);

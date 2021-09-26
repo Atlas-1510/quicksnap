@@ -24,7 +24,3 @@ function useGetUserPosts(uid) {
 }
 
 export default useGetUserPosts;
-
-// TODO: Paginate, limit to 12 results at a time
-
-// source: https://stackoverflow.com/questions/60637671/how-can-i-download-images-from-firebase-storage-and-assign-them-as-a-prop-to-doc

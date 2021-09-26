@@ -14,8 +14,6 @@ import generateProfileImage from "../../utils/generateProfileImage/generateProfi
 import loadUserProfile from "./loadUserProfile/loadUserProfile";
 import handleErrorCode from "./handleErrorCode";
 
-// TODO: set up login with either email address or username
-
 function Login({ setUID }) {
   const [modal, setModal] = useState("login");
   const [loginPrompt, setLoginPrompt] = useState(null);
@@ -142,7 +140,7 @@ function Login({ setUID }) {
               >
                 <input
                   className=" w-full my-1 p-1 border border-gray-300 rounded-sm bg-gray-50"
-                  placeholder="Email or username"
+                  placeholder="Email"
                   required
                 />
                 <input

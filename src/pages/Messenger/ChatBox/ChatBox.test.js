@@ -56,6 +56,4 @@ describe("ChatBox", () => {
     expect(message).toBeTruthy();
     expect(message.classList.contains("bg-gray-300")).toBe(true);
   });
-
-  // TODO: Add tests for entering a new message
 });

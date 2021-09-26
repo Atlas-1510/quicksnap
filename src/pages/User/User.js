@@ -163,7 +163,6 @@ function User({ setCurrentPage }) {
               <ImageGrid posts={savedPosts} openPost={openPost} />
             )}
           </AnimatePresence>
-          {/* TODO: Add saved section to go with posts and likes. Tie to bookmark button in card component */}
         </div>
         {/* Image Modal (shows when a post is opened) */}
         <AnimatePresence exitBeforeEnter={true}>

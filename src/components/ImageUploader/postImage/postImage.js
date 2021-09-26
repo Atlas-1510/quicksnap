@@ -2,7 +2,6 @@ import { storage, firestore, timestamp } from "../../../firebase/firebase";
 import { v4 as uuidv4 } from "uuid";
 
 export default async function postImage(user, image) {
-  // TODO: replace logic below with postToStorage.js
   try {
     const nameOld = image.name;
     const suffix = nameOld.match(/\.[0-9a-z]+$/i)[0];

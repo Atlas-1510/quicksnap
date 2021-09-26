@@ -26,8 +26,5 @@ export default function useGetSavedPosts(uid) {
       });
     return () => unsub();
   }, [uid]);
-
-  // TODO: paginate this to return 12 results at a time (to fill grid, and then scroll down for more)
-  //www.youtube.com/watch?v=yFlhTvxcrQ8
   return posts;
 }

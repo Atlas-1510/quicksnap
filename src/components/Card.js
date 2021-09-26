@@ -20,8 +20,6 @@ import useGetPostSaveStatus from "../hooks/useGetPostSaveStatus/useGetPostSaveSt
 import useComponentVisible from "../hooks/useComponentVisible/useComponentVisible";
 import useDeletePost from "../hooks/useDeletePost/useDeletePost";
 
-// TODO: Add timestamp display to post
-
 function Card({ card, setCurrentPage }) {
   const { width } = useWindowSize();
   const [post, setPost] = useState(card);

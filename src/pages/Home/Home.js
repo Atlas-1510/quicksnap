@@ -8,8 +8,6 @@ import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import ButtonSecondary from "../../components/ButtonSecondary";
 
-// TODO: Add pull down to refresh
-
 function Home({ setCurrentPage }) {
   const user = useContext(UserContext);
   const { feed, fetchMorePosts } = useContext(FeedContext);
