@@ -31,3 +31,5 @@ functions/.runtimeconfig.json
 /famousAccountsAllPosts
 /famousAccountsNoPosts
 /addJHandMKBHDpostsToFeed
+firebase-debug.log
+firestore-debug.log
