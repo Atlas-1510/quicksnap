@@ -18,7 +18,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
   const [returnRef] = useState(currentPage);
   const [image, setImage] = useState(null);
   const [view, setView] = useState("no-image");
-  const { feed, updateFeed } = useContext(FeedContext);
+  const { updateFeed } = useContext(FeedContext);
 
   const [submissionComplete, setSubmissionComplete] = useState(false);
 

@@ -56,6 +56,7 @@ function Desktop({
                     ? "bg-gray-200"
                     : ""
                 }`}
+                key={chat.chatID}
               >
                 <motion.div
                   key={chat.chatID}

@@ -6,7 +6,6 @@ import Camera from "../../images/SVG/Camera";
 import useGetFollowSuggestions from "../../hooks/useGetFollowSuggestions/useGetFollowSuggestions";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
-import Button from "../../components/Button";
 import ButtonSecondary from "../../components/ButtonSecondary";
 
 // TODO: Add pull down to refresh

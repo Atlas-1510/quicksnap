@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 
 import Heart from "../images/SVG/Heart/Heart";
 import PaperAirplane from "../images/SVG/PaperAirplane/PaperAirplane";
