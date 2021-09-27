@@ -81,7 +81,7 @@ function Card({ card, setCurrentPage }) {
   if (!deleteStatus) {
     return (
       <>
-        <div className="flex flex-col md:border border-gray-300 rounded-sm mb-3 md:mt-7 text-sm ">
+        <div className="flex flex-col md:border border-gray-300 rounded-sm mb-3 md:mt-7 text-sm w-full">
           <div className="flex justify-between bg-white h-12 items-center">
             <div className="mx-3 flex items-center">
               <img
@@ -112,7 +112,7 @@ function Card({ card, setCurrentPage }) {
             </div>
           </div>
           <div>
-            <img src={image} alt="None" />
+            <img src={image} alt="None" className="w-full" />
           </div>
           <div className="flex flex-col bg-white text-gray-700">
             <div className="flex justify-between">
