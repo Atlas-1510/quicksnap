@@ -68,10 +68,12 @@ function Main({ uid }) {
                     </Route>
                   </Switch>
                 </div>
-                <BottomMobileNav
-                  currentPage={currentPage}
-                  setCurrentPage={setCurrentPage}
-                />
+                <FeedContext.Provider value={{ feed, updateFeed }}>
+                  <BottomMobileNav
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                  />
+                </FeedContext.Provider>
               </div>
             </div>
           </div>
