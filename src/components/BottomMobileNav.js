@@ -18,7 +18,7 @@ function BottomMobileNav({ currentPage, setCurrentPage }) {
             <Home currentPage={currentPage} />
           </div>
         </Link>
-        <Link to="/messenger" onClick={() => setCurrentPage("messenger")}>
+        <Link to="/messenger/main" onClick={() => setCurrentPage("messenger")}>
           <div className="w-8 m-2">
             <PaperAirplane currentPage={currentPage} />
           </div>
