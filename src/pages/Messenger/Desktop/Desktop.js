@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import Write from "../../../images/SVG/Write";
-import ChevronDown from "../../../images/SVG/ChevronDown";
 import PaperAirplane from "../../../images/SVG/PaperAirplane/PaperAirplane";
 import ModalBackground from "../../../components/ModalBackground";
 import Button from "../../../components/Button";
@@ -35,9 +34,6 @@ function Desktop({
         <div className="border-b border-gray-300 flex items-center justify-center py-2 relative">
           <div className="my-1 flex items-center">
             <span className="font-semibold text-sm">{user.name}</span>
-            <div className="w-6">
-              <ChevronDown />
-            </div>
           </div>
           <div
             className="mx-2 w-7 absolute right-0 cursor-pointer"

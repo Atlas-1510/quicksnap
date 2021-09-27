@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Write from "../../../images/SVG/Write";
-import ChevronDown from "../../../images/SVG/ChevronDown";
 import ChevronLeft from "../../../images/SVG/ChevronLeft";
 import ChatBox from "../ChatBox/ChatBox";
 import NewChat from "../NewChat/NewChat";
@@ -35,9 +34,6 @@ function Mobile({
             </Link>
             <div className="my-1 flex items-center">
               <span className="font-semibold text-sm">{user.name}</span>
-              <div className="w-6">
-                <ChevronDown />
-              </div>
             </div>
             <div
               className=" mx-2 w-7"
@@ -66,7 +62,7 @@ function Mobile({
                       {chat.contact.name}
                     </span>
                     <span className="text-gray-500 text-xs">
-                      last message XYZ
+                      {chat.contact.fullName}
                     </span>
                   </div>
                 </div>
@@ -91,9 +87,6 @@ function Mobile({
               <span className="font-semibold text-sm">
                 {activeChat.contact.name}
               </span>
-              <div className="w-6">
-                <ChevronDown />
-              </div>
             </div>
           </div>
           {messages && (

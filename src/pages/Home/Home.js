@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import Card from "../../components/Card";
 import RightSideBox from "../../components/RightSideBox";
 import { UserContext, FeedContext } from "../Main";
-import Camera from "../../images/SVG/Camera";
 import useGetFollowSuggestions from "../../hooks/useGetFollowSuggestions/useGetFollowSuggestions";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
@@ -29,9 +28,6 @@ function Home({ setCurrentPage }) {
     <div className="flex flex-col">
       {/* Mobile Header */}
       <nav className="relative flex md:hidden justify-center items-center w-full bg-white border-b border-gray-300 py-1">
-        <div className="w-7 m-2 absolute left-0">
-          <Camera />
-        </div>
         <h1 className="font-curly text-4xl m-1">QuickSnap</h1>
       </nav>
       <RightSideBox
