@@ -81,7 +81,10 @@ const useGetFeed = (uid) => {
     } else if (collection === "recent") {
       ref = recentPostsRef;
     }
-    const snapshot = await ref.limit(5).startAfter(latestPost).get();
+    const snapshot = await ref
+      .limit(5)
+      .startAfter(latestPost || null)
+      .get();
     const response = await processSnapshot(snapshot);
     return response;
   };
