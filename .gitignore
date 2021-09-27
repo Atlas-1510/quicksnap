@@ -33,3 +33,4 @@ functions/.runtimeconfig.json
 /addJHandMKBHDpostsToFeed
 firebase-debug.log
 firestore-debug.log
+.firebase
