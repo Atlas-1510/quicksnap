@@ -44,7 +44,7 @@ async function resizeMe(img, name) {
   ctx.drawImage(img, 0, 0, width, height);
 
   // get the data from canvas as 70% JPG (can be also PNG, etc.)
-  const url = canvas.toDataURL("image/jpeg", 0.7);
+  const url = canvas.toDataURL("image/jpeg", 1);
   const blob = await (await fetch(url)).blob();
   blob.name = name;
   return blob;

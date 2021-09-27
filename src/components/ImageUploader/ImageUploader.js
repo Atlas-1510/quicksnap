@@ -51,15 +51,15 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
       setView("no-image");
       return false;
     }
-    let fileToUpload = image.size > 102400 ? await compressImage(image) : image;
+    console.log(image);
+    const fileToUpload =
+      image.size > 2000000 ? await compressImage(image) : image;
     const result = await postImage(user, fileToUpload);
     if (result === "success") {
       setView("image-uploaded");
       setTimeout(() => {
         setSubmissionComplete(true);
       }, 1500);
-      // instead of refreshing whole app, call a parent method to refresh feed state
-      // window.location.reload();
       updateFeed();
     } else {
       setView("upload-failure");
@@ -88,6 +88,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
         if (e.dataTransfer.items[i].kind === "file") {
           const file = e.dataTransfer.items[i].getAsFile();
           setImage(file);
+          setView("image-chosen");
         }
       }
     }
@@ -153,6 +154,7 @@ function ImageUploader({ exit, currentPage, setCurrentPage }) {
                     src={URL.createObjectURL(image)}
                     alt="preview"
                     id="chosen-image"
+                    className="max-h-80"
                   />
                 </div>
                 <div className="flex">
