@@ -17,7 +17,7 @@ let firebaseConfig = {
 
 const fireApp = firebase.initializeApp(firebaseConfig);
 
-// firebase.analytics(); TODO: Re-enable analytics
+firebase.analytics();
 
 const auth = firebase.auth();
 const firestore = firebase.firestore();
@@ -27,7 +27,7 @@ const FieldValue = firebase.firestore.FieldValue;
 
 const functions = fireApp.functions("australia-southeast1");
 
-const useEmulator = true;
+const useEmulator = false;
 
 if (window.location.hostname === "localhost" && useEmulator) {
   firestore.useEmulator("localhost", 8080);

@@ -9,7 +9,7 @@ const client = algoliasearch(env.algolia.appid, env.algolia.apikey);
 const index = client.initIndex("quicksnap_users");
 
 //TODO: Reactivate algolia when moving to production
-const activeAlgolia = false;
+const activeAlgolia = true;
 
 const increment = admin.firestore.FieldValue.increment(1);
 const decrement = admin.firestore.FieldValue.increment(-1);
