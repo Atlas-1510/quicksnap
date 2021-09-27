@@ -4,7 +4,7 @@
 
 👉 [Check out QuickSnap here](https://quicksnap-58e9a.web.app) 👈
 
-QuickSnap is a media-sharing platform based on Instagram, which allows users to share photos, send messages, and like, comment, and save posts. I created QuickSnap for my final project in the Odin Project web development course.
+QuickSnap is a media-sharing platform based on Instagram, which allows users to share photos, send messages, and like, comment, and save posts. I created QuickSnap for my final project in the Odin Project javascript course.
 
 ## Project features
 
@@ -28,7 +28,7 @@ QuickSnap is a media-sharing platform based on Instagram, which allows users to 
 
   <img src="https://github.com/Atlas-1510/quicksnap/blob/5f1bb6cd2e4f8f1e4689c5367423c48f36b776be/readme-images/search.png?raw=true" width="500px"/>
 
-- Users can customise their accounts, by changing their profile photos and usernames. For users that don't choose their own profile, one is automatically provided based on their initials.
+- Users can customise their accounts by changing their profile photos, usernames, and passwords. For users that don't choose their own profile, one is automatically provided based on their initials.
 
   <img src="https://github.com/Atlas-1510/quicksnap/blob/5f1bb6cd2e4f8f1e4689c5367423c48f36b776be/readme-images/editProfile.png?raw=true" width="500px"/>
 
@@ -49,7 +49,7 @@ QuickSnap is a media-sharing platform based on Instagram, which allows users to 
 
 ## Special thanks to...
 
-The following real-life instagram accounts, which I copied to create demo accounts in this project
+The following real-life instagram accounts, which I copied to create demo accounts in this project:
 
 - [mkbhd](https://www.instagram.com/mkbhd/)
 - [jackhoward](https://www.instagram.com/jackhoward/)
